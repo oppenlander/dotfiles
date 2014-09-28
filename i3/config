@@ -1,10 +1,9 @@
 #TODO:
 # - figure out mark/jump
-# - named workspaces for static main monitor things (skype, spotify, hipchat)
-# - fix volume muting
 # - set up compton/another composite manager
-# - useless gaps
 # - set up dunst http://www.j4tools.org/
+# - fix volume muting
+# - useless gaps
 
 set $mod Mod4
 
@@ -23,6 +22,13 @@ exec dunst -config $HOME/.config/i3/dunstrc
 
 # Desktop manager (mounting USB drices)
 exec pcmanfm -d
+
+# Spotify
+exec spotify
+
+# Communication apps
+exec skype
+exec hipchat
 
 ##############
 # APPEARANCE #
@@ -80,10 +86,8 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+bindsym $mod+Left workspace prev
+bindsym $mod+Right workspace next
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -92,10 +96,10 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left move workspace to output left
+bindsym $mod+Shift+Down move workspace to output down
+bindsym $mod+Shift+Up move workspace to output up
+bindsym $mod+Shift+Right move workspace to output right
 
 # split in horizontal orientation
 bindsym $mod+b split h
@@ -132,8 +136,9 @@ bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+
+bindsym $mod+9 workspace "9: spotify"
+bindsym $mod+0 workspace "10: comm"
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -144,8 +149,9 @@ bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+
+bindsym $mod+Shift+9 move container to workspace "9: spotify"
+bindsym $mod+Shift+0 move container to workspace "10: comm"
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -246,3 +252,6 @@ bindsym $mod+m mode "$mode_spotify"
 ################
 
 #for_window [class="FTL"] floating enable
+assign [class="Spotify"] → "9: spotify"
+assign [class="Skype"] → "10: comm"
+assign [class="HipChat"] → "10: comm"
