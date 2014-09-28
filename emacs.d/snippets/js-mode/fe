@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: forEach
+# key: fe
+# binding: direct-keybinding
+# --
+${1:collection}.forEach(function($2) {
+  $0
+});

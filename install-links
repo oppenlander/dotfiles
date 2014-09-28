@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Link all the files in dotfiles to their correct locations
+mkdir -p $HOME/.config
+
+# Home bin/scripts
+rm -r $HOME/bin
+ln -s $DIR/bin $HOME/bin
+
+# Emacs
+rm -r $HOME/.emacs.d
+ln -s $DIR/emacs $HOME/.emacs.d
+
+# Fish shell
+rm -r $HOME/.config/fish
+ln -s $DIR/fish $HOME/.config/fish
+
+# i3wm
+rm -r $HOME/.config/i3
+ln -s $DIR/i3 $HOME/.config/i3
+
+# profile
+rm $HOME/.profile
+ln -s $DIR/profile $HOME/.profile
+
+# Lightdm (requires sudo)
+sudo mkdir -p /etc/lightdm
+sudo rm /etc/lightdm/lightdm.conf
+sudo ln -s $DIR/lightdm.conf /etc/lightdm/lightdm.conf
+sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
+sudo ln -s $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+
+# Git
+rm $HOME/.gitconfig
+ln -s $DIR/git/gitconfig $HOME/.gitconfig

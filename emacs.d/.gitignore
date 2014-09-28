@@ -1,0 +1,20 @@
+auto-save-list/
+backups/
+elpa/
+ensime/
+url/
+eshell/
+ac-comphist*
+session-*
+session.*
+*~
+ido.last
+.places
+projectile-bookmarks.eld
+request/
+tramp
+*conflicted copy*
+semanticdb
+\#*#
+.mc-lists.el
+projectile.cache

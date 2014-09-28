@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Installs (most of) my Arch Linux setup
+# Assumes user account/sudo has been set up, and an internet connection.
+
+# Ensure the system is up to date
+sudo pacman -Syu
+
+hash pacaur &> /dev/null
+if [ $? -eq 1 ]; then
+    # Install base packages we'll need for pacaur
+    sudo pacman -S git base-devel yajl openssl curl expac
+
+    # Enter temp folder to install cower/pacaur
+    mkdir -p $HOME/tmp
+    cd $HOME/tmp
+
+    # Download/build/install cower
+    curl -o cower.tar.gz https://aur.archlinux.org/packages/co/cower/cower.tar.gz
+    tar xzf cower.tar.gz
+    cd cower
+    makepkg
+    sudo pacman -U cower*.pkg.tar.gz
+    cd ..
+
+    # Download/build/install pacaur
+    curl -o pacaur.tar.gz https://aur.archlinux.org/packages/pa/pacaur/pacaur.tar.gz
+    tar xzf pacaur.tar.gz
+    cd pacaur
+    makepkg
+    sudo pacman -U pacaur*.pkg.tar.gz
+    cd ..
+
+    # Cleanup
+    rm cower.tar.gz && rm -r cower && rm pacaur.tar.gz && rm -r pacaur
+    cd $HOME
+fi
+
+# Install software
+pacaur -S \
+    compton \
+    elementary-icon-theme \
+    emacs \
+    fish \
+    google-chrome \
+    gtk-theme-elementary \
+    i3 \
+    i3blocks \
+    iw \
+    jdk \
+    libreoffice \
+    lightdm \
+    lxappearance \
+    lxrandr \
+    pcmanfm \
+    playerctl \
+    skype \
+    spotify \
+    terminator \
+    tmux \
+    ttf-dejavu \
+    ttf-font-awesome \
+    xautolock \
+    xfce4-mixer \
+    wireless-tools \
+    wpa_supplicant
+
+# Setup services
+sudo systemctl enable lightdm
+
+# Change default shell to fish
+chsh -s /usr/bin/fish
+
+# Run setup script to link config files
+$DIR/install-links

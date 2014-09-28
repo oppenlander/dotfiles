@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Grabs and prints information about time/date
+
+echo  $(date "+%H:%M, %B %d, %G, %A")

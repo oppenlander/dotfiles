@@ -1,0 +1,26 @@
+(require 'octave-mode)
+
+(setq-default octave-auto-indent t)
+(setq-default octave-auto-newline t)
+(setq-default octave-blink-matching-block t)
+(setq-default octave-block-offset 4)
+(setq-default octave-continuation-offset 4)
+(setq-default octave-continuation-string "\\")
+(setq-default octave-mode-startup-message t)
+(setq-default octave-send-echo-input t)
+(setq-default octave-send-line-auto-forward t)
+(setq-default octave-send-show-buffer t)
+
+(defun my-octave-mode-hook ()
+	(abbrev-mode 1)
+	(auto-fill-mode 1)
+	(if (eq window-system 'x)
+			(font-lock-mode 1)))
+(add-hook 'octave-mode-hook 'my-octave-mode-hook)
+
+(require 'ac-octave)
+(defun ac-octave-mode-setup ()
+	(setq ac-sources '(ac-source-octave)))
+(add-hook 'octave-mode-hook 'ac-octave-mode-setup)
+
+(provide 'setup-octave-mode)
