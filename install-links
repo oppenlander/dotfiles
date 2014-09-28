@@ -10,7 +10,7 @@ ln -s $DIR/bin $HOME/bin
 
 # Emacs
 rm -r $HOME/.emacs.d
-ln -s $DIR/emacs $HOME/.emacs.d
+ln -s $DIR/emacs.d $HOME/.emacs.d
 
 # Fish shell
 rm -r $HOME/.config/fish
