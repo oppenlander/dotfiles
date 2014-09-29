@@ -1,3 +1,6 @@
+# No capslock. Not ever.
+setxkbmap -option ctrl:nocaps
+
 # Add home bin to path
 export PATH=$PATH;$HOME/bin
 

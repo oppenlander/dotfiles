@@ -1,3 +1,9 @@
+;; emacs <= 24.3
+(unless (fboundp 'with-eval-after-load)
+  (defmacro with-eval-after-load (file &rest body)
+    (declare (indent 1) (debug t))
+    `(eval-after-load ,file '(progn ,@body))))
+
 ;; Turn off tool-bar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 
@@ -16,7 +22,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Droid Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal)))))
 
 ;; Set path to dependencies
 (setq site-lisp-dir
@@ -106,14 +112,13 @@
 	 (cons 'popwin melpa)
 	 (cons 'floobits melpa)
 	 (cons 'geiser melpa)
-	 ;(cons 'tern melpa)
-	 ;(cons 'tern-auto-complete melpa)
+	 (cons 'tern melpa)
+	 (cons 'tern-auto-complete melpa)
 	 (cons '2048-game melpa)
 	 (cons 'powerline melpa)
 	 (cons 'sublimity melpa)
 	 (cons 'ag melpa)
 	 (cons 'multi-term melpa)
-	 (cons 'smart-tabs-mode melpa)
 	 (cons 'pandoc-mode melpa)
 	 (cons 'handlebars-mode melpa)
 	 (cons 'less-css-mode melpa)
@@ -139,7 +144,10 @@
 	 (cons 'csv-mode marmalade)
 	 (cons 'password-store melpa)
 	 (cons 'fish-mode melpa)
-   (cons 'zeal-at-point melpa)
+   (cons 'sudo-edit marmalade)
+   (cons 'math-at-point marmalade)
+   (cons 'move-line marmalade)
+   (cons 'workgroups2  melpa)
 	 ))
 (condition-case nil
 		(init--install-packages)
@@ -197,11 +205,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(jabber-account-list (quote (("115566_887076@chat.hipchat.com" (:password . "fakepass") (:network-server . "chat.hipchat.com") (:port . 5222) (:connection-type . starttls)))))
  '(js-indent-level 2)
- '(pandoc-major-modes (quote ((haskell-mode . "native") (text-mode . "markdown") (markdown-mode . "markdown_github") (mediawiki-mode . "mediawiki") (textile-mode . "textile") (rst-mode . "rst") (html-mode . "html") (latex-mode . "latex") (json-mode . "json"))))
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(typescript-auto-indent-flag t)
+ '(typescript-indent-level 2))
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)

@@ -34,3 +34,5 @@ sudo cp $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
 # Git
 rm $HOME/.gitconfig
 ln -s $DIR/git/gitconfig $HOME/.gitconfig
+rm $HOME/.gitignore
+ln -s $DIR/git/gitignore $HOME/.gitignore

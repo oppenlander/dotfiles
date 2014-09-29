@@ -14,6 +14,33 @@
 	(cleanup-buffer-safe)
 	(indent-region (point-min) (point-max)))
 (add-hook 'before-save-hook 'cleanup-buffer-boring)
+(defun start-buffer-cleanup ()
+  "Turn on buffer cleanup"
+  (interactive)
+  (add-hook 'before-save-hook 'cleanup-buffer-boring))
+(defun stop-buffer-cleanup ()
+  "Turn on buffer cleanup"
+  (interactive)
+  (remove-hook 'before-save-hook 'cleanup-buffer-boring))
+(define-key global-map (kbd "C-c @ y") 'start-buffer-cleanup)
+(define-key global-map (kbd "C-c @ n") 'stop-buffer-cleanup)
+(start-buffer-cleanup)
+
+;; Mimic vim's "w" command
+(defun forward-word-to-beginning (&optional n)
+  "Move point forward n words and place cursor at the beginning."
+  (interactive "p")
+  (let (myword)
+    (setq myword
+      (if (and transient-mark-mode mark-active)
+        (buffer-substring-no-properties (region-beginning) (region-end))
+        (thing-at-point 'symbol)))
+    (if (not (eq myword nil))
+      (forward-word n))
+    (forward-word n)
+    (backward-word n)))
+(global-set-key (kbd "M-F") 'forward-word)
+(global-set-key (kbd "M-f") 'forward-word-to-beginning)
 
 ;; Don't add new line at the end of every file
 (setq mode-require-final-newline nil)
@@ -126,8 +153,8 @@
 (setq speedbar-use-images nil)
 
 ;; Rainbows
-																				;(require 'rainbow-delimiters)
-																				;(global-rainbow-delimiters-mode)
+(require 'rainbow-delimiters)
+(global-rainbow-delimiters-mode)
 
 ;; Ack
 (require 'ack-and-a-half)
@@ -151,10 +178,6 @@
 			popwin:special-display-config)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 
-;; Powerline (advanced mode-line)
-(require 'powerline)
-(powerline-default-theme)
-
 ;; Multi-term
 (require 'multi-term)
 (setq multi-term-program "/usr/bin/fish")
@@ -166,8 +189,8 @@
 (require 'smartparens-config)
 (smartparens-global-mode 1)
 (show-smartparens-global-mode 1)
-(global-set-key (kbd "C-M-k") 'sp-kill-sexp)
 (diminish 'smartparens-mode)
+(global-set-key (kbd "C-M-k") 'sp-kill-sexp)
 
 ;; Cleaning modeline
 (defmacro rename-modeline (package-name mode new-name)
@@ -239,8 +262,27 @@
 ;; Pass(word-store)
 (require 'password-store)
 
-;; Zeal
-(require 'zeal-at-point)
-(global-set-key "\C-cd" 'zeal-at-point)
+;; Comment
+(require 'comment-dwim-2)
+(global-set-key (kbd "M-;") 'comment-dwim-2)
+
+;; sudo-edit
+(require 'sudo-edit)
+
+;; math-at-point
+(require 'math-at-point)
+
+;; move-line C-s-UP / C-s-DOWN
+(require 'move-line)
+
+;; Workgroups2 C-c w
+(require 'workgroups2)
+(setq wg-prefix-key (kbd "C-c w"))
+(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+(workgroups-mode 1)
+
+;; Powerline (advanced mode-line)
+(require 'powerline)
+(powerline-default-theme)
 
 (provide 'my-misc)
