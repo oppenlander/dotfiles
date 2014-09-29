@@ -55,6 +55,7 @@ pacaur -S \
     playerctl \
     skype \
     spotify \
+    redshift \
     terminator \
     tmux \
     ttf-dejavu \

@@ -30,6 +30,9 @@ exec spotify
 exec skype
 exec hipchat
 
+# Reden the everything
+exec redshift-gtk
+
 ##############
 # APPEARANCE #
 ##############
