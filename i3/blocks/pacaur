@@ -4,14 +4,8 @@ n1="$(checkupdates | wc -l)"
 n2="$(pacaur -k | wc -l)"
 n=$(( $n1+$n2 ))
 
-if [ $n -eq 0 ]; then
-    echo " no updates"
-else
-    if [ $n -eq 1 ]; then
-        echo " 1 new package"
-    else
-        echo " $n new packages"
-    fi
+if [ $n -ne 0 ]; then
+    echo " $n new packages"
     echo
     echo "#47a8e9"
 fi
