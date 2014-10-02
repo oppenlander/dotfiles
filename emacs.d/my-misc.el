@@ -152,10 +152,6 @@
 (setq speedbar-smart-directory-expand-flag t)
 (setq speedbar-use-images nil)
 
-;; Rainbows
-(require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
-
 ;; Ack
 (require 'ack-and-a-half)
 (defalias 'ack 'ack-and-a-half)
@@ -276,10 +272,26 @@
 (require 'move-line)
 
 ;; Workgroups2 C-c w
-(require 'workgroups2)
-(setq wg-prefix-key (kbd "C-c w"))
-(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
-(workgroups-mode 1)
+;; (require 'workgroups2)
+;; (setq wg-prefix-key (kbd "C-c w"))
+;; (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+;; (workgroups-mode 1)
+
+;; Expand Region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;; Smart forward (better semantic navigation)
+(require 'smart-forward)
+(global-set-key (kbd "M-<up>") 'smart-up)
+(global-set-key (kbd "M-<down>") 'smart-down)
+(global-set-key (kbd "M-<left>") 'smart-backward)
+(global-set-key (kbd "M-<right>") 'smart-forward)
+
+;; Edit server
+(when (daemonp)
+  (require 'edit-server)
+  (edit-server-start))
 
 ;; Powerline (advanced mode-line)
 (require 'powerline)

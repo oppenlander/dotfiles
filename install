@@ -40,6 +40,8 @@ pacaur -S \
     compton \
     elementary-icon-theme \
     emacs \
+    dmenu2 \
+    feh \
     fish \
     google-chrome \
     gtk-theme-elementary \

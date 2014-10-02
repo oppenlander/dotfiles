@@ -148,6 +148,9 @@
    (cons 'math-at-point marmalade)
    (cons 'move-line marmalade)
    (cons 'workgroups2  melpa)
+   (cons 'expand-region melpa)
+   (cons 'smart-forward melpa)
+   (cons 'edit-server melpa)
 	 ))
 (condition-case nil
 		(init--install-packages)

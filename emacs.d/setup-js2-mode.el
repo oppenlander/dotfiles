@@ -88,5 +88,8 @@
 
 (add-hook 'js2-mode-hook '(lambda () (setq indent-tabs-mode 1)))
 
+(require 'rainbow-delimiters)
+(add-hook 'js2-mode-hook 'rainbow-delimiters)
+
 (provide 'setup-js2-mode)
 ;;; setup-js2-mode ends here

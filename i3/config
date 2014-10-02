@@ -11,6 +11,9 @@ set $mod Mod4
 # STARTUP APPS #
 ################
 
+# Ensure the background is set
+exec feh --bg-scale /opt/backgrounds/default.jpg
+
 # Lock screen after 10 minutes
 exec xautolock -time 10 -locker i3lock &
 
@@ -206,6 +209,9 @@ mode "$mode_system" {
 }
 bindsym $mod+Pause mode "$mode_system"
 
+# Lock screen without system mode
+bindsym Mod1+Control+l exec --no-startup-id /home/andrew/bin/i3exit lock, mode "default"
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -229,7 +235,7 @@ mode "$mode_vlc" {
   bindsym m exec playerctl --player=vlc play-pause, mode "default"
   bindsym n exec playerctl --player=vlc next
   bindsym p exec playerctl --player=vlc previous
-  bindsym s exec playerctl --player=vlc stop, mode "default"
+  bindsym Space exec playerctl --player=vlc stop, mode "default"
 
   bindsym Return mode "default"
   bindsym Escape mode "default"
@@ -242,7 +248,7 @@ mode "$mode_spotify" {
   bindsym m exec playerctl --player=spotify play-pause, mode "default"
   bindsym n exec playerctl --player=spotify next
   bindsym p exec playerctl --player=spotify previous
-  bindsym s exec playerctl --player=spotify stop, mode "default"
+  bindsym Space exec playerctl --player=spotify stop, mode "default"
 
   bindsym Return mode "default"
   bindsym Escape mode "default"
