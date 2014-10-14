@@ -26,6 +26,13 @@
 (define-key global-map (kbd "C-c @ n") 'stop-buffer-cleanup)
 (start-buffer-cleanup)
 
+;; Replace string
+(define-key global-map (kbd "C-c r") 'replace-string)
+
+;; Flex isearch
+(require 'flex-isearch)
+(global-flex-isearch-mode 1)
+
 ;; Mimic vim's "w" command
 (defun forward-word-to-beginning (&optional n)
   "Move point forward n words and place cursor at the beginning."
@@ -109,6 +116,7 @@
 											 ))
 (real-global-auto-complete-mode t)
 (diminish 'auto-complete-mode)
+(define-key ac-mode-map (kbd "C-TAB") 'auto-complete)
 
 ;; Hide DOS line endings
 (defun remove-dos-eol ()
@@ -139,11 +147,8 @@
 (show-paren-mode 1)
 
 ;; Cursor Settings
-(blink-cursor-mode 1)
-(setq default-frame-alist '((cursor-color . "white")))
-
-;; Autocomplete
-(define-key ac-mode-map (kbd "C-TAB") 'auto-complete)
+;(blink-cursor-mode 1)
+;(setq default-frame-alist '((cursor-color . "white")))
 
 ;; Same-frame Speedbar
 (require 'sr-speedbar)
@@ -195,9 +200,9 @@
 				(setq mode-name ,new-name))))
 
 ;; eww it up
-(require 'eww)
-(require 'w3m)
-(setq browse-url-browser-function 'w3m-browse-url)
+;(require 'eww)
+;(require 'w3m)
+;(setq browse-url-browser-function 'w3m-browse-url)
 
 ;; my magit
 (require 'magit)
@@ -215,14 +220,6 @@
 (setq guide-key/recursive-key-sequence-flag t)
 (guide-key-mode 1)
 (diminish 'guide-key-mode)
-
-;; visual regexp (with steroids!)
-(require 'visual-regexp-steroids)
-(define-key global-map (kbd "C-c r") 'vr/replace)
-(define-key global-map (kbd "C-c q") 'vr/query-replace)
-(define-key global-map (kbd "C-c m") 'vr/mc-mark)
-(define-key esc-map (kbd "C-r") 'vr/isearch-backward)
-(define-key esc-map (kbd "C-s") 'vr/isearch-forward)
 
 ;; Flycheck
 (require 'flycheck)
@@ -263,13 +260,13 @@
 (global-set-key (kbd "M-;") 'comment-dwim-2)
 
 ;; sudo-edit
-(require 'sudo-edit)
+;(require 'sudo-edit)
 
 ;; math-at-point
 (require 'math-at-point)
 
 ;; move-line C-s-UP / C-s-DOWN
-(require 'move-line)
+;(require 'move-line)
 
 ;; Workgroups2 C-c w
 ;; (require 'workgroups2)
@@ -282,11 +279,11 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; Smart forward (better semantic navigation)
-(require 'smart-forward)
-(global-set-key (kbd "M-<up>") 'smart-up)
-(global-set-key (kbd "M-<down>") 'smart-down)
-(global-set-key (kbd "M-<left>") 'smart-backward)
-(global-set-key (kbd "M-<right>") 'smart-forward)
+;(require 'smart-forward)
+;(global-set-key (kbd "M-<up>") 'smart-up)
+;(global-set-key (kbd "M-<down>") 'smart-down)
+;(global-set-key (kbd "M-<left>") 'smart-backward)
+;(global-set-key (kbd "M-<right>") 'smart-forward)
 
 ;; Edit server
 (when (daemonp)
@@ -296,5 +293,12 @@
 ;; Powerline (advanced mode-line)
 (require 'powerline)
 (powerline-default-theme)
+
+;; Diff Highlight
+(require 'diff-hl)
+(global-diff-hl-mode)
+
+;; Set Dedicated windows
+(require 'dedicated)
 
 (provide 'my-misc)

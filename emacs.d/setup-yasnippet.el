@@ -1,5 +1,7 @@
 (require 'yasnippet)
 
+(require 'mocha-snippets)
+
 (setq yas/snippet-dirs '("~/.emacs.d/snippets"))
 (yas/global-mode 1)
 (diminish 'yas-minor-mode)
@@ -26,6 +28,6 @@
         (delete-char (- init-word original-point))
         (insert key)
         (yas-expand)))))
-(define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-ido-expand)
+(define-key yas-minor-mode-map (kbd "C-`") 'yas-ido-expand)
 
 (provide 'setup-yasnippet)

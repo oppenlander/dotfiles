@@ -13,16 +13,13 @@
 ;; No splash screen
 (setq inhibit-startup-message t)
 
-;; Set custom (built in) theme
-(load-theme 'wombat t)
-
 ;; Set font
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 90 :width normal)))))
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
 
 ;; Set path to dependencies
 (setq site-lisp-dir
@@ -129,14 +126,9 @@
 	 (cons 'grunt melpa)
 	 (cons 'smartparens melpa)
 	 (cons 'diminish melpa)
-	 (cons 'helm-spotify melpa)
-	 (cons 'helm-dash melpa)
-	 (cons 'helm-themes melpa)
 	 (cons 'w3 gnu)
 	 (cons 'w3m melpa)
 	 (cons 'guide-key melpa)
-	 (cons 'visual-regexp melpa)
-	 (cons 'visual-regexp-steroids melpa)
 	 (cons 'js-comint melpa)
 	 (cons 'flycheck melpa)
 	 (cons 'json-mode melpa)
@@ -151,6 +143,25 @@
    (cons 'expand-region melpa)
    (cons 'smart-forward melpa)
    (cons 'edit-server melpa)
+   (cons 'smyx-theme melpa)
+   (cons 'helm melpa)
+   (cons 'helm-ag melpa)
+	 (cons 'helm-dash melpa)
+   (cons 'helm-flycheck melpa)
+   (cons 'helm-google melpa)
+   (cons 'helm-proc melpa)
+   (cons 'helm-projectile melpa)
+   (cons 'helm-projectile-all melpa)
+	 (cons 'helm-spotify melpa)
+	 (cons 'helm-themes melpa)
+   (cons 'diff-hl melpa)
+   (cons 'company melpa)
+   (cons 'company-tern melpa)
+   (cons 'helm-company melpa)
+   (cons 'dedicated melpa)
+   (cons 'base16-theme melpa)
+   (cons 'mocha-snippets melpa)
+   (cons 'flex-isearch melpa)
 	 ))
 (condition-case nil
 		(init--install-packages)
@@ -158,11 +169,17 @@
 	 (package-refresh-contents)
 	 (init--install-packages)))
 
+;; Set custom theme
+(load-theme 'base17-default t)
+
 ;; Misc
 (require 'my-misc)
 
 ;; Setup extensions
 (eval-after-load 'ido '(require 'setup-ido))
+
+;; COMPlete ANYthing
+(eval-after-load 'company '(require 'setup-company-mode))
 
 ;; Snippets
 (eval-after-load 'yasnippet '(require 'setup-yasnippet))
@@ -208,7 +225,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(ansi-term-color-vector [unspecified "#202020" "#ac4142" "#90a959" "#f4bf75" "#6a9fb5" "#aa759f" "#6a9fb5" "#e0e0e0"] t)
+ '(column-number-mode t)
+ '(custom-safe-themes (quote ("f675333c7510173ff618cf51002d4d5056f611d9a97e3d663bb37f01ed67e9a4" "7ed6913f96c43796aa524e9ae506b0a3a50bfca061eed73b66766d14adfa86d1" "7f0d333837a8af59b03210122aa92440b51a7dd0b3a560db7c659ac6e64fd276" "decaff85530e410562660b1df2cde34e8abf6a2e3498d401e526d7b0914e8730" "5b5c66ec647aee5f9f31a8deee5e0b1fdec6d7fa9c3354ed6227e6b4eafa273b" "298f3826066ad761b9f461eec62b578c9725fd6134fdcab75fef579032f03d34" default)))
+ '(fci-rule-color "#151515")
  '(js-indent-level 2)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
  '(typescript-auto-indent-flag t)
  '(typescript-indent-level 2))
 (put 'downcase-region 'disabled nil)

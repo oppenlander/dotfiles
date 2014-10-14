@@ -20,6 +20,9 @@ exec xautolock -time 10 -locker i3lock &
 # Move control key
 exec setxkbmap -option ctrl:nocaps
 
+# Map some keys with xcape
+exec xcape -e 'Alt_L=Escape'
+
 # desktop notifications
 exec dunst -config $HOME/.config/i3/dunstrc
 
@@ -218,6 +221,7 @@ bar {
   position top
   font pango:DejaVu Sans Mono 10
   status_command i3blocks -c $HOME/.config/i3/i3blocks.conf
+  tray_output primary
   colors {
     background #000000
     statusline #ffffff
