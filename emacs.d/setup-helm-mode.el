@@ -24,6 +24,8 @@
 ;; Spotify
 (global-set-key (kbd "C-c C-h m") 'helm-spotify)
 
+;; Turn on helm builtins
+;(helm-mode 1)
 
 (provide 'setup-helm-mode)
 ;;;

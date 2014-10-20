@@ -177,6 +177,7 @@
 
 ;; Setup extensions
 (eval-after-load 'ido '(require 'setup-ido))
+(require 'setup-helm-mode)
 
 ;; COMPlete ANYthing
 (eval-after-load 'company '(require 'setup-company-mode))
@@ -203,7 +204,6 @@
 (eval-after-load 'go-mode '(require 'setup-go-mode))
 																				;(require 'setup-java-mode)
 (eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
-(require 'setup-helm-mode)
 (require 'fish-mode)
 
 ;; Map files to modes

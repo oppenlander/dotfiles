@@ -108,15 +108,16 @@
 (require 'diminish)
 
 ;; Auto-complete
-(require 'auto-complete)
-(define-globalized-minor-mode real-global-auto-complete-mode
-	auto-complete-mode (lambda ()
-											 (if (not (minibufferp (current-buffer)))
-													 (auto-complete-mode 1))
-											 ))
-(real-global-auto-complete-mode t)
-(diminish 'auto-complete-mode)
-(define-key ac-mode-map (kbd "C-TAB") 'auto-complete)
+;(require 'auto-complete)
+;(define-globalized-minor-mode real-global-auto-complete-mode
+;	auto-complete-mode (lambda ()
+;											 (if (not (minibufferp (current-buffer)))
+;													 (auto-complete-mode 1))
+;											 ))
+;(real-global-auto-complete-mode t)
+;(diminish 'auto-complete-mode)
+;(setq-default ac-auto-show-menu nil)
+;(define-key ac-mode-map (kbd "C-TAB") 'auto-complete)
 
 ;; Hide DOS line endings
 (defun remove-dos-eol ()

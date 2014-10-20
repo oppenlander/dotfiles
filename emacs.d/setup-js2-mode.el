@@ -11,7 +11,9 @@
 (setq-default js-indent-level 2)
 (setq-default js2-strict-inconsistent-return-warning nil)
 (setq-default js2-include-node-externs t)
+(setq-default js2-include-jslint-globals t)
 (setq-default js2-indent-ignore-first-tab t)
+
 
 ;; Jade/Stylus
 (require 'sws-mode)
@@ -25,8 +27,9 @@
 (add-hook 'less-css-mode-hook '(lambda () (setq indent-tabs-mode 1)))
 
 ;; Autocomplete js2
-(require 'auto-complete)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
+(require 'company)
+(require 'ac-js2)
+(add-hook 'js2-mode-hook 'ac-js2-company)
 (setq-default ac-js2-evaluate-calls t)
 
 ;; Grunt

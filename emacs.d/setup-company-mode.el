@@ -9,8 +9,8 @@
 
 ;; (add-to-list 'company-backends 'company-dabbrev t)
 
-(require 'company-tern)
-(add-to-list 'company-backends 'company-tern t)
+;(require 'company-tern)
+;(add-to-list 'company-backends 'company-tern t)
 ; (add-to-list 'company-backends 'company-ispell t)
 ;; (add-to-list 'company-backends 'company-files t)
 
