@@ -21,12 +21,13 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
 
-;; Set path to dependencies
+;; Set load path to dependencies
 (setq site-lisp-dir
-			(expand-file-name "site-lisp" user-emacs-directory))
+      (expand-file-name "lisp" user-emacs-directory))
+(message user-emacs-directory)
+(message site-lisp-dir)
 
 ;; Set up load path
-(add-to-list 'load-path user-emacs-directory)
 (add-to-list 'load-path site-lisp-dir)
 
 ;; Write backup files to own directory
@@ -61,8 +62,7 @@
 	 (cons 'magit melpa)
 	 (cons 'slime-js marmalade)
 	 (cons 'clojure-mode melpa)
-	 (cons 'clojure-test-mode melpa)
-	 (cons 'cider melpa)
+;	 (cons 'cider melpa)
 	 (cons 'rainbow-delimiters melpa)
 	 (cons 'js2-mode melpa)
 	 (cons 'js2-refactor melpa)
@@ -94,8 +94,6 @@
 	 (cons 'prolog melpa)
 	 (cons 'ediprolog gnu)
 	 (cons 'rust-mode melpa)
-	 (cons 'flymake-easy melpa)
-	 (cons 'flymake-rust melpa)
 	 (cons 'go-mode melpa)
 	 (cons 'go-autocomplete melpa)
 	 (cons 'go-direx melpa)
@@ -119,21 +117,16 @@
 	 (cons 'pandoc-mode melpa)
 	 (cons 'handlebars-mode melpa)
 	 (cons 'less-css-mode melpa)
-	 (cons 'flymake-less marmalade)
-	 (cons 'flymake-jshint melpa)
 	 (cons 'discover melpa)
 	 (cons 'discover-js2-refactor melpa)
 	 (cons 'grunt melpa)
 	 (cons 'smartparens melpa)
 	 (cons 'diminish melpa)
-	 (cons 'w3 gnu)
-	 (cons 'w3m melpa)
 	 (cons 'guide-key melpa)
 	 (cons 'js-comint melpa)
 	 (cons 'flycheck melpa)
 	 (cons 'json-mode melpa)
 	 (cons 'ace-jump-mode melpa)
-	 (cons 'csv-mode marmalade)
 	 (cons 'password-store melpa)
 	 (cons 'fish-mode melpa)
    (cons 'sudo-edit marmalade)
@@ -162,6 +155,7 @@
    (cons 'base16-theme melpa)
    (cons 'mocha-snippets melpa)
    (cons 'flex-isearch melpa)
+   (cons 'comment-dwim-2 melpa)
 	 ))
 (condition-case nil
 		(init--install-packages)
@@ -170,7 +164,7 @@
 	 (init--install-packages)))
 
 ;; Set custom theme
-(load-theme 'base17-default t)
+(require 'base17-default-theme)
 
 ;; Misc
 (require 'my-misc)
