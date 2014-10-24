@@ -156,6 +156,8 @@
    (cons 'mocha-snippets melpa)
    (cons 'flex-isearch melpa)
    (cons 'comment-dwim-2 melpa)
+   (cons 'simple-screen melpa)
+   (cons 'flyspell-lazy melpa)
 	 ))
 (condition-case nil
 		(init--install-packages)
@@ -164,7 +166,7 @@
 	 (init--install-packages)))
 
 ;; Set custom theme
-(require 'base17-default-theme)
+(load-theme 'smyx t)
 
 ;; Misc
 (require 'my-misc)
@@ -219,10 +221,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
- '(ansi-term-color-vector [unspecified "#202020" "#ac4142" "#90a959" "#f4bf75" "#6a9fb5" "#aa759f" "#6a9fb5" "#e0e0e0"] t)
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(ansi-term-color-vector
+   [unspecified "#202020" "#ac4142" "#90a959" "#f4bf75" "#6a9fb5" "#aa759f" "#6a9fb5" "#e0e0e0"] t)
  '(column-number-mode t)
- '(custom-safe-themes (quote ("f675333c7510173ff618cf51002d4d5056f611d9a97e3d663bb37f01ed67e9a4" "7ed6913f96c43796aa524e9ae506b0a3a50bfca061eed73b66766d14adfa86d1" "7f0d333837a8af59b03210122aa92440b51a7dd0b3a560db7c659ac6e64fd276" "decaff85530e410562660b1df2cde34e8abf6a2e3498d401e526d7b0914e8730" "5b5c66ec647aee5f9f31a8deee5e0b1fdec6d7fa9c3354ed6227e6b4eafa273b" "298f3826066ad761b9f461eec62b578c9725fd6134fdcab75fef579032f03d34" default)))
+ '(custom-safe-themes
+   (quote
+    ("46223bc978f9e7ab7f5b61d171da7ce98e69661158b75ed011603d3134fbad02" "f675333c7510173ff618cf51002d4d5056f611d9a97e3d663bb37f01ed67e9a4" "7ed6913f96c43796aa524e9ae506b0a3a50bfca061eed73b66766d14adfa86d1" "7f0d333837a8af59b03210122aa92440b51a7dd0b3a560db7c659ac6e64fd276" "decaff85530e410562660b1df2cde34e8abf6a2e3498d401e526d7b0914e8730" "5b5c66ec647aee5f9f31a8deee5e0b1fdec6d7fa9c3354ed6227e6b4eafa273b" "298f3826066ad761b9f461eec62b578c9725fd6134fdcab75fef579032f03d34" default)))
  '(fci-rule-color "#151515")
  '(js-indent-level 2)
  '(show-paren-mode t)
