@@ -2,7 +2,7 @@
 setxkbmap -option ctrl:nocaps
 
 # Add home bin to path
-export PATH=$PATH;$HOME/bin
+export PATH=$PATH;$HOME/bin;$HOME/.cabal/bin
 
 # sensible editor
 export VISUAL="emacsclient -c"

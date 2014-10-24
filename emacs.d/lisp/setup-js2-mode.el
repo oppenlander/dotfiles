@@ -1,4 +1,4 @@
-(setq-default js2-enter-indents-newline t)
+(setq-default js2-enter-indents-newline nil)
 (setq-default js2-bounce-indent-p t)
 (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
 
@@ -29,8 +29,8 @@
 ;; Autocomplete js2
 (require 'company)
 (require 'ac-js2)
-(add-hook 'js2-mode-hook 'ac-js2-company)
-(setq-default ac-js2-evaluate-calls t)
+;(add-hook 'js2-mode-hook 'ac-js2-company)
+;(setq-default ac-js2-evaluate-calls t)
 
 ;; Grunt
 (require 'grunt)
@@ -76,6 +76,9 @@
 
 (require 'rainbow-delimiters)
 (add-hook 'js2-mode-hook 'rainbow-delimiters-mode)
+
+;; electric indent hates bouncies
+(add-hook 'js2-mode-hook (lambda () (electric-indent-local-mode -1)))
 
 (provide 'setup-js2-mode)
 ;;; setup-js2-mode ends here

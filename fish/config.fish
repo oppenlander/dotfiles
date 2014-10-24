@@ -1,5 +1,5 @@
 # Path to your oh-my-fish.
-set omf_path $HOME/.config/fish/oh-my-fish
+set fish_path $HOME/.config/fish/oh-my-fish
 
 set fish_greeting ""
 
@@ -51,6 +51,8 @@ set -gx PATH '/opt/android-sdk/platform-tools' $PATH
 set -gx PATH $HOME'/bin' $PATH
 # NPM bin
 set -gx PATH $HOME'/npm/bin' $PATH
+# Cabal/Haskell bin
+set -gx PATH $HOME'/.cabal/bin' $PATH
 
 # Load oh-my-fish configuration.
-. $omf_path/oh-my-fish.fish
+. $fish_path/oh-my-fish.fish
