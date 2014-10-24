@@ -302,4 +302,14 @@
 ;; Set Dedicated windows
 (require 'dedicated)
 
+;; SPELLING
+(require 'flyspell-lazy)
+(flyspell-lazy-mode 1)
+(flyspell-prog-mode)
+
+;; screen
+(require 'simple-screen)
+(global-set-key (kbd "C-z") 'simple-screen-map)
+
+
 (provide 'my-misc)
