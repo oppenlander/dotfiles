@@ -1,6 +1,22 @@
 ;;; -*- coding: utf-8 -*-
-(("/home/andrew/.dotfiles/emacs.d/emacs-init.org" . 22195)
- ("/home/andrew/.recentf" . 5152)
+(("/home/andrew/.dotfiles/emacs.d/emacs-init.el" . 4866)
+ ("/home/andrew/.recentf" . 5306)
+ ("/home/andrew/.dotfiles/emacs.d/emacs-init.org" . 15344)
+ ("/home/andrew/.dotfiles/emacs.d/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/quelpa"))
+ ("/home/andrew/.dotfiles/emacs.d/quelpa/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/quelpa/build"))
+ ("/home/andrew/.dotfiles/emacs.d/quelpa/build/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/quelpa/build/quelpa"))
+ ("/home/andrew/.dotfiles/emacs.d/quelpa/build/quelpa/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/quelpa/build/quelpa/.git"))
+ ("/home/andrew/.dotfiles/emacs.d/packages/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/packages/rename-modeline.el"))
+ ("/home/andrew/.dotfiles/emacs.d/.cask/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/.cask/24.4.1"))
+ ("/home/andrew/.dotfiles/emacs.d/quelpa/build/package-build/"
+  (dired-filename . "/home/andrew/.dotfiles/emacs.d/quelpa/build/package-build/.git"))
+ ("/home/andrew/Downloads/t.html" . 2096)
  ("/home/andrew/.dotfiles/emacs.d/Cask" . 49)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/evil-20141025.1316/evil-autoloads.el" . 695)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/goto-chg-20131228.1459/goto-chg-autoloads.el" . 1874)
@@ -50,7 +66,6 @@
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/ido-vertical-mode-20140516.1920/ido-vertical-mode-autoloads.el" . 806)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/flx-ido-20140821.2033/flx-ido-autoloads.el" . 550)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/flx-20140921.739/flx-autoloads.el" . 220)
- ("/home/andrew/.dotfiles/emacs.d/emacs-init.el" . 27843)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/"
   (dired-filename . "/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/archives"))
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/markdown-mode-20140914.1012/markdown-mode-autoloads.el" . 704)
