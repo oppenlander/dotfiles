@@ -1,0 +1,672 @@
+* Emacs Org Configuration
+2014-10-25
+* Description
+This file is tangled using =org-babel-load-file=. What this does is generate
+a =emacs-init.el= from the =emacs-lisp= source blocks.
+
+This emacs.d is currently  designed for Emacs 24.3 and above.
+
+**** The basic directory structure.
+#+BEGIN_SRC text
+  └── emacs.d
+      ├── README.markdown
+      ├── emacs-init.org
+      ├── init.el
+      ├── packages
+      ├── places
+      ├── snippets
+      ├── backups
+      ├── tempfiles
+      └── themes
+#+END_SRC
+
+*** Credits:
+This emacs.d was heavily inspired by the following configurations.
+
+[[https://github.com/magnars/.emacs.d][Magnar Sveen's emacs.d]]
+
+[[https://github.com/jhenahan/emacs.d/blob/master/emacs-init.org][Jack Henahan's init.org]]
+
+[[https://github.com/seth/my-emacs-dot-d/blob/master/emacs-init.org][Seth Falcon's emacs-init-org]]
+
+[[https://github.com/steckerhalter/steckemacs/blob/master/steckemacs.org][Steckerhalter's Steckemacs]]
+
+[[https://github.com/daschwa/dotfiles][Daschwa's Dotfiles]]
+
+* Prerequisites
+
+** Arch Linux
+
+*** [[https://wiki.archlinux.org/index.php/Pacaur][Pacaur (or any other AUR helepr)]]
+
+*** [[https://github.com/cask/cask][Cask]]
+#+BEGIN_SRC sh
+pacaur -S cask
+#+END_SRC
+
+* Installation
+
+** Arch Linux
+*** Installing Emacs
+**** 24.4 (Stable)
+#+BEGIN_SRC sh
+pacman -S emacs
+#+END_SRC
+
+* Package Management
+
+[[https://github.com/rdallasgray/pallet][Pallet]] is a very helpful package management tool for Emacs.
+It utilizes a dependency management platform called [[https://github.com/cask/cask][Cask]],
+to update a centralized =Cask= file when you install or remove packages.
+
+** Pallet
+You can download all packages in your =Cask= file by using =M-x pallet-install=.
+However, this should not be necessary.
+
+** Cask
+Cask is initialized in =init.el= with the following:
+#+BEGIN_SRC emacs-lisp
+(require 'cask "/usr/share/cask/cask.el")
+(cask-initialize)
+#+END_SRC
+
+** Install Packages
+- Install [[https://github.com/cask/cask][Cask]].
+- Run =cask install= in =$HOME/.emacs.d/=.
+
+* Packages, Modes, and Extensions
+** Dependency Management with =req-package=
+
+Where Pallet keeps track of the packages we have installed, =req-package=
+handles all our internal package dependencies and configurations.
+
+#+BEGIN_QUOTE
+[[https://github.com/edvorg/req-package][req-package]] is a wrapper on top of [[https://github.com/jwiegley/use-package][use-package]], a package dependency
+management tool. The documentation for =use-package= is immensely helpful for
+figuring out how to describe package dependencies and settings. =req-package=
+adds the =:require= keyword which allows you to define dependencies between
+related packages.
+#+END_QUOTE
+
+Another nice thing about =req-package=, is that you no longer not need to
+specify the =:ensure= keyword, as it is added by default.
+
+Start using =req-package=
+#+BEGIN_SRC emacs-lisp
+(require 'req-package)
+#+END_SRC
+
+** Local Custom Packages
+Add custom packages directory to the =load-path=.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (concat user-emacs-directory "packages/"))
+#+END_SRC
+
+* Essentials
+Some quick essential customizations. To tame emacs's
+#+BEGIN_SRC emacs-lisp
+  ;; Turn off mouse interface early in startup to avoid momentary display
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
+  ;; Start off with some sanity.
+  (req-package better-defaults)
+
+  ;; No splash screen please
+  (setq inhibit-startup-message t)
+
+  ;; No alarms.
+  (setq ring-bell-function 'ignore)
+
+  ;; Write backup files to own directory
+  (setq backup-directory-alist
+        `(("." . ,(expand-file-name
+                   (concat user-emacs-directory "backups")))))
+
+  ;; Backup files correctly and clean up versions
+  (setq backup-by-copying t)
+  (setq delete-old-versions t)
+  (setq kept-new-versions 6)
+  (setq kept-old-versions 2)
+  (setq version-control t)
+
+  ;; Disable lock files
+  (setq create-lockfiles nil)
+
+  ;; Write auto-saves to own directory
+  (setq auto-save-file-name-transforms
+        `((".*" ,(expand-file-name
+                  (concat user-emacs-directory "tempfiles")) t)))
+
+
+  ;; Make backups of files, even when they're in version control
+  (setq vc-make-backup-files t)
+
+  ;; Save point position between sessions
+  (req-package saveplace)
+  (setq-default save-place t)
+  (setq save-place-file (expand-file-name "places" user-emacs-directory))
+
+  ;; Fix empty pasteboard error
+  (setq save-interprogram-paste-before-kill nil)
+
+  ;; Enable some commands
+  (put 'downcase-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'narrow-to-region 'disabled nil)
+  (put 'erase-buffer 'disabled nil)
+
+  ;; Allow pasting selection outside Emacs
+  (setq x-select-enable-clipboard t)
+
+  ;; Move deleted fiels to trash
+  (setq delete-by-moving-to-trash t)
+
+  ;; No shift marking/selecting
+  (setq shift-select-mode nil)
+
+  ;; Answer yes/no with y/n
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; Set coding system to utf-8 everywhere
+  (setq locale-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+
+  ;; Use spaces by defult
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 2)
+
+  ;; Line and column numbers
+  (setq line-number-mode t)
+  (setq column-number-mode t)
+#+END_SRC
+
+* Keybindings
+#+BEGIN_QUOTE
+There are a number of ways to bind keys in Emacs, but I find
+=bind-key=, bundled with =use-package=, easier to work with and,
+more importantly, easier to read. =bind-key= takes a key sequence, a
+command, and an optional keymap.  =bind-key*= overrides any minor
+mode which sets the keybinding. =unbind-key= takes a key sequence
+and a keymap and removes that binding. Invoking
+=describe-personal-keybindings= prints a summary of your keybindings
+through =bind-key= and any overrides or conflicts. This is really
+the killer convenience of using =bind-key=.
+#+END_QUOTE
+
+** Exiting
+I don't like to quit Emacs on accident, and I find closing frames are more useful.
+
+#+BEGIN_SRC emacs-lisp
+  ;; The mnemonic is C-x REALLY QUIT
+  (bind-key "C-x r q" 'save-buffers-kill-terminal)
+  (bind-key "C-x C-c" 'delete-frame)
+#+END_SRC
+
+** Improvements
+#+BEGIN_SRC emacs-lisp
+  ;; Home and End Keys:
+  (bind-key "<home>" 'move-beginning-of-line)
+  (bind-key "<end>" 'move-end-of-line)
+
+  ;; Joins Lines into one
+  (bind-key  "M-j" '(lambda () (interactive) (join-line -1)))
+
+  ;; Kill line from the left
+  (bind-key "<s-backspace>" '(lambda () (interactive) (kill-line 0)))
+
+  ;; Quickly jump to last change
+  (bind-key "C-x C-\\" 'goto-last-change)
+
+  ;; Clean up whitespace
+  (bind-key "C-c @ c" 'delete-trailing-whitespace)
+
+  ;; Replace string
+  (bind-key "C-c r" 'replace-string)
+#+END_SRC
+
+** Unbind keys
+Sometimes there are system keybindings that get in the way and will be used later.
+
+#+BEGIN_SRC emacs-lisp
+(dolist (keys '("<M-up>" "<M-down>" "<s-left>" "<s-right>"
+                "s-c" "s-v" "s-x" "s-v" "s-q" "s-s" "s-w"
+                "s-a" "s-o" "s-n" "s-p" "s-k" "s-u" "s-m"
+                "s-f" "s-z" "s-g" "s-d" "s-," "s-:" "s-e"
+                "s-t" "C-z"))
+  (global-unset-key (kbd keys)))
+#+END_SRC
+
+* TODO Appearance
+** Font
+I default to DejaVu Sans Mono for everything.
+#+BEGIN_SRC emacs-lisp
+   (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 98)
+#+END_SRC
+
+** Theme
+Set custom theme path and load theme
+#+BEGIN_SRC emacs-lisp
+(setq custom-theme-directory (concat user-emacs-directory "themes/"))
+
+(load-theme 'smyx-custom t)
+#+END_SRC
+
+** Pretty Mode
+#+BEGIN_SRC emacs-lisp
+  (req-package pretty-mode
+    :config
+    (global-pretty-mode 1))
+#+END_SRC
+
+** TODO Mode Line
+*** Date
+Display the date on the mode line.
+#+BEGIN_SRC emacs-lisp
+(setq display-time-day-and-date t
+                display-time-format "%a %b %d %R"
+                display-time-interval 60
+                display-time-default-load-average nil)
+             (display-time)
+#+END_SRC
+
+*** TODO Use a custom powerline theme that includes workgroup and evil support
+#+BEGIN_SRC emacs-lisp
+  (req-package powerline
+               :config
+               (powerline-default-theme))
+#+END_SRC
+
+** Custom Keywords
+
+*** Keyword Symbols
+#+BEGIN_SRC emacs-lisp
+(defun add-operator-hl ()
+  (font-lock-add-keywords
+   nil
+   '(("\s[-]\s\\|\s[/]\s\\|[%]\\|[+]\\|[*]\\|[!=]\\|[/=]\\|[<=]\\|[>=]" . font-lock-keyword-face))))
+;; prog-mode applies to all programming modes
+(add-hook 'prog-mode-hook 'add-operator-hl)
+#+END_SRC
+
+** Other
+Don't defer screen updates when performing operations
+#+BEGIN_SRC emacs-lisp
+(setq redisplay-dont-pause t)
+#+END_SRC
+
+* Custom Functions
+** Lisp
+*** Evaluate and Replace
+#+BEGIN_SRC emacs-lisp
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+(bind-key "C-x x e" 'eval-and-replace)
+#+END_SRC
+
+** Buffer
+*** Kill Region / Line
+With these in place, you can kill or copy the line point is on with a single keystroke:
+
+- =C-w= kills the current line
+- =M-w= copies the current line
+
+Note that if there is an active region, =kill-region= and =kill-ring-save=
+will continue to do what they normally do: Kill or copy it.
+#+BEGIN_SRC emacs-lisp
+  (defadvice kill-region (before slick-cut activate compile)
+    "When called interactively with no active region, kill a single
+  line instead."
+    (interactive
+     (if mark-active
+         (list (region-beginning) (region-end))
+       (list (line-beginning-position) (line-beginning-position 2)))))
+
+  (defadvice kill-ring-save (before slick-copy activate compile)
+    "When called interactively with no active region, copy a single
+  line instead."
+    (interactive
+     (if mark-active
+         (list (region-beginning) (region-end))
+       (message "Copied line")
+       (list (line-beginning-position) (line-beginning-position 2)))))
+#+END_SRC
+Borrowed from [[http://emacs.stackexchange.com/questions/2347/kill-or-copy-current-line-with-minimal-keystrokes][this]] emacs.stackexchange question.
+
+*** Hide Mode Line
+Make the mode line disappear.
+#+BEGIN_SRC emacs-lisp
+;; See http://bzg.fr/emacs-hide-mode-line.html
+(defvar-local hidden-mode-line-mode nil)
+(defvar-local hide-mode-line nil)
+
+(define-minor-mode hidden-mode-line-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global nil
+  :variable hidden-mode-line-mode
+  :group 'editing-basics
+  (if hidden-mode-line-mode
+      (setq hide-mode-line mode-line-format
+            mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+          hide-mode-line nil))
+  (force-mode-line-update)
+  ;; Apparently force-mode-line-update is not always enough to
+  ;; redisplay the mode-line
+  (redraw-display)
+  (when (and (called-interactively-p 'interactive)
+             hidden-mode-line-mode)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden Mode Line Mode enabled.  "
+             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+  ;; If you want to hide the mode-line in all new buffers
+  ;; (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode))
+#+END_SRC
+
+*** Unmark Flyspell
+#+BEGIN_SRC emacs-lisp
+(defun unmark-flyspell-in-buffer ()
+       (interactive)
+       (flyspell-delete-all-overlays))
+#+END_SRC
+
+*** Dvorak Mode
+#+BEGIN_SRC emacs-lisp :tangle no
+(defun dvorak-mode()
+  "Toggles dvorak input type in the buffer and minibuffer.
+   Good for learning Dvorak, or if you really like qwerty bindings."
+  (interactive)
+  (if (equal current-input-method nil)
+      ;; Change buffer to dvorak
+      (progn
+        ;; Main setup for  all the buffers
+        (defadvice switch-to-buffer (after activate-input-method activate)
+          (activate-input-method "english-dvorak"))
+        (set-input-method "english-dvorak")
+        ;; Sets up Dvorak for the minibuffer
+        (add-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak"))))
+    ;; Change back to qwerty
+    (progn
+      ;; Main setup for  all the buffers
+      (defadvice switch-to-buffer (after activate-input-method activate)
+        (activate-input-method nil))
+      (set-input-method nil)
+      (remove-hook 'minibuffer-setup-hook (lambda () (set-input-method "english-dvorak"))))))
+#+END_SRC
+
+*** Scratch
+#+BEGIN_SRC emacs-lisp
+(defun create-scratch-buffer nil
+  "create a new scratch buffer to work in. (could be *scratch* - *scratchX*)"
+  (interactive)
+  (let ((n 0)
+        bufname)
+    (while (progn
+             (setq bufname (concat "*scratch"
+                                   (if (= n 0) "" (int-to-string n))
+                                   "*"))
+             (setq n (1+ n))
+             (get-buffer bufname)))
+    (switch-to-buffer (get-buffer-create bufname))
+    (lisp-interaction-mode)))
+#+END_SRC
+
+*** Untabify Buffer
+#+BEGIN_SRC emacs-lisp
+(defun untabify-buffer ()
+  (interactive)
+  (untabify (point-min) (point-max)))
+(bind-key "C-c @ u" 'untabify-buffer)
+#+END_SRC
+
+*** Tabify Buffer
+#+BEGIN_SRC emacs-lisp
+(defun tabify-buffer ()
+  (interactive)
+  (tabify (point-min) (point-max)))
+(bind-key "C-c @ t" 'tabify-buffer)
+#+END_SRC
+
+*** Indent Buffer
+#+BEGIN_SRC emacs-lisp
+(defun indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+(bind-key "C-c @ i" indent-buffer)
+#+END_SRC
+
+*** Cleanup Buffer
+#+BEGIN_SRC emacs-lisp
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer.
+Including indent-buffer, which should not be called automatically on save."
+  (interactive)
+  (untabify-buffer)
+  (delete-trailing-whitespace)
+  (indent-buffer))
+#+END_SRC
+
+*** Cleanup Buffer Boring
+#+BEGIN_SRC emacs-lisp
+(defun cleanup-buffer-boring ()
+  "Perform a bunch of operations on the whitespace content of a buffer.
+Including indent-buffer, which should not be called automatically on save."
+  (interactive)
+  (delete-trailing-whitespace))
+#+END_SRC
+
+*** Auto Buffer Cleanup
+#+BEGIN_SRC emacs-lisp
+(defun auto-buffer-cleanup ()
+  "Turn on buffer cleanup"
+  (interactive)
+  (stop-buffer-cleanup)
+  (add-hook 'before-save-hook 'cleanup-buffer))
+(defun auto-buffer-cleanup-boring ()
+  "Turn on buffer cleanup"
+  (interactive)
+  (stop-buffer-cleanup)
+  (add-hook 'before-save-hook 'cleanup-buffer-boring))
+(defun stop-auto-buffer-cleanup ()
+  "Turn on buffer cleanup"
+  (interactive)
+  (remove-hook 'before-save-hook 'cleanup-buffer)
+  (remove-hook 'before-save-hook 'cleanup-buffer-boring))
+(bind-key "C-c @ Y" auto-buffer-cleanup)
+(bind-key "C-c @ y" auto-buffer-cleanup-boring)
+(bind-key "C-c @ n" stop-auto-buffer-claenup)
+(start-buffer-cleanup-boring)
+#+END_SRC
+
+*** Forward Word To Beginning
+#+BEGIN_SRC emacs-lisp
+;; Mimic vim's "w" command
+(defun forward-word-to-beginning (&optional n)
+  "Move point forward n words and place cursor at the beginning."
+  (interactive "p")
+  (let (myword)
+    (setq myword
+      (if (and transient-mark-mode mark-active)
+        (buffer-substring-no-properties (region-beginning) (region-end))
+        (thing-at-point 'symbol)))
+    (if (not (eq myword nil))
+      (forward-word n))
+    (forward-word n)
+    (backward-word n)))
+(bind-key "M-f" 'forward-word-to-beginning)
+;; Remap old forward word
+(bind-key "M-F" 'forward-word)
+#+END_SRC
+
+*** Remove DOS EOL
+#+BEGIN_SRC emacs-lisp
+;; Hide DOS line endings
+(defun remove-dos-eol ()
+	(interactive)
+	(setq buffer-display-table (make-display-table))
+	(aset buffer-display-table ?\^M []))
+#+END_SRC
+
+*** Other Window Backwards
+#+BEGIN_SRC emacs-lisp
+  (defun other-window-backwards (count)
+    (itneractive "p")
+    (otehr-window (- 0 count)))
+  (bind-key "C-x p" 'other-window-backwards)
+#+END_SRC
+
+** File
+*** Rename Buffer & File
+#+BEGIN_SRC emacs-lisp
+(defun rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+(bind-key "C-c @ r" 'rename-current-buffer-file)
+#+END_SRC
+
+*** Delete Buffer & File
+#+BEGIN_SRC emacs-lisp
+(defun delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully removed" filename)))))
+(bind-key "C-c @ d" 'rename-current-buffer-file)
+#+END_SRC
+
+** Miscellaneous
+*** Insert Date
+#+BEGIN_SRC emacs-lisp
+(defun insert-date ()
+  "Insert current date yyyy-mm-dd H:M:S."
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d %T")))
+#+END_SRC
+
+** Snippet Helpers
+*** JavaScript
+#+BEGIN_SRC emacs-lisp
+(defun js-method-p ()
+  (save-excursion
+    (word-search-backward "function")
+    (looking-back ": ")))
+
+(defun js-function-declaration-p ()
+  (save-excursion
+    (word-search-backward "function")
+    (looking-back "^\\s *")))
+
+(defun snippet--function-punctuation ()
+  (if (js-method-p)
+      (when (not (looking-at "[ \n\t\r]*[},]"))
+        (insert ","))
+    (unless (js-function-declaration-p)
+      (if (looking-at "$") (insert ";")))))
+
+(defun snippet--function-name ()
+  (if (js-function-declaration-p) "name" ""))
+#+END_SRC
+
+*** Other
+#+BEGIN_SRC emacs-lisp
+;;; clojure
+(defun snippet--clojure-namespace-from-buffer-file-name ()
+  (replace-regexp-in-string "_" "-"
+   (replace-regexp-in-string "/" "."
+    (chop-prefix "test/"
+    (chop-prefix "src/"
+    (chop-suffix ".clj"
+     (substring (buffer-file-name) (length eproject-root))))))))
+
+(defun snippet--clojure-namespace-under-test ()
+  (replace-regexp-in-string "-test" "" (snippet--clojure-namespace-from-buffer-file-name)))
+
+;; snippet-helper-helpers
+(defun chop-suffix (suffix s)
+  "Remove string 'suffix' if it is at end of string 's'"
+  (let ((pos (- (length suffix))))
+    (if (and (>= (length s) (length suffix))
+             (string= suffix (substring s pos)))
+        (substring s 0 pos)
+      s)))
+
+(defun chop-prefix (prefix s)
+  "Remove string 'prefix' if it is at start of string 's'"
+  (let ((pos (length prefix)))
+    (if (and (>= (length s) (length prefix))
+             (string= prefix (substring s 0 pos)))
+        (substring s pos)
+      s)))
+#+END_SRC
+
+* Games
+Emacs is fun.
+
+*** Built in Games
+=M-x <game>= to play.
+- Snake: Eat the red squares.
+- Tetris: Arrange falling blocks.
+- Pong: Two-Player ping-pong.
+- Zone: Manipulates the text in your buffer when Emacs is idle.
+- Life: Watch a Conway's Game of Life simulation.
+- Morse Code: Transate a region into dots and dashes.
+- 2048: Merge teh tiles to reach 2048
+
+* Server
+** Client/Server
+Running emacs as greatly improves startup
+#+BEGIN_SRC emacs-lisp
+  (req-package server
+               :config
+               (unless (server-running-p)
+                 (server-start)))
+#+END_SRC
+
+** Edit With Emacs
+[[https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh?hl=en][Edit With Emacs]] provides a method to use an edit server for text fields in the browser.
+#+BEGIN_SRC emacs-lisp
+  (req-package edit-server
+               :config
+               (when (daemonp)
+                 (edit-server-start)))
+#+END_SRC
+
+* Finish Requirements
+All done with  =req-package=.
+#+BEGIN_SRC emacs-lisp
+(req-package-finish)
+#+END_SRC
+
