@@ -1,7 +1,6 @@
 
 (package-initialize)
-(if (require 'quelpa nil t)
-    (quelpa-self-upgrade)
+(unless (require 'quelpa nil t)
   (with-temp-buffer
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer)))
@@ -671,19 +670,20 @@ up before you execute another command."
 (require 'dired+)
 
 (quelpa 'pandoc-mode)
-(require 'pandoc-mode)
+(quelpa 'markdown-mode)
 
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
 (add-to-list 'auto-mode-alist '("README$" . markdown-mode))
 
 (defun setup-markdown-mode ()
+  (require 'pandoc-mode)
   (add-hook 'markdown-mode-hook 'turn-on-pandoc)
   (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
   (setq markdown-command "pandoc --smart -f markdown -t html5")
   (setq markdown-css-path (file-truename (concat user-emacs-directory "themes/markdown.css")))
   (bind-key "C-c h" 'my-markdown-preview-file markdown-mode-map))
-(eval-after-load 'markdown-mode '(progn (setup-markdown-mdoe)))
+(eval-after-load 'markdown-mode '(progn (setup-markdown-mode)))
 
 ;;TODO: set up a save hook to auto-reload the converted markdown on save
 
