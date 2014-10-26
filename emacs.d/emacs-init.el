@@ -456,6 +456,10 @@ up before you execute another command."
 (bind-key "C-c C-M-v" 'evil-mode)
 (setq evil-default-cursor t)
 
+(quelpa 'grunt)
+(require 'grunt)
+(bind-key "C-c C-M-g" 'grunt-exec)
+
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
@@ -665,6 +669,111 @@ up before you execute another command."
 
 (quelpa 'dired+)
 (require 'dired+)
+
+(quelpa 'pandoc-mode)
+(require 'pandoc-mode)
+
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+(add-to-list 'auto-mode-alist '("README$" . markdown-mode))
+
+(defun setup-markdown-mode ()
+  (add-hook 'markdown-mode-hook 'turn-on-pandoc)
+  (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+  (setq markdown-command "pandoc --smart -f markdown -t html5")
+  (setq markdown-css-path (file-truename (concat user-emacs-directory "themes/markdown.css")))
+  (bind-key "C-c h" 'my-markdown-preview-file markdown-mode-map))
+(eval-after-load 'markdown-mode '(progn (setup-markdown-mdoe)))
+
+;;TODO: set up a save hook to auto-reload the converted markdown on save
+
+;; Preview inspired by https://gist.github.com/Javran/9181746
+
+(defun my-pandoc-markdown-to-html (file-src file-dst)
+  "convert markdown files into HTML files."
+  (shell-command
+   (format "pandoc -s -t html5 %s -o %s" file-src file-dst)))
+
+(defun my-markdown-preview-file ()
+    "generate HTML file for current editing file
+    using pandoc, and the open browser to preview
+    the resulting HTML file"
+    (interactive)
+    ;; create place to store the temp HTML file output
+    (mkdir "/tmp/markdown_tmps/" t)
+    (let* ((dst-dir "/tmp/markdown_tmps/")
+           (file-dst
+            (concat dst-dir
+                    (file-name-base (buffer-file-name))
+                    ".html"))
+           (url-dst
+            (concat "file://" file-dst)))
+      (my-pandoc-markdown-to-html (buffer-file-name)
+                               file-dst)
+      (split-window-below)
+      (other-window 1)
+      (eww url-dst)))
+
+(quelpa 'js2-mode)
+(quelpa 'js2-refactor)
+(quelpa 'js-comint)
+(quelpa 'rainbow-delimiters)
+
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
+
+(defun setup-js2-mode ()
+  (setq js2-enter-indents-newline nil)
+  (setq js2-bounce-indent-p t)
+  (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+
+  ;; Let Flycheck handle errors until js2 mode supports ES6
+  (setq js2-show-parse-errors nil)
+  (setq js2-strict-missing-semi-warning nil)
+  (setq js2-strict-trailing-comma-warning t)
+
+  (setq js2-basic-offset 2)
+  (setq js-indent-level 2)
+  (setq js2-strict-inconsistent-return-warning nil)
+  (setq js2-include-node-externs t)
+  (setq js2-include-jslint-globals t)
+  (setq js2-indent-ignore-first-tab t)
+
+  ;; set up js2-refactor map
+  (require 'js2-refactor
+  (js2r-add-keybindings-with-prefix "C-c C-r")
+
+  ;; set up comint keys
+  (requier 'js-comint)
+  (bind-key "C-c C-c e" 'js-send-last-sexp)
+  (bind-key "C-c C-c x" 'js-send-last-sexp-and-go)
+  (bind-key "C-c C-c b" 'js-send-buffer)
+  (bind-key "C-c C-c C-b" 'js-send-buffer-and-go)
+  (bind-key "C-c C-c n" 'js-send-region)
+  (bind-key "C-c C-c C-n" 'js-send-region-and-go)
+  (bind-key "C-c C-c l" 'js-load-file-and-go)
+
+  ;; Set up js-comint for node
+  (setq inferior-js-program-command "node")
+  (setq inferior-js-mode-hook
+        (lambda ()
+          (ansi-color-for-comint-mode-on)
+          (add-to-list
+           'comint-preoutput-filter-functions
+           (lambda (output)
+             (replace-regexp-in-string "\033\\[[0-9]+[A-Z]" "" output)))))
+
+  ;; Extra configuration that needs to be run on the js2-mode-hook
+  (add-hook 'js2-mode-hook (lambda ()
+                             ;; Rainbows
+                             (require 'rainbow-delimiters)
+                             (rainbow-delimiters-mode)
+                             ;; Electric indent hates bouncies
+                             (electric-indent-mode -1)
+                             ;; Turn on tabs for JavaScript files
+                             ;;TODO: set up folder-local settings for this kind of customization
+                             (setq indent-tabs-mode 1)))))
+(eval-after-load 'js2-mode 'setup-js2-mode)
 
 (quelpa 'magit)
 (require 'magit)

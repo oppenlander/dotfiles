@@ -20,3 +20,5 @@ semanticdb
 projectile.cache
 .emacs_workgroups
 .cask
+quelpa
+.places

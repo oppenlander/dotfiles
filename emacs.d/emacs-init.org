@@ -1073,9 +1073,9 @@ js2-mode is full JavaScript AST parser in elisp
   (quelpa 'rainbow-delimiters)
 
   (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-  (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode)))
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
-  (defun setup-javascript-mode ()
+  (defun setup-js2-mode ()
     (setq js2-enter-indents-newline nil)
     (setq js2-bounce-indent-p t)
     (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
@@ -1125,7 +1125,8 @@ js2-mode is full JavaScript AST parser in elisp
                                (electric-indent-mode -1)
                                ;; Turn on tabs for JavaScript files
                                ;;TODO: set up folder-local settings for this kind of customization
-                               (setq indent-tabs-mode 1))))
+                               (setq indent-tabs-mode 1)))))
+  (eval-after-load 'js2-mode 'setup-js2-mode)
 
 #+END_SRC
 
