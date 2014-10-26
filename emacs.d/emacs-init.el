@@ -144,6 +144,696 @@
 
 (setq redisplay-dont-pause t)
 
+(req-package pallet)
+
+(req-package ido
+             :require (flx-ido ido-vertical-mode ido-ubiquitous)
+             :init
+             (progn
+               (ido-mode t)
+
+               (flx-ido-mode 1)
+               (setq ido-use-faces nil)
+
+               (ido-vertical-mode)
+
+               ;; Use ido everywhere
+               (ido-ubiquitous-mode 1)))
+
+(req-package smex
+             :require ido
+             :bind (("M-x" . smex)
+                    ("M-X" . smex-major-mode-commands)))
+
+(req-package diminish)
+
+(req-package company
+  :diminish (company-mode . "")
+  :config
+  (progn
+    (setq company-idle-delay 0.3)
+    (setq company-tooltip-limit 20)
+    (setq company-minimum-prefix-length 2)
+    (global-company-mode t)))
+
+(req-package ace-jump-mode
+             :bind ("C-c SPC" . ace-jump-mode))
+
+(req-package recentf
+             :config
+             (progn
+               (recentf-mode 1)
+               (setq recentf-max-saved-items 100)
+               (setq recentf-max-menu-items 15)))
+
+;; Looks like a big mess
+(defun recentf-ido-find-file ()
+  "Find a recent file using ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+(bind-key "C-x C-r" 'recentf-ido-find-file)
+
+(req-package yasnippet
+             :diminish (yas-global-mode . "")
+             :init
+             (progn
+               (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
+               (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))
+               (add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode)))
+             :config
+             (progn
+               (yas-global-mode 1)
+               ;; No dropdowns please, yas
+               (setq yas-prompt-functions '(yas/ido-prompt yas/completing-prompt))
+               ;; No need to be so verbose
+               (setq yas-verbosity 1)
+               ;; Wrap around region
+               (setq yas-wrap-around-region t)
+               ;; Bind only during snippet
+               (bind-key "<return>" 'yas/exit-all-snippets yas-keymap)
+               (bind-key "C-e" 'yas/goto-end-of-active-field yas-keymap)
+               (bind-key "C-a" 'yas/goto-start-of-active-field yas-keymap)))
+
+;; Interactive-Field navigation
+(defun yas/goto-end-of-active-field ()
+  (interactive)
+  (let* ((snippet (car (yas--snippets-at-point)))
+         (position (yas--field-end (yas--snippet-active-field snippet))))
+    (if (= (point) position)
+        (move-end-of-line 1)
+      (goto-char position))))
+
+(defun yas/goto-start-of-active-field ()
+  (interactive)
+  (let* ((snippet (car (yas--snippets-at-point)))
+         (position (yas--field-start (yas--snippet-active-field snippet))))
+    (if (= (point) position)
+        (move-beginning-of-line 1)
+      (goto-char position))))
+
+;; fix some org-mode + yasnippet conflicts:
+(defun yas/org-very-safe-expand ()
+  (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+(req-package undo-tree
+  :diminish (undo-tree-mode . "")
+  :bind (("C-x x u" . undo-tree-visualize)
+         ("C-x x r u" . undo-tree-save-state-to-register)
+         ("C-x x r U" . undo-tree-restore-state-from-register))
+  :config
+  (progn
+    (global-undo-tree-mode 1)
+    ;; Fix some undo-tree bindings.
+    (unbind-key "C-x u" undo-tree-map)
+    (unbind-key "C-x r u" undo-tree-map)
+    (unbind-key "C-x r U" undo-tree-map)))
+
+(req-package move-text
+             :bind (("<C-S-up>" . move-text-up)
+                    ("<C-S-down>" . move-text-down)))
+
+(req-package webjump
+             :bind ("C-c j" . webjump))
+
+(req-package webjump
+             :init
+             (add-to-list 'webjump-sites
+                          '("Urban Dictionary" .
+                            [simple-query
+                             "www.urbandictionary.com"
+                             "http://www.urbandictionary.com/define.php?term="
+                             ""])))
+
+(req-package browse-url
+             :bind ("C-c C-j" . browse-url))
+
+(req-package smartparens
+             :diminish (smartparens-mode . "")
+             :config
+             (progn
+               (smartparens-global-mode t)
+               ;; The '' pair will autopair UNLESS the point is right after a word,
+               ;; in which case you want to insert a single apostrophe.
+               (sp-pair "'" nil :unless '(sp-point-after-word-p))
+
+               ;; disable single quote completion in
+               ;; emacs-lisp-mode WHEN point is inside a string. In other modes, the
+               ;; global definition is used.
+               (sp-local-pair 'emacs-lisp-mode "'" nil :when '(sp-in-string-p))
+               (sp-local-pair 'lisp-interaction-mode "'" nil :when '(sp-in-string-p))))
+
+(req-package smart-compile
+  :bind ("C-x c c" . smart-compile)
+  :config
+  (progn
+    (remove '("\\.c\\'" . "gcc -O2 %f -lm -o %n") 'smart-compile-alist)
+    ;; compile and run programs
+    (add-to-list 'smart-compile-alist '("\\.c\\'" . "gcc -O2 -Wall %f -lm -o %n"))
+    (add-to-list 'smart-compile-alist '("\\.cpp\\'" . "g++ -Wall -ggdb %f -lm -o %n"))
+    (add-to-list 'smart-compile-alist '("\\.py\\'" . "python %f"))
+    (add-to-list 'smart-compile-alist '("\\.hs\\'" . "ghc -o %n %f"))
+    (add-to-list 'smart-compile-alist '("\\.js\\'" . "node %f"))))
+
+(defun my-tabs-makefile-hook ()
+  (setq indent-tabs-mode t))
+(add-hook 'makefile-mode-hook 'my-tabs-makefile-hook)
+
+(req-package rainbow-mode
+             :diminish (rainbow-mode . "")
+             :init
+             (add-hook 'prog-mode-hook 'rainbow-mode))
+
+(req-package flyspell
+             :diminish (flyspell-mode . "")
+             :init
+             (progn
+               ;; Enable spell check in program comments
+               (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+               ;; Enable spell check in plain text / org-mode
+               (add-hook 'text-mode-hook 'flyspell-mode)
+               (add-hook 'org-mode-hook 'flyspell-mode)
+               :config
+               (setq flyspell-issue-welcome-flag nil)
+               (setq flyspell-issue-message-flag nil)
+
+               ;; ignore repeated words
+               (setq flyspell-mark-duplications-flag nil)
+
+               (setq-default ispell-list-command "list")
+
+               ;; Make spell check on right click.
+               (define-key flyspell-mouse-map [down-mouse-3] 'flyspell-correct-word)
+               (define-key flyspell-mouse-map [mouse-3] 'undefined)))
+
+(req-package flycheck
+             :diminish (flycheck-mode . "")
+             :config
+             (progn
+               (add-hook 'after-init-hook #'global-flycheck-mode)
+               (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)) ; disable the annoying doc checker
+               (setq flycheck-indication-mode 'left-fringe)
+               (defun magnars/adjust-flycheck-automatic-syntax-eagerness ()
+                 "Adjust how often we check for errors based on if there are any.
+
+This lets us fix any errors as quickly as possible, but in a
+clean buffer we're an order of magnitude laxer about checking."
+                 (setq flycheck-idle-change-delay
+                       (if flycheck-current-errors 0.5 30.0)))
+
+               ;; Each buffer gets its own idle-change-delay because of the
+               ;; buffer-sensitive adjustment above.
+               (make-variable-buffer-local 'flycheck-idle-change-delay)
+
+               (add-hook 'flycheck-after-syntax-check-hook
+                         'magnars/adjust-flycheck-automatic-syntax-eagerness)
+
+               ;; Remove newline checks, since they would trigger an immediate check
+               ;; when we want the idle-change-delay to be in effect while editing.
+               (setq flycheck-check-syntax-automatically '(save
+                                                           idle-change
+                                                           mode-enabled))
+
+               (defun flycheck-handle-idle-change ()
+                 "Handle an expired idle time since the last change.
+
+This is an overwritten version of the original
+flycheck-handle-idle-change, which removes the forced deferred.
+Timers should only trigger inbetween commands in a single
+threaded system and the forced deferred makes errors never show
+up before you execute another command."
+                 (flycheck-clear-idle-change-timer)
+                 (flycheck-buffer-automatically 'idle-change))))
+
+(req-package helm-config
+             :require (helm-misc popwin flycheck helm-dash helm-spotify helm-dash)
+             :bind (("C-c h" . helm-mini)
+                    ("C-c C-h m" . helm-spotify)
+                    ("C-c C-h d" . helm-dash)
+                    ("C-c C-h C-d" . helm-dash-at-point)
+                    ("C-c ! h" . helm-flycheck))
+             :init
+             (progn
+               (setq popwin:special-display-config
+                     (push helm-popwin
+                           popwin:special-display-config))
+               (setq helm-dash-browser-func 'eww)
+               ))
+
+(req-package popwin
+             :config
+             (progn
+               (popwin-mode 1)
+               (setq helm-popwin
+                     '("*helm mini*" :height 10))))
+
+;; Create new cursor by marking region with up / down arrows.
+(req-package rectangular-region-mode
+             :require multiple-cursors-core
+             :bind ("C-c C-SPC" . set-rectangular-region-anchor))
+;; Mark by keyword
+(req-package mc-mark-more
+             :require (multiple-cursors-core thingatpt)
+             :bind (("C-c C->" . mc/mark-next-like-this)
+                    ("C-c C-<" . mc/mark-previous-like-this)
+                    ( "C-c c s" . mc/mark-all-like-this)
+                    ("M-<mouse-1>" . mc/add-cursor-on-click)))
+
+(req-package expand-region
+             :require (expand-region-core expand-region-custom er-basic-expansions)
+             :bind ("C-=" . er/expand-region))
+
+;; Turn on winner mdoe by defautl
+(winner-mode 1)
+
+;; Transparently open compressed files
+(auto-compression-mode t)
+
+;; Global line numbers
+(global-linum-mode 1)
+
+;; Flex isearch
+(req-package flex-isearch
+             :init
+             (global-flex-isearch-mode 1))
+
+;; Remove test in active region if inserting text
+(req-package delsel
+             :init
+             (delete-selection-mode 1))
+
+;; Add parts of each file's directory to the buffer name if not unique
+(req-package uniquify
+             :init
+             (setq uniquify-buffer-name-style 'forward))
+
+;; Projectile
+(req-package projectile
+             :init
+             (projectile-global-mode))
+
+;; Show matchin parentheses
+(show-paren-mode 1)
+
+;; Same-frame Speedbar
+(req-package sr-speedbar
+             :bind ("C-c C-s" . sr-speedbar-toggle)
+             :config
+             (progn
+               (setq speedbar-show-unknown-files t)
+               (setq speedbar-smart-directory-expand-flag t)
+               (setq speedbar-use-images nil)))
+
+(require 'eww)
+(setq browse-url-browser-function 'eww)
+
+;; Make tramp work nicely with sudo
+(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
+
+(req-package guide-key
+             :diminish (guide-key-mode . "")
+             :init
+             (progn
+               (setq guide-key/guide-key-sequence '("C-x" "C-c"))
+               (setq guide-key/recursive-key-sequence-flag t)
+               (guide-key-mode 1)))
+
+(req-package password-store)
+
+(req-package comment-dwim-2
+             :bind ("M-;" . comment-dwim-2))
+
+(req-package math-at-point)
+
+(req-package workgroups-mode
+             :config
+             (progn
+               (setq wg-prefix-key (kbd "C-z"))
+               (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+               (workgroups-mode 1)))
+
+(req-package smart-forward
+             :bind (("M-<up>" . smart-up)
+                    ("M-<down>" . smart-down)
+                    ("M-<left>" . smart-left)
+                    ("M-<right>" . smart-right)))
+
+(req-package diff-hl
+             :init
+             (global-diff-hl-mode))
+
+(req-package dedicated)
+
+(req-package evil
+             :require (ace-jump-mode)
+             :bind ("C-c [ESC]" . evil-mode)
+             :init
+             (progn
+               (setq evil-default-cursor t)))
+
+(req-package lisp-mode
+             :init
+             (progn
+               (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+               (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)))
+
+(req-package elpy
+  :config
+  (progn
+    (elpy-enable)
+    ;; Use Flycheck instead of Flymake
+    (when (require 'flycheck nil t)
+      (remove-hook 'elpy-modules 'elpy-module-flymake)
+      (add-hook 'elpy-mode-hook 'flycheck-mode))
+    ;; jedi is great
+    (setq elpy-rpc-backend "jedi")))
+
+(req-package web-mode
+             :bind ("C-c C-v" . browse-url-of-buffer)
+             :init
+             (progn
+               (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+               (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode)))
+             :config
+             (progn
+               ;; Set tab to 4 to play nice with plebeian editors
+               (setq web-mode-markup-indent-offset 2)
+               (setq web-mode-css-indent-offset 4)
+               (setq web-mode-code-indent-offset 4)
+               (bind-key "<return>" 'newline-and-indent web-mode-map)
+               (bind-key "C-c w t" 'web-mode-element-wrap)))
+
+(req-package css-mode
+             :init
+             (progn
+               (add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
+               (add-to-list 'auto-mode-alist '("\\.sass$" . css-mode))
+               (add-to-list 'auto-mode-alist '("\\.less" . css-mode)))
+             :config
+             (progn
+               (add-hook 'css-mode-hook 'turn-on-css-eldoc)
+               (add-hook 'css-mode-hook 'rainbow-mode)
+               (autoload 'turn-on-css-eldoc "css-eldoc")
+               (bind-key "C-{" 'brace-ret-brace css-mode-map)))
+
+;; Insert curly-braces
+(defun brace-ret-brace ()
+  (interactive)
+  (insert "{") (newline-and-indent)
+  (newline-and-indent)
+  (insert "}") (indent-for-tab-command)
+  (newline-and-indent) (newline-and-indent)
+  (previous-line) (previous-line) (previous-line)
+  (indent-for-tab-command))
+
+(req-package emmet-mode
+             :init
+             (progn
+               (add-hook 'sgml-mode-hook 'emmet-mode)
+               (add-hook 'web-mode-hook 'emmet-mode)
+               (add-hook 'css-mode-hook  'emmet-mode))
+             :config
+             (progn
+               (setq emmet-indentation 2)
+               (bind-key "C-j" 'emmet-expand-line emmet-mode-keymap)
+               (bind-key "<C-return>" 'emmet-expand emmet-mode-keymap)
+               ;; Remove purple <, >.
+               (defadvice emmet-preview-accept (after expand-and-fontify activate)
+                 "Update the font-face after an emmet expantion."
+                 (font-lock-fontify-buffer))))
+
+(defun skip-to-next-blank-line ()
+  (interactive)
+  (let ((inhibit-changing-match-data t))
+    (skip-syntax-forward " >")
+    (unless (search-forward-regexp "^\\s *$" nil t)
+      (goto-char (point-max)))))
+
+(defun skip-to-previous-blank-line ()
+  (interactive)
+  (let ((inhibit-changing-match-data t))
+    (skip-syntax-backward " >")
+    (unless (search-backward-regexp "^\\s *$" nil t)
+      (goto-char (point-min)))))
+
+(defun html-wrap-in-tag (beg end)
+  (interactive "r")
+  (let ((oneline? (= (line-number-at-pos beg) (line-number-at-pos end))))
+    (deactivate-mark)
+    (goto-char end)
+    (unless oneline? (newline-and-indent))
+    (insert "</div>")
+    (goto-char beg)
+    (insert "<div>")
+    (unless oneline? (newline-and-indent))
+    (indent-region beg (+ end 11))
+    (goto-char (+ beg 4))))
+
+(eval-after-load "sgml-mode"
+  '(progn
+     ;; don't include equal sign in symbols
+     (modify-syntax-entry ?= "." html-mode-syntax-table)
+
+     (define-key html-mode-map [remap forward-paragraph] 'skip-to-next-blank-line)
+     (define-key html-mode-map [remap backward-paragraph] 'skip-to-previous-blank-line)
+     ;;(define-key html-mode-map (kbd "C-c C-w") 'html-wrap-in-tag)
+     (define-key html-mode-map (kbd "/") nil) ; no buggy matching of slashes
+     (define-key html-mode-map (kbd "C-c C-d") 'ng-snip-show-docs-at-point)))
+
+;; after deleting a tag, indent properly
+(defadvice sgml-delete-tag (after reindent activate)
+  (indent-region (point-min) (point-max)))
+
+(req-package scheme
+             :init
+             (progn
+               (setq geiser-racket-binary "/usr/bin/racket")
+               (setq geiser-guile-binary "/usr/bin/guile")))
+
+(req-package tex-site
+             :init
+             (progn
+               (setq TeX-PDF-mode t)
+               (setq LaTeX-command "latex -shell-escape")))
+
+(req-package org
+:require (ob-core ox-md ox-latex)
+:config
+(progn
+  ;; Unbind from org-mode only
+  (unbind-key "<C-S-up>" org-mode-map)
+  (unbind-key "<C-S-down>" org-mode-map)
+  ;; Bind new keys to org-mode only
+  (bind-key "<s-up>" 'org-metaup org-mode-map)
+  (bind-key "<s-down>" 'org-metadown org-mode-map)
+  (bind-key "<s-left>" 'org-promote-subtree org-mode-map)
+  (bind-key "<s-right>" 'org-demote-subtree org-mode-map)
+
+  ;; Fontify org-mode code blocks
+  (setq org-src-fontify-natively t)
+
+  ;; Essential Settings
+  (setq org-log-done 'time)
+  (setq org-html-doctype "html5")
+  (setq org-export-headline-levels 6)
+
+  ;; Custom TODO keywords
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+
+  ;; Set up latex
+  (setq org-export-with-LaTeX-fragments t)
+  (setq org-latex-create-formula-image-program 'imagemagick)
+
+  ;; Add minted to the defaults packages to include when exporting.
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+
+  ;; Tell the latex export to use the minted package for source
+  ;; code coloration.
+  (setq org-latex-listings 'minted)
+
+  ;; Let the exporter use the -shell-escape option to let latex
+  ;; execute external programs.
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+  ;; Set up babel source-block execution
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (haskell . t)
+     (C . t)
+     (js . t)))
+
+  ;; fix org-mode + yasnippet conflicts:
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (make-variable-buffer-local 'yas/trigger-key)
+              (setq yas/trigger-key [tab])
+              (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+              (bind-key [tab] 'yas/next-field yas/keymap)))
+
+  ;; Prevent Weird LaTeX class issue
+  (unless (boundp 'org-latex-classes)
+    (setq org-latex-classes nil))
+  (add-to-list 'org-latex-classes
+               '("per-file-class"
+                 "\\documentclass{article}
+                  [NO-DEFAULT-PACKAGES]
+                  [EXTRA]"))
+
+  (defun myorg-update-parent-cookie ()
+    (when (equal major-mode 'org-mode)
+      (save-excursion
+        (ignore-errors
+          (org-back-to-heading)
+          (org-update-parent-todo-statistics)))))
+
+  (defadvice org-kill-line (after fix-cookies activate)
+    (myorg-update-parent-cookie))
+
+  (defadvice kill-whole-line (after fix-cookies activate)
+    (myorg-update-parent-cookie))))
+
+(req-package markdown-mode
+             :require (pandoc-mode yasnippet)
+             :init
+             (progn
+               (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+               (add-to-list 'auto-mode-alist '("\\.markdown$" . markdown-mode))
+               (add-to-list 'auto-mode-alist '("README$" . markdown-mode)))
+             :config
+             (progn
+               (add-hook 'markdown-mode-hook 'turn-on-pandoc)
+               (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+               (setq markdown-command "pandoc --smart -f markdown -t html5")
+               (setq markdown-css-path (file-truename (concat user-emacs-directory "themes/markdown.css")))
+               (bind-key "C-c h" 'my-markdown-preview-file markdown-mode-map)))
+
+;;TODO: set up a save hook to auto-reload the converted markdown on save
+
+;; Preview inspired by https://gist.github.com/Javran/9181746
+
+(defun my-pandoc-markdown-to-html (file-src file-dst)
+  "convert markdown files into HTML files."
+  (shell-command
+   (format "pandoc -s -t html5 %s -o %s" file-src file-dst)))
+
+(defun my-markdown-preview-file ()
+    "generate HTML file for current editing file
+    using pandoc, and the open browser to preview
+    the resulting HTML file"
+    (interactive)
+    ;; create place to store the temp HTML file output
+    (mkdir "/tmp/markdown_tmps/" t)
+    (let* ((dst-dir "/tmp/markdown_tmps/")
+           (file-dst
+            (concat dst-dir
+                    (file-name-base (buffer-file-name))
+                    ".html"))
+           (url-dst
+            (concat "file://" file-dst)))
+      (my-pandoc-markdown-to-html (buffer-file-name)
+                               file-dst)
+      (split-window-below)
+      (other-window 1)
+      (eww url-dst)))
+
+(req-package dired+)
+
+(req-package magit
+             :diminish (magit-auto-revert-mode . "")
+             :bind ("C-c g" . magit-status))
+
+(defun eshell/clear ()
+  "04Dec2001 - sailor, to clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+
+(req-package erc
+  :config
+  (add-hook 'erc-mode-hook 'flyspell-mode))
+
+(req-package js2-mode
+             :diminish (js2-mode . "JS2")
+             :require (js2-refactor grunt js-comint rainbow-delimiters)
+             :bind (("C-M-g" . grunt-exec)
+                    ("C-c C-c e" . js-send-last-sexp)
+                    ("C-c C-c x" . js-send-last-sexp-and-go)
+                    ("C-c C-c b" . js-send-buffer)
+                    ("C-c C-c C-b" . js-send-buffer-and-go)
+                    ("C-c C-c n" . js-send-region)
+                    ("C-c C-c C-n" . js-send-region-and-go)
+                    ("C-c C-c l" . js-load-file-and-go))
+             :init
+             (progn
+               (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+               (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode)))
+             :config
+             (progn
+               (setq js2-enter-indents-newline nil)
+               (setq js2-bounce-indent-p t)
+               (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+
+               ;; Let Flycheck handle errors until js2 mode supports ES6
+               (setq js2-show-parse-errors nil)
+               (setq js2-strict-missing-semi-warning nil)
+               (setq js2-strict-trailing-comma-warning t)
+
+               (setq js2-basic-offset 2)
+               (setq js-indent-level 2)
+               (setq js2-strict-inconsistent-return-warning nil)
+               (setq js2-include-node-externs t)
+               (setq js2-include-jslint-globals t)
+               (setq js2-indent-ignore-first-tab t)
+
+               ;; set up js2-refactor map
+               (js2r-add-keybindings-with-prefix "C-c C-r")
+
+               ;; Set up js-comint for node
+               (setq inferior-js-program-command "node")
+               (setq inferior-js-mode-hook
+                     (lambda ()
+                       (ansi-color-for-comint-mode-on)
+                       (add-to-list
+                        'comint-preoutput-filter-functions
+                        (lambda (output)
+                          (replace-regexp-in-string "\033\\[[0-9]+[A-Z]" "" output)))))
+
+               ;; Extra configuration that needs to be run on the js2-mode-hook
+               (add-hook 'js2-mode-hook (lambda ()
+                                          ;; Rainbows
+                                          (rainbow-delimiters-mode)
+                                          ;; Electric indent hates bouncies
+                                          (electric-indent-mode -1)
+                                          ;; Turn on tabs for JavaScript files
+                                          ;;TODO: set up folder-local settings for this kind of customization
+                                          (setq indent-tabs-mode 1)))))
+
+(req-package json-mode
+             :init
+             (add-to-list 'auto-mode-alist '("\\.json$" . json-mode)))
+
+(req-package handlebars-mode
+             :init
+             (progn
+               (add-to-list 'auto-mode-alist '("\\.hbs$" . handlebars-mode))
+               (add-to-list 'auto-mode-alist '("\\.handlebards$" . handlebars-mode))))
+
+(req-package image-mode
+             :init
+             (add-to-list 'auto-mode-alist '("\\.svg$" . image-mode)))
+
+(req-package coffee-mode
+             :config
+             (setq coffee-tab-width 2))
+
+(req-package fish-mode)
+
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
@@ -228,10 +918,10 @@ line instead."
   (tabify (point-min) (point-max)))
 (bind-key "C-c @ t" 'tabify-buffer)
 
-(defun indent-buffer ()
+(defun indnet-buffer ()
   (interactive)
   (indent-region (point-min) (point-max)))
-(bind-key "C-c @ i" indent-buffer)
+(bind-key "C-c @ i" 'indent-buffer)
 
 (defun cleanup-buffer ()
   "Perform a bunch of operations on the whitespace content of a buffer.
@@ -250,22 +940,22 @@ Including indent-buffer, which should not be called automatically on save."
 (defun auto-buffer-cleanup ()
   "Turn on buffer cleanup"
   (interactive)
-  (stop-buffer-cleanup)
+  (stop-auto-buffer-cleanup)
   (add-hook 'before-save-hook 'cleanup-buffer))
 (defun auto-buffer-cleanup-boring ()
   "Turn on buffer cleanup"
   (interactive)
-  (stop-buffer-cleanup)
+  (stop-auto-buffer-cleanup)
   (add-hook 'before-save-hook 'cleanup-buffer-boring))
 (defun stop-auto-buffer-cleanup ()
   "Turn on buffer cleanup"
   (interactive)
   (remove-hook 'before-save-hook 'cleanup-buffer)
   (remove-hook 'before-save-hook 'cleanup-buffer-boring))
-(bind-key "C-c @ Y" auto-buffer-cleanup)
-(bind-key "C-c @ y" auto-buffer-cleanup-boring)
-(bind-key "C-c @ n" stop-auto-buffer-claenup)
-(start-buffer-cleanup-boring)
+(bind-key "C-c @ Y" 'auto-buffer-cleanup)
+(bind-key "C-c @ y" 'auto-buffer-cleanup-boring)
+(bind-key "C-c @ n" 'stop-auto-buffer-claenup)
+(auto-buffer-cleanup-boring)
 
 ;; Mimic vim's "w" command
 (defun forward-word-to-beginning (&optional n)
