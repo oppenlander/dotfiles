@@ -310,12 +310,12 @@ Snippets are key.
 #+BEGIN_SRC emacs-lisp
   (quelpa 'yasnippet)
   (require 'yasnippet)
-  (diminish 'yas-global-mode)
 
   (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
   (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))
-  (add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode)))
+  (add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode))
   (yas-global-mode 1)
+  (diminish 'yas-minor-mode)
   ;; No need to be so verbose
   (setq yas-verbosity 1)
   ;; Wrap around region
@@ -323,7 +323,7 @@ Snippets are key.
   ;; Bind only during snippet
   (bind-key "<return>" 'yas/exit-all-snippets yas-keymap)
   (bind-key "C-e" 'yas/goto-end-of-active-field yas-keymap)
-  (bind-key "C-a" 'yas/goto-start-of-active-field yas-keymap)))
+  (bind-key "C-a" 'yas/goto-start-of-active-field yas-keymap)
 
   ;; Interactive-Field navigation
   (defun yas/goto-end-of-active-field ()
@@ -360,12 +360,8 @@ More natural undo or redo. Undo with =C-/= and redo with =C-?=.
 
   (global-undo-tree-mode 1)
 
-  ;; Fix some undo-tree bindings.
-  (unbind-key "C-x u" 'undo-tree-map)
-  (unbind-key "C-x r u" 'undo-tree-map)
-  (unbind-key "C-x r U" 'undo-tree-map)
-  (bind key "C-x x u" 'undo-tree-visualize)
-  (bind key "C-x x r u" 'undo-tree-save-state-to-register)
+  (bind-key "C-x x u" 'undo-tree-visualize)
+  (bind-key "C-x x r u" 'undo-tree-save-state-to-register)
   (bind-key "C-x x r U" 'undo-tree-restore-state-from-register)
 #+END_SRC
 
@@ -383,7 +379,7 @@ Move lines or a region up or down.
 *** Web Jump
 #+BEGIN_SRC emacs-lisp
   (quelpa 'webjump)
-  (requier 'webjump)
+  (require 'webjump)
   (bind-key "C-c j" 'webjump)
 #+END_SRC
 
@@ -418,7 +414,7 @@ Set custom compile commands for different modes.
 
 #+BEGIN_SRC emacs-lisp
   (quelpa 'smart-compile)
-  (requier 'smrt-compile)
+  (require 'smart-compile)
 
   (bind-key "C-x c c" 'smart-compile)
 
@@ -435,9 +431,9 @@ Set custom compile commands for different modes.
 =rainbow-mode= displays hexadecimal colors with the color they represent as their background.
 #+BEGIN_SRC emacs-lisp
   (quelpa 'rainbow-mode)
-  (requier 'rainbow-mode)
-  (diminish 'rainbow-mode)
-  (add-hook 'prog-mode-hook 'rainbow-mode)
+;  (require 'rainbow-mode)
+;  (diminish 'rainbow-mode)
+;  (add-hook 'prog-mode-hook 'rainbow-mode)
 #+END_SRC
 
 *** Flyspell
@@ -481,7 +477,7 @@ A great syntax checker.
 #+BEGIN_SRC emacs-lisp
   (quelpa 'flycheck)
   (require 'flycheck)
-  (diminish 'flycheck)
+  (diminish 'flycheck-mode)
 
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)) ; disable the annoying doc checker
@@ -519,6 +515,17 @@ A great syntax checker.
     (flycheck-buffer-automatically 'idle-change))
 #+END_SRC
 
+*** Pop Win
+[[https://github.com/m2ym/popwin-el][popwin]] is used to manage the size of "popup" buffers.
+
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'popwin)
+  (require 'popwin)
+  (popwin-mode 1)
+  (setq helm-popwin
+        '("*helm mini*" :height 10))
+#+END_SRC
+
 *** Helm
 =helm-mini= is a part of [[https://github.com/emacs-helm/helm][Helm]] that shows current buffers and a list of recent files using =recentf=.
 It is a great way to manage many open files.
@@ -526,7 +533,7 @@ It is a great way to manage many open files.
 #+BEGIN_SRC emacs-lisp
   (quelpa 'helm)
   (quelpa 'helm-dash)
-  (quelpa 'helms-potify)
+  (quelpa 'helm-spotify)
   (quelpa 'popwin)
   (require 'helm-config)
   (require 'helm-dash)
@@ -537,24 +544,13 @@ It is a great way to manage many open files.
   (bind-key "C-c C-h m" 'helm-spotify)
   (bind-key "C-c C-h d" 'helm-dash)
   (bind-key "C-c C-h C-d" 'helm-dash-at-point)
-  (bind-key "C-c ! h" 'helm-flycheck))
+  (bind-key "C-c ! h" 'helm-flycheck)
 
   (setq popwin:special-display-config
         (push helm-popwin
-              popwin:special-display-config)
+              popwin:special-display-config))
 
   (setq helm-dash-browser-func 'eww)
-#+END_SRC
-
-*** Pop Win
-[[https://github.com/m2ym/popwin-el][popwin]] is used to manage the size of "popup" buffers.
-
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'popwin)
-  (require 'popwin)
-  (popwin-mode 1)
-  (setq helm-popwin
-        '("*helm mini*" :height 10))
 #+END_SRC
 
 *** Multiple Cursors
@@ -678,6 +674,7 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 #+BEGIN_SRC emacs-lisp
   (quelpa 'workgroups2)
   (require 'workgroups2)
+  (diminish 'workgroups-mode)
   (setq wg-prefix-key (kbd "C-z"))
   (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
   (workgroups-mode 1)
@@ -690,7 +687,7 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (bind-key "M-<up>" 'smart-up)
   (bind-key "M-<down>" 'smart-down)
   (bind-key "M-<left>" 'smart-left)
-  (bind-key "M-<right>" 'smart-right)))
+  (bind-key "M-<right>" 'smart-right)
 #+END_SRC
 
 *** Diff Hightlight

@@ -5,10 +5,6 @@
 ;; a file `init.org` would generate `init.el`, obliterating this file in the
 ;; process. So your config org file should not be named "init.org".
 
-;; Initialize cask to get the correct version of org-mode
-(require 'cask "/usr/share/cask/cask.el")
-(cask-initialize)
-
 (require 'ob-tangle)
 (setq debug-on-error t)
 (org-babel-load-file

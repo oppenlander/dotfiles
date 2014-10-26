@@ -185,12 +185,12 @@
 
 (quelpa 'yasnippet)
 (require 'yasnippet)
-(diminish 'yas-global-mode)
 
 (setq yas-snippet-dirs '("~/.emacs.d/snippets/"))
 (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))
-(add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode)))
+(add-to-list 'auto-mode-alist '("\\.yasnippet$" . snippet-mode))
 (yas-global-mode 1)
+(diminish 'yas-minor-mode)
 ;; No need to be so verbose
 (setq yas-verbosity 1)
 ;; Wrap around region
@@ -198,7 +198,7 @@
 ;; Bind only during snippet
 (bind-key "<return>" 'yas/exit-all-snippets yas-keymap)
 (bind-key "C-e" 'yas/goto-end-of-active-field yas-keymap)
-(bind-key "C-a" 'yas/goto-start-of-active-field yas-keymap)))
+(bind-key "C-a" 'yas/goto-start-of-active-field yas-keymap)
 
 ;; Interactive-Field navigation
 (defun yas/goto-end-of-active-field ()
@@ -227,12 +227,8 @@
 
 (global-undo-tree-mode 1)
 
-;; Fix some undo-tree bindings.
-(unbind-key "C-x u" 'undo-tree-map)
-(unbind-key "C-x r u" 'undo-tree-map)
-(unbind-key "C-x r U" 'undo-tree-map)
-(bind key "C-x x u" 'undo-tree-visualize)
-(bind key "C-x x r u" 'undo-tree-save-state-to-register)
+(bind-key "C-x x u" 'undo-tree-visualize)
+(bind-key "C-x x r u" 'undo-tree-save-state-to-register)
 (bind-key "C-x x r U" 'undo-tree-restore-state-from-register)
 
 (quelpa 'move-text)
@@ -241,7 +237,7 @@
 (bind-key "C-S-<down>" 'move-text-down)
 
 (quelpa 'webjump)
-(requier 'webjump)
+(require 'webjump)
 (bind-key "C-c j" 'webjump)
 
 (require 'browse-url)
@@ -263,7 +259,7 @@
 (sp-local-pair 'lisp-interaction-mode "'" nil :when '(sp-in-string-p))
 
 (quelpa 'smart-compile)
-(requier 'smrt-compile)
+(require 'smart-compile)
 
 (bind-key "C-x c c" 'smart-compile)
 
@@ -276,9 +272,9 @@
 (add-to-list 'smart-compile-alist '("\\.js\\'" . "node %f"))
 
 (quelpa 'rainbow-mode)
-(requier 'rainbow-mode)
-(diminish 'rainbow-mode)
-(add-hook 'prog-mode-hook 'rainbow-mode)
+;  (require 'rainbow-mode)
+;  (diminish 'rainbow-mode)
+;  (add-hook 'prog-mode-hook 'rainbow-mode)
 
 (quelpa 'flyspell)
 (require 'flyspell)
@@ -304,7 +300,7 @@
 
 (quelpa 'flycheck)
 (require 'flycheck)
-(diminish 'flycheck)
+(diminish 'flycheck-mode)
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)) ; disable the annoying doc checker
@@ -341,9 +337,15 @@ up before you execute another command."
   (flycheck-clear-idle-change-timer)
   (flycheck-buffer-automatically 'idle-change))
 
+(quelpa 'popwin)
+(require 'popwin)
+(popwin-mode 1)
+(setq helm-popwin
+      '("*helm mini*" :height 10))
+
 (quelpa 'helm)
 (quelpa 'helm-dash)
-(quelpa 'helms-potify)
+(quelpa 'helm-spotify)
 (quelpa 'popwin)
 (require 'helm-config)
 (require 'helm-dash)
@@ -354,19 +356,13 @@ up before you execute another command."
 (bind-key "C-c C-h m" 'helm-spotify)
 (bind-key "C-c C-h d" 'helm-dash)
 (bind-key "C-c C-h C-d" 'helm-dash-at-point)
-(bind-key "C-c ! h" 'helm-flycheck))
+(bind-key "C-c ! h" 'helm-flycheck)
 
 (setq popwin:special-display-config
       (push helm-popwin
-            popwin:special-display-config)
+            popwin:special-display-config))
 
 (setq helm-dash-browser-func 'eww)
-
-(quelpa 'popwin)
-(require 'popwin)
-(popwin-mode 1)
-(setq helm-popwin
-      '("*helm mini*" :height 10))
 
 ;; Mark by keyword
 (quelpa 'multiple-cursors)
@@ -445,7 +441,7 @@ up before you execute another command."
 (bind-key "M-<up>" 'smart-up)
 (bind-key "M-<down>" 'smart-down)
 (bind-key "M-<left>" 'smart-left)
-(bind-key "M-<right>" 'smart-right)))
+(bind-key "M-<right>" 'smart-right)
 
 (quelpa 'diff-hl)
 (require 'diff-hl)
