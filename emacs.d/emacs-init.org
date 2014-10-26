@@ -1,19 +1,18 @@
 * Emacs Org Configuration
-2014-10-25
+2014-10-26
 * Description
 This file is tangled using =org-babel-load-file=. What this does is generate
 a =emacs-init.el= from the =emacs-lisp= source blocks.
 
-This emacs.d is currently  designed for Emacs 24.3 and above.
+This emacs.d is currently  designed for Emacs 24.4 and above.
 
 **** The basic directory structure.
 #+BEGIN_SRC text
   └── emacs.d
       ├── README.markdown
       ├── emacs-init.org
+      ├── emacs-init.el
       ├── init.el
-      ├── packages
-      ├── places
       ├── snippets
       ├── backups
       ├── tempfiles
@@ -44,14 +43,14 @@ This emacs.d was heavily inspired by the following configurations.
     (eval-buffer)))
 #+END_SRC
 
-I'm using [[https://github.com/jwiegley/use-package/][use-package]] in this for th bind-key and unbind-key helpers
+I'm using [[https://github.com/jwiegley/use-package/][use-package]]'s bind-key instead of the myriad of options emacs gives us to define keys
 #+BEGIN_SRC emacs-lisp
 (quelpa 'bind-key)
 (require 'bind-key)
 #+END_SRC
 
 * Essentials
-Some quick essential customizations. To tame emacs's
+Some quick essential customizations. To tame emacs' defaults
 #+BEGIN_SRC emacs-lisp
   ;; Turn off mouse interface early in startup to avoid momentary display
   (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -132,8 +131,7 @@ Some quick essential customizations. To tame emacs's
 
 * Keybindings
 ** Exiting
-I don't like to quit Emacs on accident, and I find closing frames are more useful.
-
+Don't quit on accident and give a better binding for deleting a client frame.
 #+BEGIN_SRC emacs-lisp
   ;; The mnemonic is C-x REALLY QUIT
   (global-set-key (kbd "C-x r q") 'save-buffers-kill-terminal)
@@ -174,7 +172,7 @@ Sometimes there are system keybindings that get in the way and will be used late
   (global-unset-key (kbd keys)))
 #+END_SRC
 
-* TODO Appearance
+* Appearance
 ** Font
 I default to DejaVu Sans Mono for everything.
 #+BEGIN_SRC emacs-lisp
@@ -189,13 +187,7 @@ Set custom theme path and load theme
 (load-theme 'smyx-custom t)
 #+END_SRC
 
-** Pretty Mode
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'pretty-mode)
-  (global-pretty-mode 1)
-#+END_SRC
-
-** TODO Mode Line
+** Mode Line
 *** Date
 Display the date on the mode line.
 #+BEGIN_SRC emacs-lisp
@@ -206,7 +198,7 @@ Display the date on the mode line.
              (display-time)
 #+END_SRC
 
-*** TODO Use a custom powerline theme that includes workgroup and evil support
+*** TODO Use a custom powerline theme that includes workgroup and evil, and better projectile support
 #+BEGIN_SRC emacs-lisp
   (quelpa 'powerline)
   (powerline-default-theme)
