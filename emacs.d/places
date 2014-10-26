@@ -1,8 +1,9 @@
 ;;; -*- coding: utf-8 -*-
 (("/home/andrew/.dotfiles/emacs.d/emacs-init.el" . 22102)
- ("/home/andrew/.ido.last" . 39450)
- ("/home/andrew/.recentf" . 8951)
- ("/home/andrew/.emacs.d/.emacs_workgroups" . 1404)
+ ("/home/andrew/.dotfiles/emacs.d/.gitignore" . 248)
+ ("/home/andrew/.ido.last" . 39449)
+ ("/home/andrew/.recentf" . 9003)
+ ("/home/andrew/.emacs.d/.emacs_workgroups" . 2533)
  ("/home/andrew/.emacs.d/elpa/rainbow-delimiters-20141026.1646/rainbow-delimiters-autoloads.el" . 728)
  ("/home/andrew/.emacs.d/elpa/js-comint-20080530.1057/js-comint-autoloads.el" . 2466)
  ("/home/andrew/.emacs.d/elpa/js2-refactor-20141002.1205/js2-refactor-autoloads.el" . 948)
