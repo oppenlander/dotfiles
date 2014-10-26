@@ -311,7 +311,7 @@ Don't defer screen updates when performing operations
 #+BEGIN_SRC emacs-lisp
   (req-package ido
                :require (flx-ido ido-vertical-mode ido-ubiquitous)
-               :init
+               :config
                (progn
                  (ido-mode t)
 
@@ -465,21 +465,9 @@ Move lines or a region up or down.
 
 *** Web Jump
 #+BEGIN_SRC emacs-lisp
-(req-package webjump
-             :bind ("C-c j" . webjump))
-#+END_SRC
-
-This adds Urban Dictionary to webjup. It serves as an example to add more sites later.
-
-#+BEGIN_SRC emacs-lisp
-(req-package webjump
-             :init
-             (add-to-list 'webjump-sites
-                          '("Urban Dictionary" .
-                            [simple-query
-                             "www.urbandictionary.com"
-                             "http://www.urbandictionary.com/define.php?term="
-                             ""])))
+  (req-package webjump
+               :config
+               (bind-key "C-c j" 'webjump))
 #+END_SRC
 
 *** Go-To URL
@@ -554,7 +542,7 @@ pacman -S aspell
 #+BEGIN_SRC emacs-lisp
   (req-package flyspell
                :diminish (flyspell-mode . "")
-               :init
+               :config
                (progn
                  ;; Enable spell check in program comments
                  (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -702,7 +690,7 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 #+BEGIN_SRC emacs-lisp
   ;; Flex isearch
   (req-package flex-isearch
-               :init
+               :config
                (global-flex-isearch-mode 1))
 #+END_SRC
 
@@ -710,7 +698,7 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 #+BEGIN_SRC emacs-lisp
   ;; Remove test in active region if inserting text
   (req-package delsel
-               :init
+               :config
                (delete-selection-mode 1))
 
 #+END_SRC
@@ -804,10 +792,13 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 *** Smart Forward
 #+BEGIN_SRC emacs-lisp
   (req-package smart-forward
-               :bind (("M-<up>" . smart-up)
-                      ("M-<down>" . smart-down)
-                      ("M-<left>" . smart-left)
-                      ("M-<right>" . smart-right)))
+               :commands (smart-up smart-down smart-left smart-right)
+               :init
+               (progn
+                 (bind-key "M-<up>" 'smart-up)
+                 (bind-key "M-<down>" 'smart-down)
+                 (bind-key "M-<left>" 'smart-left)
+                 (bind-key "M-<right>" 'smart-right)))
 #+END_SRC
 
 *** Diff Hightlight
@@ -1208,9 +1199,8 @@ Emacs IRC Client
 js2-mode is full JavaScript AST parser in elisp
 #+BEGIN_SRC emacs-lisp
   (req-package js2-mode
-               :diminish (js2-mode . "JS2")
                :require (js2-refactor grunt js-comint rainbow-delimiters)
-               :bind (("C-M-g" . grunt-exec)
+               :bind (("C-c C-c g" . grunt-exec)
                       ("C-c C-c e" . js-send-last-sexp)
                       ("C-c C-c x" . js-send-last-sexp-and-go)
                       ("C-c C-c b" . js-send-buffer)

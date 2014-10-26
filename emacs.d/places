@@ -1,6 +1,7 @@
 ;;; -*- coding: utf-8 -*-
-(("/home/andrew/.dotfiles/emacs.d/emacs-init.org" . 13788)
- ("/home/andrew/.recentf" . 5030)
+(("/home/andrew/.dotfiles/emacs.d/emacs-init.org" . 22195)
+ ("/home/andrew/.recentf" . 5152)
+ ("/home/andrew/.dotfiles/emacs.d/Cask" . 49)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/evil-20141025.1316/evil-autoloads.el" . 695)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/goto-chg-20131228.1459/goto-chg-autoloads.el" . 1874)
  ("/home/andrew/Playground/tweetems/Brocfile.js" . 709)
@@ -28,7 +29,6 @@
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/workgroups2-20140929.2339/workgroups2-autoloads.el" . 801)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/workgroups2-20140929.2339/workgroups2.el" . 178885)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/math-at-point-0.0.1/math-at-point-autoloads.el" . 248)
- ("/home/andrew/.dotfiles/emacs.d/Cask" . 46)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/anaphora-20140728.1536/anaphora-autoloads.el" . 7975)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/comment-dwim-2-20141004.333/comment-dwim-2-autoloads.el" . 1046)
  ("/home/andrew/.dotfiles/emacs.d/.cask/24.4.1/elpa/password-store-20140616.1141/password-store-autoloads.el" . 2098)

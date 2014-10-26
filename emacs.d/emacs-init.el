@@ -148,7 +148,7 @@
 
 (req-package ido
              :require (flx-ido ido-vertical-mode ido-ubiquitous)
-             :init
+             :config
              (progn
                (ido-mode t)
 
@@ -255,16 +255,8 @@
                     ("<C-S-down>" . move-text-down)))
 
 (req-package webjump
-             :bind ("C-c j" . webjump))
-
-(req-package webjump
-             :init
-             (add-to-list 'webjump-sites
-                          '("Urban Dictionary" .
-                            [simple-query
-                             "www.urbandictionary.com"
-                             "http://www.urbandictionary.com/define.php?term="
-                             ""])))
+             :config
+             (bind-key "C-c j" 'webjump))
 
 (req-package browse-url
              :bind ("C-c C-j" . browse-url))
@@ -307,7 +299,7 @@
 
 (req-package flyspell
              :diminish (flyspell-mode . "")
-             :init
+             :config
              (progn
                ;; Enable spell check in program comments
                (add-hook 'prog-mode-hook 'flyspell-prog-mode)
@@ -415,12 +407,12 @@ up before you execute another command."
 
 ;; Flex isearch
 (req-package flex-isearch
-             :init
+             :config
              (global-flex-isearch-mode 1))
 
 ;; Remove test in active region if inserting text
 (req-package delsel
-             :init
+             :config
              (delete-selection-mode 1))
 
 ;; Add parts of each file's directory to the buffer name if not unique
@@ -474,10 +466,13 @@ up before you execute another command."
                (workgroups-mode 1)))
 
 (req-package smart-forward
-             :bind (("M-<up>" . smart-up)
-                    ("M-<down>" . smart-down)
-                    ("M-<left>" . smart-left)
-                    ("M-<right>" . smart-right)))
+             :commands (smart-up smart-down smart-left smart-right)
+             :init
+             (progn
+               (bind-key "M-<up>" 'smart-up)
+               (bind-key "M-<down>" 'smart-down)
+               (bind-key "M-<left>" 'smart-left)
+               (bind-key "M-<right>" 'smart-right)))
 
 (req-package diff-hl
              :init
@@ -759,9 +754,8 @@ up before you execute another command."
   (add-hook 'erc-mode-hook 'flyspell-mode))
 
 (req-package js2-mode
-             :diminish (js2-mode . "JS2")
              :require (js2-refactor grunt js-comint rainbow-delimiters)
-             :bind (("C-M-g" . grunt-exec)
+             :bind (("C-c C-c g" . grunt-exec)
                     ("C-c C-c e" . js-send-last-sexp)
                     ("C-c C-c x" . js-send-last-sexp-and-go)
                     ("C-c C-c b" . js-send-buffer)
