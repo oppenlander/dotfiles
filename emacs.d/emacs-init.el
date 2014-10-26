@@ -120,9 +120,6 @@
 
 (load-theme 'smyx-custom t)
 
-(quelpa 'pretty-mode)
-(global-pretty-mode 1)
-
 (setq display-time-day-and-date t
                 display-time-format "%a %b %d %R"
                 display-time-interval 60
