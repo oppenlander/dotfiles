@@ -435,6 +435,7 @@ up before you execute another command."
 (setq wg-prefix-key (kbd "C-z"))
 (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
 (workgroups-mode 1)
+(diminish 'workgroups-mode)
 
 (quelpa 'smart-forward)
 (require 'smart-forward)
@@ -661,6 +662,43 @@ up before you execute another command."
   (defadvice kill-whole-line (after fix-cookies activate)
     (myorg-update-parent-cookie)))
 (eval-after-load 'org '(progn (setup-org-mode)))
+
+(quelpa 'dired+)
+(require 'dired+)
+
+(quelpa 'magit)
+(require 'magit)
+(diminish 'magit-auto-revert-mode)
+(bind-key "C-c g" 'magit-status)
+
+(defun eshell/clear ()
+  "04Dec2001 - sailor, to clear the eshell buffer."
+  (interactive)
+  (let ((inhibit-read-only t))
+    (erase-buffer)))
+
+(quelpa 'erc)
+(require 'erc)
+(add-hook 'erc-mode-hook 'flyspell-mode)
+
+(quelpa 'json-mode)
+(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+
+(quelpa 'handlebars-mode)
+(add-to-list 'auto-mode-alist '("\\.hbs$" . handlebars-mode))
+(add-to-list 'auto-mode-alist '("\\.handlebards$" . handlebars-mode))
+
+(add-to-list 'auto-mode-alist '("\\.svg$" . image-mode))
+
+(quelpa 'coffee-mode)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+
+(defun setup-coffee-mode ()
+  (setq coffee-tab-width 2))
+(eval-after-load 'coffee-mode '(progn (setup-coffee-mode)))
+
+(quelpa 'fish-mode)
+(add-to-list 'auto-mode-alist '("\\.fish$" . fish-mode))
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
