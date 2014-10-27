@@ -737,11 +737,11 @@ up before you execute another command."
   (setq js2-indent-ignore-first-tab t)
 
   ;; set up js2-refactor map
-  (require 'js2-refactor
+  (require 'js2-refactor)
   (js2r-add-keybindings-with-prefix "C-c C-r")
 
   ;; set up comint keys
-  (requier 'js-comint)
+  (require 'js-comint)
   (bind-key "C-c C-c e" 'js-send-last-sexp)
   (bind-key "C-c C-c x" 'js-send-last-sexp-and-go)
   (bind-key "C-c C-c b" 'js-send-buffer)
@@ -761,16 +761,17 @@ up before you execute another command."
              (replace-regexp-in-string "\033\\[[0-9]+[A-Z]" "" output)))))
 
   ;; Extra configuration that needs to be run on the js2-mode-hook
-  (add-hook 'js2-mode-hook (lambda ()
-                             ;; Rainbows
-                             (require 'rainbow-delimiters)
-                             (rainbow-delimiters-mode)
-                             ;; Electric indent hates bouncies
-                             (electric-indent-mode -1)
-                             ;; Turn on tabs for JavaScript files
-                             ;;TODO: set up folder-local settings for this kind of customization
-                             (setq indent-tabs-mode 1)))))
-(eval-after-load 'js2-mode 'setup-js2-mode)
+  (add-hook 'js2-mode-hook
+            (lambda ()
+              ;; Rainbows
+              (require 'rainbow-delimiters)
+              (rainbow-delimiters-mode)
+              ;; Electric indent hates bouncies
+              (electric-indent-mode -1)
+              ;; Turn on tabs for JavaScript files
+              ;;TODO: set up folder-local settings for this kind of customization
+              (setq indent-tabs-mode 1))))
+(eval-after-load 'js2-mode '(progn (setup-js2-mode)))
 
 (quelpa 'magit)
 (require 'magit)
@@ -802,6 +803,8 @@ up before you execute another command."
 (defun setup-coffee-mode ()
   (setq coffee-tab-width 2))
 (eval-after-load 'coffee-mode '(progn (setup-coffee-mode)))
+
+(add-to-list 'auto-mode-alist '("\\.service" . conf-mode))
 
 (quelpa 'fish-mode)
 (add-to-list 'auto-mode-alist '("\\.fish$" . fish-mode))
