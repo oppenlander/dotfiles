@@ -36,3 +36,7 @@ rm $HOME/.gitconfig
 ln -s $DIR/git/gitconfig $HOME/.gitconfig
 rm $HOME/.gitignore
 ln -s $DIR/git/gitignore $HOME/.gitignore
+
+# Terminator
+rm -r $HOME/.config/terminator
+ln -s $DIR/terminator $HOME/.config/terminator
