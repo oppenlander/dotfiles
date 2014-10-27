@@ -205,7 +205,6 @@ Display the date on the mode line.
 #+END_SRC
 
 ** Custom Keywords
-
 *** Keyword Symbols
 #+BEGIN_SRC emacs-lisp
 (defun add-operator-hl ()
@@ -221,6 +220,7 @@ Don't defer screen updates when performing operations
 #+BEGIN_SRC emacs-lisp
 (setq redisplay-dont-pause t)
 #+END_SRC
+
 * Setups
 ** Minor Modes and Utilities
 *** IDO
@@ -925,7 +925,7 @@ If you are not using it, you need to start.
 
     ;; Custom TODO keywords
     (setq org-todo-keywords
-          '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+          '((sequence "TODO(t)" "PROGRESS(p!)" "REVIEW(r@/!)" "QA(q!)" "|" "DONE(d!)" "CANCELED(c@!)" "ROADBLOCK(o@!)")))
 
     ;; Set up latex
     (setq org-export-with-LaTeX-fragments t)
@@ -1068,22 +1068,6 @@ js2-mode is full JavaScript AST parser in elisp
   (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
   (defun setup-js2-mode ()
-    (setq js2-enter-indents-newline nil)
-    (setq js2-bounce-indent-p t)
-    (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
-
-    ;; Let Flycheck handle errors until js2 mode supports ES6
-    (setq js2-show-parse-errors nil)
-    (setq js2-strict-missing-semi-warning nil)
-    (setq js2-strict-trailing-comma-warning t)
-
-    (setq js2-basic-offset 2)
-    (setq js-indent-level 2)
-    (setq js2-strict-inconsistent-return-warning nil)
-    (setq js2-include-node-externs t)
-    (setq js2-include-jslint-globals t)
-    (setq js2-indent-ignore-first-tab t)
-
     ;; set up js2-refactor map
     (require 'js2-refactor)
     (js2r-add-keybindings-with-prefix "C-c C-r")
@@ -1118,9 +1102,25 @@ js2-mode is full JavaScript AST parser in elisp
                 (electric-indent-mode -1)
                 ;; Turn on tabs for JavaScript files
                 ;;TODO: set up folder-local settings for this kind of customization
-                (setq indent-tabs-mode 1))))
-  (eval-after-load 'js2-mode '(progn (setup-js2-mode)))
+                (setq indent-tabs-mode 1)
 
+                ;; Set default js2 settings
+                (setq js2-enter-indents-newline nil)
+                (setq js2-bounce-indent-p t)
+                (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+
+                ;; Let Flycheck handle errors until js2 mode supports ES6
+                (setq js2-show-parse-errors nil)
+                (setq js2-strict-missing-semi-warning nil)
+                (setq js2-strict-trailing-comma-warning t)
+
+                (setq js-indent-level 2)
+                (setq js2-strict-inconsistent-return-warning nil)
+                (setq js2-include-node-externs t)
+                (setq js2-include-jslint-globals t)
+                (setq js2-mode-indent-ignore-first-tab t)
+                (setq js2-basic-offset 2))))
+  (eval-after-load 'js2-mode '(progn (setup-js2-mode)))
 #+END_SRC
 
 *** Magit
@@ -1190,6 +1190,19 @@ Use =conf-mode= for some file types that aren't associated with it yet
   (add-to-list 'auto-mode-alist '("\\.fish$" . fish-mode))
 #+END_SRC
 
+*** Sh
+Add some magic and auto modes to load =sh-mode= automatically
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/sh" . sh-mode))
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/bash" . sh-mode))
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/zsh" . sh-mode))
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/env sh" . sh-mode))
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/env bash" . sh-mode))
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/env zsh" . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.sh" . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.bash" . sh-mode))
+  (add-to-list 'auto-mode-alist '("\\.zsh" . sh-mode))
+#+END_SRC
 
   All packages and modes are configured here.
 * Custom Functions
