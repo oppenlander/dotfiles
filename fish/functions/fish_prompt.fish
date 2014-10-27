@@ -10,12 +10,12 @@ end
 
 function fish_prompt
   set -l last_status $status
-  set -l cyan (set_color cyan)
+  set -l cyan (set_color -o cyan)
   set -l yellow (set_color -o yellow)
   set -l red (set_color -o red)
   set -l green (set_color -o green)
   set -l white (set_color -o white)
-  set -l normal (set_color normal)
+  set -l onormal (set_color -o normal)
   set -l blue (set_color -o blue)
 
   set -l prompt_status
@@ -35,5 +35,5 @@ function fish_prompt
     set git_info "$git_info$yellow)"
   end
 
-  echo -n -s $prompt_status $normal '[' $green (whoami) $normal '@' $cyan (hostname) $normal ':' $blue (prompt_pwd) $git_info $normal ']' $normal➜ ' '
+  echo -n -s $prompt_status $onormal '[' $green (whoami) $onormal '@' $cyan (hostname) $onormal ':' $blue (prompt_pwd) $git_info $onormal ']' $onormal➜ ' '
 end
