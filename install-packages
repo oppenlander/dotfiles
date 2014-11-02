@@ -43,6 +43,7 @@ pacaur -S \
     dmenu2 \
     feh \
     fish \
+    go \
     google-chrome \
     gtk-theme-elementary \
     i3 \
@@ -67,11 +68,18 @@ pacaur -S \
     wireless-tools \
     wpa_supplicant
 
-# Setup services
-sudo systemctl enable lightdm
-
-# Change default shell to fish
-chsh -s /usr/bin/fish
-
-# Run setup script to link config files
-$DIR/install-links
+# Install go dependencies
+# gocode
+go get -u github.com/nsf/gocode
+# gotags
+go get -u github.com/jstemmer/gotags
+# golint
+go get -u github.com/golang/lint/golint
+# oracle
+go get -u code.google.com/p/go.tools/cmd/oracle
+# godef
+go get -u code.google.com/p/rog-go/exp/cmd/godef
+# errcheck
+go get -u github.com/kisielk/errcheck
+# goimports
+go get -u github.com/bradfitz/goimports
