@@ -449,7 +449,7 @@ up before you execute another command."
 
 (quelpa 'evil)
 (require 'evil)
-(bind-key "C-c C-M-v" 'evil-mode)
+(bind-key "M-<f2>" 'evil-mode)
 (setq evil-default-cursor t)
 
 (quelpa 'grunt)
@@ -463,6 +463,14 @@ up before you execute another command."
   (rainbow-delimiters-mode -1)
   ad-do-it
   (rainbow-delimiters-mode t))
+
+(quelpa 'god-mode)
+(require 'god-mode)
+(bind-key "M-<f1>" 'god-mode-all)
+(bind-key "C-x C-1" 'delete-other-windows)
+(bind-key "C-x C-2" 'split-window-below)
+(bind-key "C-x C-3" 'split-window-right)
+(bind-key "C-x C-0" 'delete-window)
 
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -780,7 +788,24 @@ up before you execute another command."
               (electric-indent-mode -1)
               ;; Turn on tabs for JavaScript files
               ;;TODO: set up folder-local settings for this kind of customization
-              (setq indent-tabs-mode 1))))
+              (setq indent-tabs-mode 1)
+
+              ;; Set default js2 settings
+              (setq js2-enter-indents-newline nil)
+              (setq js2-bounce-indent-p t)
+              (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+
+              ;; Let Flycheck handle errors until js2 mode supports ES6
+              (setq js2-show-parse-errors nil)
+              (setq js2-strict-missing-semi-warning nil)
+              (setq js2-strict-trailing-comma-warning t)
+
+              (setq js-indent-level 2)
+              (setq js2-strict-inconsistent-return-warning nil)
+              (setq js2-include-node-externs t)
+              (setq js2-include-jslint-globals t)
+              (setq js2-mode-indent-ignore-first-tab t)
+              (setq js2-basic-offset 2))))
 (eval-after-load 'js2-mode '(progn (setup-js2-mode)))
 
 (quelpa 'magit)
@@ -829,6 +854,137 @@ up before you execute another command."
 (add-to-list 'auto-mode-alist '("\\.bash" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.zsh" . sh-mode))
 
+(quelpa 'clojure-mode)
+(quelpa '(queue :url "http://www.dr-qubit.org/download.php?file=predictive/queue.el" :fetcher url :version original))
+(quelpa 'cider)
+(quelpa 'clj-refactor)
+(quelpa 'rainbow-delimiters)
+
+(defun setup-clojure-mode ()
+  (defadvice clojure-test-run-tests (before save-first activate)
+    (save-buffer))
+
+  (defadvice nrepl-load-current-buffer (before save-first activate)
+    (save-buffer))
+
+  ;; Cider, the Clojure IDE
+  (require 'cider)
+
+  ;; Define some cider keys
+  (bind-key "C-," 'complete-symbol cider-repl-mode-map)
+  (bind-key "C-," 'complete-symbol cider-mode-map)
+  (bind-key "C-c C-q" 'nrepl-close cider-mode-map)
+  (bind-key "C-c C-Q" 'cider-quit cider-mode-map)
+
+
+  ;; Clojure refactorings
+  (require 'clj-refactor)
+  (cljr-add-keybindings-with-prefix "C-c C-r")
+
+
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (smartparens-strict-mode)
+
+              ;; Turn on refactoring
+              (clj-refactor-mode 1)
+
+
+              ;; Set up some cider defaults
+              ;; Hide nrepl buffers when switching buffers (switch to by prefixing with space)
+              (setq nrepl-hide-special-buffers t)
+
+              ;; Enable error buffer popping also in the REPL:
+              (setq cider-repl-popup-stacktraces t)
+
+              ;; Specify history file
+              (setq cider-history-file "~/.emacs.d/nrepl-history")
+
+              ;; auto-select the error buffer when it's displayed
+              (setq cider-auto-select-error-buffer t)
+
+              ;; Prevent the auto-display of the REPL buffer in a separate window after connection is established
+              (setq cider-repl-pop-to-buffer-on-connect nil)
+
+              ;; Enable eldoc in Clojure buffers
+              (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+              ;; Use clojure font in repl
+              (setq cider-repl-use-clojure-font-lock t)
+
+              ;; Rainbows
+              (require 'rainbow-delimiters)
+              (rainbow-delimiters-mode))))
+(eval-after-load 'org '(progn (setup-clojure-mode)))
+
+(quelpa 'twittering-mode)
+(require 'twittering-mode)
+
+(setq twittering-cert-file "/etc/ssl/certs/ca-certificates.crt")
+(setq twittering-use-master-password t)
+(setq twittering-auth-method 'basic)
+
+(quelpa 'go-mode)
+(require 'go-mode)
+
+(quelpa 'go-eldoc)
+(quelpa 'go-direx)
+(quelpa 'golint)
+(quelpa 'go-projectile)
+(quelpa 'company-go)
+(quelpa 'go-errcheck)
+(quelpa 'helm-go-package)
+
+(defun setup-go-mode ()
+
+  ;; Set default GOPATH
+  (unless (getenv "GOPATH")
+    (setenv "GOPATH" (concat (getenv "HOME") "/gocode")))
+
+  ;; go-direx
+  (require 'go-direx)
+  (bind-key "C-c d" 'go-direx-pop-to-buffer go-mode-map)
+
+  ;; golint
+  (require 'golint)
+
+  ;; go-projectile
+  (require 'go-projectile)
+
+  ;; completion
+  (require 'company-go)
+
+  ;; go-errcheck
+  (require 'go-errcheck)
+
+  ;; helm-go-package
+  (require 'helm-go-package)
+  (substitute-key-definition 'go-import-add 'helm-go-package go-mode-map)
+
+  ;; oracle (source analyzer)
+  (load (concat (getenv "GOPATH") "/src/code.google.com/p/go.tools/cmd/oracle/oracle.el"))
+
+  ;; Local settings
+  (add-hook 'go-mode-hook
+            (lambda ()
+              ;; Set go-eldoc
+              (require 'go-eldoc-setup)
+              (go-eldoc-setup)
+
+              ;; go-direx popwin options
+              (require 'popwin)
+              (setq display-buffer-function 'popwin:display-buffer)
+              (push '("^\*go-direx:" :regexp t :position left :width 0.4 :dedicated t :stick t)
+                    popwin:special-display-config)
+
+              ;; Add company-go to the completion list
+              (set (make-local-variable 'company-backends) '(company-go))
+
+              ;; oracle
+              (go-oracle-mode))))
+(eval-after-load 'org '(progn (setup-go-mode)))
+
+>>>>>>> d562c2a73e2c9a125bf0285a7187d5dcc7e0afa3
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)

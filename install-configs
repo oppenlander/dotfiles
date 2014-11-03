@@ -30,6 +30,7 @@ sudo rm /etc/lightdm/lightdm.conf
 sudo cp $DIR/lightdm.conf /etc/lightdm/lightdm.conf
 sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
 sudo cp $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+sudo systemctl enable lightdm
 
 # Git
 rm $HOME/.gitconfig
@@ -40,3 +41,6 @@ ln -s $DIR/git/gitignore $HOME/.gitignore
 # Terminator
 rm -r $HOME/.config/terminator
 ln -s $DIR/terminator $HOME/.config/terminator
+
+# Fish
+chsh -s /usr/bin/fish

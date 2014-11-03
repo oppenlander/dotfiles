@@ -9,7 +9,7 @@ set fish_greeting ""
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-fish/plugins/*)
 # Custom plugins may be added to ~/.oh-my-fish/custom/plugins/
 # Example format: set fish_plugins autojump bundler
-set fish_plugins node python tmux jump
+set fish_plugins python tmux jump
 
 # Path to your custom folder (default path is $FISH/custom)
 #set fish_custom $HOME/dotfiles/oh-my-fish
@@ -37,16 +37,21 @@ set -gx LANG en_US.UTF-8
 set -gx LANGUAGE en_US.UTF-8
 # Java
 set -gx JAVA_HOME '/opt/java'
+# Go
+set -gx GOPATH $HOME'/gocode'
+# Android
+set -gx ANDROID_HOME '/opt/android-sdk'
 
 #####################################
 # Path modifications
+# Ruby
 set -gx PATH (echo (ruby -e 'puts Gem.user_dir')'/bin') $PATH
-# Go Settings
+# Go
 set -gx PATH $GOPATH'/bin' $PATH
-# Java Home
-set -gx PATH '/opt/java/bin' $PATH
+# Java
+set -gx PATH $JAVA_HOME'/bin' $PATH
 # Android
-set -gx PATH '/opt/android-sdk/platform-tools' $PATH
+set -gx PATH $ANDROID_HOME'/platform-tools' $PATH
 # Home bin
 set -gx PATH $HOME'/bin' $PATH
 # NPM bin

@@ -697,7 +697,7 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 #+BEGIN_SRC emacs-lisp
   (quelpa 'evil)
   (require 'evil)
-  (bind-key "C-c C-M-v" 'evil-mode)
+  (bind-key "M-<f2>" 'evil-mode)
   (setq evil-default-cursor t)
 #+END_SRC
 
@@ -718,6 +718,18 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
     ad-do-it
     (rainbow-delimiters-mode t))
 #+END_SRC
+
+*** God Mode
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'god-mode)
+  (require 'god-mode)
+  (bind-key "M-<f1>" 'god-mode-all)
+  (bind-key "C-x C-1" 'delete-other-windows)
+  (bind-key "C-x C-2" 'split-window-below)
+  (bind-key "C-x C-3" 'split-window-right)
+  (bind-key "C-x C-0" 'delete-window)
+#+END_SRC
+
 ** Major Modes
 *** Lisp
 #+BEGIN_SRC emacs-lisp
@@ -1216,6 +1228,164 @@ Add some magic and auto modes to load =sh-mode= automatically
 #+END_SRC
 
   All packages and modes are configured here.
+
+*** Clojure
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'clojure-mode)
+  (quelpa '(queue :url "http://www.dr-qubit.org/download.php?file=predictive/queue.el" :fetcher url :version original))
+  (quelpa 'cider)
+  (quelpa 'clj-refactor)
+  (quelpa 'rainbow-delimiters)
+
+  (defun setup-clojure-mode ()
+    (defadvice clojure-test-run-tests (before save-first activate)
+      (save-buffer))
+
+    (defadvice nrepl-load-current-buffer (before save-first activate)
+      (save-buffer))
+
+    ;; Cider, the Clojure IDE
+    (require 'cider)
+
+    ;; Define some cider keys
+    (bind-key "C-," 'complete-symbol cider-repl-mode-map)
+    (bind-key "C-," 'complete-symbol cider-mode-map)
+    (bind-key "C-c C-q" 'nrepl-close cider-mode-map)
+    (bind-key "C-c C-Q" 'cider-quit cider-mode-map)
+
+
+    ;; Clojure refactorings
+    (require 'clj-refactor)
+    (cljr-add-keybindings-with-prefix "C-c C-r")
+
+
+    (add-hook 'clojure-mode-hook
+              (lambda ()
+                (smartparens-strict-mode)
+
+                ;; Turn on refactoring
+                (clj-refactor-mode 1)
+
+
+                ;; Set up some cider defaults
+                ;; Hide nrepl buffers when switching buffers (switch to by prefixing with space)
+                (setq nrepl-hide-special-buffers t)
+
+                ;; Enable error buffer popping also in the REPL:
+                (setq cider-repl-popup-stacktraces t)
+
+                ;; Specify history file
+                (setq cider-history-file "~/.emacs.d/nrepl-history")
+
+                ;; auto-select the error buffer when it's displayed
+                (setq cider-auto-select-error-buffer t)
+
+                ;; Prevent the auto-display of the REPL buffer in a separate window after connection is established
+                (setq cider-repl-pop-to-buffer-on-connect nil)
+
+                ;; Enable eldoc in Clojure buffers
+                (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+                ;; Use clojure font in repl
+                (setq cider-repl-use-clojure-font-lock t)
+
+                ;; Rainbows
+                (require 'rainbow-delimiters)
+                (rainbow-delimiters-mode))))
+  (eval-after-load 'org '(progn (setup-clojure-mode)))
+#+END_SRC
+
+*** Twitter
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'twittering-mode)
+  (require 'twittering-mode)
+
+  (setq twittering-cert-file "/etc/ssl/certs/ca-certificates.crt")
+  (setq twittering-use-master-password t)
+  (setq twittering-auth-method 'basic)
+#+END_SRC
+
+*** Go
+**** Go Dependencies
+#+BEGIN_SRC sh
+  # gocode
+  go get -u github.com/nsf/gocode
+  # gotags
+  go get -u github.com/jstemmer/gotags
+  # golint
+  go get -u github.com/golang/lint/golint
+  # oracle
+  go get -u code.google.com/p/go.tools/cmd/oracle
+  # godef
+  go get -u code.google.com/p/rog-go/exp/cmd/godef
+  # errcheck
+  go get -u github.com/kisielk/errcheck
+  # goimports
+  go get -u github.com/bradfitz/goimports
+#+END_SRC
+**** Setup
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'go-mode)
+  (require 'go-mode)
+
+  (quelpa 'go-eldoc)
+  (quelpa 'go-direx)
+  (quelpa 'golint)
+  (quelpa 'go-projectile)
+  (quelpa 'company-go)
+  (quelpa 'go-errcheck)
+  (quelpa 'helm-go-package)
+
+  (defun setup-go-mode ()
+
+    ;; Set default GOPATH
+    (unless (getenv "GOPATH")
+      (setenv "GOPATH" (concat (getenv "HOME") "/gocode")))
+
+    ;; go-direx
+    (require 'go-direx)
+    (bind-key "C-c d" 'go-direx-pop-to-buffer go-mode-map)
+
+    ;; golint
+    (require 'golint)
+
+    ;; go-projectile
+    (require 'go-projectile)
+
+    ;; completion
+    (require 'company-go)
+
+    ;; go-errcheck
+    (require 'go-errcheck)
+
+    ;; helm-go-package
+    (require 'helm-go-package)
+    (substitute-key-definition 'go-import-add 'helm-go-package go-mode-map)
+
+    ;; oracle (source analyzer)
+    (load (concat (getenv "GOPATH") "/src/code.google.com/p/go.tools/cmd/oracle/oracle.el"))
+
+    ;; Local settings
+    (add-hook 'go-mode-hook
+              (lambda ()
+                ;; Set go-eldoc
+                (require 'go-eldoc-setup)
+                (go-eldoc-setup)
+
+                ;; go-direx popwin options
+                (require 'popwin)
+                (setq display-buffer-function 'popwin:display-buffer)
+                (push '("^\*go-direx:" :regexp t :position left :width 0.4 :dedicated t :stick t)
+                      popwin:special-display-config)
+
+                ;; Add company-go to the completion list
+                (set (make-local-variable 'company-backends) '(company-go))
+
+                ;; oracle
+                (go-oracle-mode))))
+  (eval-after-load 'org '(progn (setup-go-mode)))
+#+END_SRC
+
 * Custom Functions
 ** Lisp
 *** Evaluate and Replace
