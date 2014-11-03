@@ -267,10 +267,10 @@
 (add-to-list 'smart-compile-alist '("\\.hs\\'" . "ghc -o %n %f"))
 (add-to-list 'smart-compile-alist '("\\.js\\'" . "node %f"))
 
-(quelpa 'rainbow-mode)
-;  (require 'rainbow-mode)
-;  (diminish 'rainbow-mode)
-;  (add-hook 'prog-mode-hook 'rainbow-mode)
+(quelpa '(rainbow-mode :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el" :fetcher url))
+(require 'rainbow-mode)
+(diminish 'rainbow-mode)
+(add-hook 'prog-mode-hook 'rainbow-mode)
 
 (quelpa 'flyspell)
 (require 'flyspell)
@@ -456,6 +456,14 @@ up before you execute another command."
 (require 'grunt)
 (bind-key "C-c C-M-g" 'grunt-exec)
 
+(quelpa 'htmlize)
+(require 'htmlize)
+;; Turn rainbow-delimiters off while doing htmlize
+(defadvice htmlize-buffer-1 (around ome-htmlize-buffer-1 disable)
+  (rainbow-delimiters-mode -1)
+  ad-do-it
+  (rainbow-delimiters-mode t))
+
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
@@ -605,7 +613,7 @@ up before you execute another command."
 
   ;; Custom TODO keywords
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+        '((sequence "TODO(t)" "PROGRESS(p!)" "REVIEW(r@/!)" "QA(q!)" "|" "DONE(d!)" "CANCELED(c@!)" "ROADBLOCK(o@!)")))
 
   ;; Set up latex
   (setq org-export-with-LaTeX-fragments t)
@@ -720,22 +728,6 @@ up before you execute another command."
 (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
 (defun setup-js2-mode ()
-  (setq js2-enter-indents-newline nil)
-  (setq js2-bounce-indent-p t)
-  (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
-
-  ;; Let Flycheck handle errors until js2 mode supports ES6
-  (setq js2-show-parse-errors nil)
-  (setq js2-strict-missing-semi-warning nil)
-  (setq js2-strict-trailing-comma-warning t)
-
-  (setq js2-basic-offset 2)
-  (setq js-indent-level 2)
-  (setq js2-strict-inconsistent-return-warning nil)
-  (setq js2-include-node-externs t)
-  (setq js2-include-jslint-globals t)
-  (setq js2-indent-ignore-first-tab t)
-
   ;; set up js2-refactor map
   (require 'js2-refactor)
   (js2r-add-keybindings-with-prefix "C-c C-r")
@@ -750,9 +742,27 @@ up before you execute another command."
   (bind-key "C-c C-c C-n" 'js-send-region-and-go)
   (bind-key "C-c C-c l" 'js-load-file-and-go)
 
+
+
+  ;; Set default js2 settings
+  (setq-default js2-enter-indents-newline nil)
+  (setq-default js2-bounce-indent-p t)
+  (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+
+  ;; Let Flycheck handle errors until js2 mode supports ES6
+  (setq-default js2-show-parse-errors nil)
+  (setq-default js2-strict-missing-semi-warning nil)
+  (setq-default js2-strict-trailing-comma-warning t)
+
+  (setq-default js-indent-level 2)
+  (setq-default js2-strict-inconsistent-return-warning nil)
+  (setq-default js2-include-node-externs t)
+  (setq-default js2-include-jslint-globals t)
+  (setq-default js2-basic-offset 2)
+
   ;; Set up js-comint for node
-  (setq inferior-js-program-command "node")
-  (setq inferior-js-mode-hook
+  (setq-default inferior-js-program-command "node")
+  (setq-default inferior-js-mode-hook
         (lambda ()
           (ansi-color-for-comint-mode-on)
           (add-to-list
@@ -808,6 +818,16 @@ up before you execute another command."
 
 (quelpa 'fish-mode)
 (add-to-list 'auto-mode-alist '("\\.fish$" . fish-mode))
+
+(add-to-list 'magic-mode-alist '("#!/usr/bin/sh" . sh-mode))
+(add-to-list 'magic-mode-alist '("#!/usr/bin/bash" . sh-mode))
+(add-to-list 'magic-mode-alist '("#!/usr/bin/zsh" . sh-mode))
+(add-to-list 'magic-mode-alist '("#!/usr/bin/env sh" . sh-mode))
+(add-to-list 'magic-mode-alist '("#!/usr/bin/env bash" . sh-mode))
+(add-to-list 'magic-mode-alist '("#!/usr/bin/env zsh" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.sh" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bash" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.zsh" . sh-mode))
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
