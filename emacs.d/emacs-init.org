@@ -718,6 +718,22 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (bind-key "C-x C-3" 'split-window-right)
   (bind-key "C-x C-0" 'delete-window)
 #+END_SRC
+
+*** Sane Term
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'sane-term)
+  (require 'sane-term)
+  (bind-key "C-x t" 'sane-term)
+  (bind-key "C-x T" 'sane-term-create)
+#+END_SRC
+
+*** Project Explore
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'project-explorer)
+  (require 'project-explorer)
+  (bind-key "C-c P" 'project-explorer-open)
+#+END_SRC
+
 ** Major Modes
 *** Lisp
 #+BEGIN_SRC emacs-lisp

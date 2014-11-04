@@ -464,6 +464,15 @@ up before you execute another command."
 (bind-key "C-x C-3" 'split-window-right)
 (bind-key "C-x C-0" 'delete-window)
 
+(quelpa 'sane-term)
+(require 'sane-term)
+(bind-key "C-x t" 'sane-term)
+(bind-key "C-x T" 'sane-term-create)
+
+(quelpa 'project-explorer)
+(require 'project-explorer)
+(bind-key "C-c P" 'project-explore-open)
+
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
