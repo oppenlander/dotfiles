@@ -267,10 +267,10 @@
 (add-to-list 'smart-compile-alist '("\\.hs\\'" . "ghc -o %n %f"))
 (add-to-list 'smart-compile-alist '("\\.js\\'" . "node %f"))
 
-(quelpa 'rainbow-mode)
-;  (require 'rainbow-mode)
-;  (diminish 'rainbow-mode)
-;  (add-hook 'prog-mode-hook 'rainbow-mode)
+(quelpa '(rainbow-mode :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el" :fetcher url))
+(require 'rainbow-mode)
+(diminish 'rainbow-mode)
+(add-hook 'prog-mode-hook 'rainbow-mode)
 
 (quelpa 'flyspell)
 (require 'flyspell)
@@ -455,6 +455,14 @@ up before you execute another command."
 (quelpa 'grunt)
 (require 'grunt)
 (bind-key "C-c C-M-g" 'grunt-exec)
+
+(quelpa 'htmlize)
+(require 'htmlize)
+;; Turn rainbow-delimiters off while doing htmlize
+(defadvice htmlize-buffer-1 (around ome-htmlize-buffer-1 disable)
+  (rainbow-delimiters-mode -1)
+  ad-do-it
+  (rainbow-delimiters-mode t))
 
 (quelpa 'god-mode)
 (require 'god-mode)
@@ -751,9 +759,27 @@ up before you execute another command."
   (bind-key "C-c C-c C-n" 'js-send-region-and-go)
   (bind-key "C-c C-c l" 'js-load-file-and-go)
 
+
+
+  ;; Set default js2 settings
+  (setq-default js2-enter-indents-newline nil)
+  (setq-default js2-bounce-indent-p t)
+  (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+
+  ;; Let Flycheck handle errors until js2 mode supports ES6
+  (setq-default js2-show-parse-errors nil)
+  (setq-default js2-strict-missing-semi-warning nil)
+  (setq-default js2-strict-trailing-comma-warning t)
+
+  (setq-default js-indent-level 2)
+  (setq-default js2-strict-inconsistent-return-warning nil)
+  (setq-default js2-include-node-externs t)
+  (setq-default js2-include-jslint-globals t)
+  (setq-default js2-basic-offset 2)
+
   ;; Set up js-comint for node
-  (setq inferior-js-program-command "node")
-  (setq inferior-js-mode-hook
+  (setq-default inferior-js-program-command "node")
+  (setq-default inferior-js-mode-hook
         (lambda ()
           (ansi-color-for-comint-mode-on)
           (add-to-list

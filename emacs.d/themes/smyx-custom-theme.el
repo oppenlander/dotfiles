@@ -193,10 +193,10 @@
    ;;; font lock
    `(font-lock-builtin-face ((,class (:foreground ,smyx-orange))))
    `(font-lock-comment-face ((,class (:foreground ,smyx-gray-9 :italic t))))
-   ;; `(font-lock-comment-delimiter-face ((,class (:foreground ,smyx-green))))
+   `(font-lock-comment-delimiter-face ((,class (:foreground ,smyx-gray-9))))
    `(font-lock-constant-face ((,class (:foreground ,smyx-red))))
-   ;; `(font-lock-doc-face ((,class (:foreground ,smyx-green+0))))
-   `(font-lock-doc-string-face ((,class (:foreground ,smyx-yellow))))
+   `(font-lock-doc-face ((,class (:foreground ,smyx-gray-3))))
+   `(font-lock-doc-string-face ((,class (:foreground ,smyx-gray-9))))
    `(font-lock-function-name-face ((,class (:foreground ,smyx-blue))))
    `(font-lock-keyword-face ((,class (:foreground ,smyx-green))))
    `(font-lock-negation-char-face ((,class (:foreground ,smyx-red))))
@@ -437,15 +437,15 @@
    `(ido-indicator ((,class (:foreground ,smyx-bg :background ,smyx-pink))))
 
    ;; js2-mode
-   `(js2-warning-face ((,class (:underline ,smyx-blue))))
+   `(js2-warning-face ((,class (:underline ,smyx-orange))))
    `(js2-error-face ((,class (:foreground ,smyx-red :weight bold))))
-   `(js2-jsdoc-tag-face ((,class (:foreground ,smyx-green))))
-   `(js2-jsdoc-type-face ((,class (:foreground ,smyx-green))))
-   `(js2-jsdoc-value-face ((,class (:foreground ,smyx-green))))
+   `(js2-jsdoc-tag-face ((,class (:foreground ,smyx-gray-6))))
+   `(js2-jsdoc-type-face ((,class (:foreground ,smyx-blue))))
+   `(js2-jsdoc-value-face ((,class (:foreground ,smyx-pink))))
 
    `(js2-function-param-face ((,class (:foreground, smyx-blue))))
-   `(js2-external-variable ((,class (:foreground , smyx-blue))))
-   `(js2-function-param ((,class (:foreground, smyx-yellow))))
+   `(js2-external-variable ((,class (:foreground , smyx-red))))
+   `(js2-function-param ((,class (:foreground, smyx-blue))))
 
    ;; jabber-mode
    `(jabber-roster-user-away ((,class (:foreground ,smyx-green+2))))
