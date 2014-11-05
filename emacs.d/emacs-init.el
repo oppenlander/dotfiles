@@ -479,7 +479,7 @@ up before you execute another command."
 
 (quelpa 'project-explorer)
 (require 'project-explorer)
-(bind-key "C-c P" 'project-explore-open)
+(bind-key "C-c P" 'project-explorer-open)
 
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -610,7 +610,6 @@ up before you execute another command."
 (quelpa 'yasnippet)
 
 (defun setup-org-mode ()
-  (message "setting up org mode")
   ;; Unbind from org-mode only
   (unbind-key "<C-S-up>" org-mode-map)
   (unbind-key "<C-S-down>" org-mode-map)
@@ -797,24 +796,7 @@ up before you execute another command."
               (electric-indent-mode -1)
               ;; Turn on tabs for JavaScript files
               ;;TODO: set up folder-local settings for this kind of customization
-              (setq indent-tabs-mode 1)
-
-              ;; Set default js2 settings
-              (setq js2-enter-indents-newline nil)
-              (setq js2-bounce-indent-p t)
-              (setq js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
-
-              ;; Let Flycheck handle errors until js2 mode supports ES6
-              (setq js2-show-parse-errors nil)
-              (setq js2-strict-missing-semi-warning nil)
-              (setq js2-strict-trailing-comma-warning t)
-
-              (setq js-indent-level 2)
-              (setq js2-strict-inconsistent-return-warning nil)
-              (setq js2-include-node-externs t)
-              (setq js2-include-jslint-globals t)
-              (setq js2-mode-indent-ignore-first-tab t)
-              (setq js2-basic-offset 2))))
+              (setq indent-tabs-mode 1))))
 (eval-after-load 'js2-mode '(progn (setup-js2-mode)))
 
 (quelpa 'magit)
@@ -934,7 +916,6 @@ up before you execute another command."
 (setq twittering-auth-method 'basic)
 
 (quelpa 'go-mode)
-(require 'go-mode)
 
 (quelpa 'go-eldoc)
 (quelpa 'go-direx)

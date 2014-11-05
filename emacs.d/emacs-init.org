@@ -961,7 +961,6 @@ If you are not using it, you need to start.
   (quelpa 'yasnippet)
 
   (defun setup-org-mode ()
-    (message "setting up org mode")
     ;; Unbind from org-mode only
     (unbind-key "<C-S-up>" org-mode-map)
     (unbind-key "<C-S-down>" org-mode-map)
@@ -1360,7 +1359,6 @@ Add some magic and auto modes to load =sh-mode= automatically
 **** Setup
 #+BEGIN_SRC emacs-lisp
   (quelpa 'go-mode)
-  (require 'go-mode)
 
   (quelpa 'go-eldoc)
   (quelpa 'go-direx)
@@ -1371,6 +1369,7 @@ Add some magic and auto modes to load =sh-mode= automatically
   (quelpa 'helm-go-package)
 
   (defun setup-go-mode ()
+    (require 'go-mode)
 
     ;; Set default GOPATH
     (unless (getenv "GOPATH")
