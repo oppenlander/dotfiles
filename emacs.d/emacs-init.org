@@ -773,9 +773,6 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (quelpa 'gitlab-helm)
   (require 'gitlab)
   (require 'helm-gitlab)
-  (setq gitlab-host "https://git.zipscene.com"
-        gitlab-username "aoppenlander"
-        gitlab-password "aoppenlander")
   (bind-key "C-c C-h g" 'helm-gitlab-projects)
   (bind-key "C-c C-h C-g" 'helm-gitlab-issues)
 #+END_SRC
