@@ -128,10 +128,6 @@
   (moe-theme-set-color 'orange)
   (powerline-moe-theme)
 
-  ;(setq custom-theme-directory (concat user-emacs-directory "themes/"))
-
-  ;(load-theme 'smyx-custom t)
-
 (setq display-time-day-and-date t
                 display-time-format "%a %b %d %R"
                 display-time-interval 60

@@ -196,16 +196,6 @@ Set custom theme path and load theme
 #+END_SRC
 
 ** Mode Line
-*** Date
-Display the date on the mode line.
-#+BEGIN_SRC emacs-lisp
-(setq display-time-day-and-date t
-                display-time-format "%a %b %d %R"
-                display-time-interval 60
-                display-time-default-load-average nil)
-             (display-time)
-#+END_SRC
-
 *** TODO Use a custom powerline theme that includes workgroup and evil, and better projectile support
 #+BEGIN_SRC emacs-lisp
   (quelpa 'powerline)
@@ -1675,8 +1665,8 @@ Including indent-buffer, which should not be called automatically on save."
 *** Other Window Backwards
 #+BEGIN_SRC emacs-lisp
   (defun other-window-backwards (count)
-    (itneractive "p")
-    (otehr-window (- 0 count)))
+    (interactive "p")
+    (other-window (- 0 count)))
   (global-set-key (kbd "C-x p") 'other-window-backwards)
 #+END_SRC
 
