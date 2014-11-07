@@ -183,20 +183,16 @@ I default to DejaVu Sans Mono for everything.
 Set custom theme path and load theme
 #+BEGIN_SRC emacs-lisp
   (quelpa 'moe-theme)
+  (require 'moe-theme)
 
   (load-theme 'moe-dark t)
 
   ;; Resize titles
   (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
   (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
-  (setq moe-theme-resize-rst-title '(2.0 1.7 1.5 1.3 1.1 1.0))
 
-  (moe-theme-set-color 'blue)
+  (moe-theme-set-color 'orange)
   (powerline-moe-theme)
-
-  ;(setq custom-theme-directory (concat user-emacs-directory "themes/"))
-
-  ;(load-theme 'smyx-custom t)
 #+END_SRC
 
 ** Mode Line
@@ -763,6 +759,24 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (require 'elfeed)
   (bind-key "C-c n f" 'elfeed)
 #+END_SRC
+
+*** Jira
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'org-jira)
+  (require 'org-jira)
+  (unbind-key "C-c pg" org-jira-entry-mode-map)
+  (unbind-key "C-c sc" org-jira-entry-mode-map)
+  (unbind-key "C-c sg" org-jira-entry-mode-map)
+  (unbind-key "C-c cu" org-jira-entry-mode-map)
+  (unbind-key "C-c tj" org-jira-entry-mode-map)
+  (bind-key "C-c ipg" 'org-jira-get-projects org-jira-entry-mode-map)
+  (bind-key "C-c isc" 'org-jira-create-subtask org-jira-entry-mode-map)
+  (bind-key "C-c isg" 'org-jira-get-subtasks org-jira-entry-mode-map)
+  (bind-key "C-c isu" 'org-jira-update-subtask org-jira-entry-mode-map)
+  (bind-key "C-c itj" 'org-jira-todo-to-jira org-jira-entry-mode-map)
+  (org-jira-mode 1)
+#+END_SRC
+
 
 ** Major Modes
 *** Lisp

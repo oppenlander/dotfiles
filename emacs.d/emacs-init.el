@@ -116,9 +116,21 @@
 
 (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 98)
 
-(setq custom-theme-directory (concat user-emacs-directory "themes/"))
+(quelpa 'moe-theme)
+  (require 'moe-theme)
 
-(load-theme 'smyx-custom t)
+  (load-theme 'moe-dark t)
+
+  ;; Resize titles
+;  (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
+  (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
+
+  (moe-theme-set-color 'orange)
+  (powerline-moe-theme)
+
+  ;(setq custom-theme-directory (concat user-emacs-directory "themes/"))
+
+  ;(load-theme 'smyx-custom t)
 
 (setq display-time-day-and-date t
                 display-time-format "%a %b %d %R"
@@ -477,9 +489,13 @@ up before you execute another command."
 (bind-key "C-x t" 'sane-term)
 (bind-key "C-x T" 'sane-term-create)
 
-(quelpa 'project-explorer)
-(require 'project-explorer)
-(bind-key "C-c P" 'project-explorer-open)
+(quelpa 'hackernews)
+(require 'hackernews)
+(bind-key "C-c n h" 'hackernews)
+
+(quelpa 'elfeed)
+(require 'elfeed)
+(bind-key "C-c n f" 'elfeed)
 
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -926,6 +942,7 @@ up before you execute another command."
 (quelpa 'helm-go-package)
 
 (defun setup-go-mode ()
+  (require 'go-mode)
 
   ;; Set default GOPATH
   (unless (getenv "GOPATH")
@@ -973,6 +990,9 @@ up before you execute another command."
               ;; oracle
               (go-oracle-mode))))
 (eval-after-load 'org '(progn (setup-go-mode)))
+
+(quelpa 'es-mode)
+(add-to-list 'auto-mode-alist '("\\.es$". es-mode))
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
