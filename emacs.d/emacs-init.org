@@ -354,30 +354,6 @@ More natural undo or redo. Undo with =C-/= and redo with =C-?=.
   (bind-key "C-x x r U" 'undo-tree-restore-state-from-register)
 #+END_SRC
 
-*** Move-Text
-Move lines or a region up or down.
-
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'move-text)
-  (require 'move-text)
-  (bind-key "C-S-<up>" 'move-text-up)
-  (bind-key "C-S-<down>" 'move-text-down)
-
-#+END_SRC
-
-*** Web Jump
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'webjump)
-  (require 'webjump)
-  (bind-key "C-c j" 'webjump)
-#+END_SRC
-
-*** Go-To URL
-#+BEGIN_SRC emacs-lisp
-  (require 'browse-url)
-  (bind-key "C-c C-j" 'browse-url)
-#+END_SRC
-
 *** Smartparens
 Show matching and unmatched delimiters, and auto-close them as well.
 
@@ -396,24 +372,6 @@ Show matching and unmatched delimiters, and auto-close them as well.
   ;; global definition is used.
   (sp-local-pair 'emacs-lisp-mode "'" nil :when '(sp-in-string-p))
   (sp-local-pair 'lisp-interaction-mode "'" nil :when '(sp-in-string-p))
-#+END_SRC
-
-*** Smart Compile
-Set custom compile commands for different modes.
-
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'smart-compile)
-  (require 'smart-compile)
-
-  (bind-key "C-x c c" 'smart-compile)
-
-  (remove '("\\.c\\'" . "gcc -O2 %f -lm -o %n") 'smart-compile-alist)
-  ;; compile and run programs
-  (add-to-list 'smart-compile-alist '("\\.c\\'" . "gcc -O2 -Wall %f -lm -o %n"))
-  (add-to-list 'smart-compile-alist '("\\.cpp\\'" . "g++ -Wall -ggdb %f -lm -o %n"))
-  (add-to-list 'smart-compile-alist '("\\.py\\'" . "python %f"))
-  (add-to-list 'smart-compile-alist '("\\.hs\\'" . "ghc -o %n %f"))
-  (add-to-list 'smart-compile-alist '("\\.js\\'" . "node %f"))
 #+END_SRC
 
 *** Rainbow Mode
@@ -658,16 +616,6 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (bind-key "M-;" 'comment-dwim-2)
 #+END_SRC
 
-*** Workgroups
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'workgroups2)
-  (require 'workgroups2)
-  (setq wg-prefix-key (kbd "C-z"))
-  (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
-  (workgroups-mode 1)
-  (diminish 'workgroups-mode)
-#+END_SRC
-
 *** Smart Forward
 #+BEGIN_SRC emacs-lisp
   (quelpa 'smart-forward)
@@ -717,25 +665,6 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
     (rainbow-delimiters-mode t))
 #+END_SRC
 
-*** God Mode
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'god-mode)
-  (require 'god-mode)
-  (bind-key "M-<f1>" 'god-mode-all)
-  (bind-key "C-x C-1" 'delete-other-windows)
-  (bind-key "C-x C-2" 'split-window-below)
-  (bind-key "C-x C-3" 'split-window-right)
-  (bind-key "C-x C-0" 'delete-window)
-#+END_SRC
-
-*** Sane Term
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'sane-term)
-  (require 'sane-term)
-  (bind-key "C-x t" 'sane-term)
-  (bind-key "C-x T" 'sane-term-create)
-#+END_SRC
-
 *** Hackernews
 #+BEGIN_SRC emacs-lisp
   (quelpa 'hackernews)
@@ -750,33 +679,6 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (bind-key "C-c n f" 'elfeed)
 #+END_SRC
 
-*** Jira
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'org-jira)
-  (require 'org-jira)
-  (unbind-key "C-c pg" org-jira-entry-mode-map)
-  (unbind-key "C-c sc" org-jira-entry-mode-map)
-  (unbind-key "C-c sg" org-jira-entry-mode-map)
-  (unbind-key "C-c cu" org-jira-entry-mode-map)
-  (unbind-key "C-c tj" org-jira-entry-mode-map)
-  (bind-key "C-c ipg" 'org-jira-get-projects org-jira-entry-mode-map)
-  (bind-key "C-c isc" 'org-jira-create-subtask org-jira-entry-mode-map)
-  (bind-key "C-c isg" 'org-jira-get-subtasks org-jira-entry-mode-map)
-  (bind-key "C-c isu" 'org-jira-update-subtask org-jira-entry-mode-map)
-  (bind-key "C-c itj" 'org-jira-todo-to-jira org-jira-entry-mode-map)
-  (org-jira-mode 1)
-#+END_SRC
-
-*** Gitlab
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'gitlab)
-  (quelpa 'gitlab-helm)
-  (require 'gitlab)
-  (require 'helm-gitlab)
-  (bind-key "C-c C-h g" 'helm-gitlab-projects)
-  (bind-key "C-c C-h C-g" 'helm-gitlab-issues)
-#+END_SRC
-
 ** Major Modes
 *** Lisp
 #+BEGIN_SRC emacs-lisp
@@ -784,28 +686,6 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
     (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
   (eval-after-load 'lisp-mode '(progn (setup-lisp-mode)))
-#+END_SRC
-
-*** Python
-**** Elpy Mode
-[[https://github.com/jorgenschaefer/elpy][Elpy]] combines many helpful packages for working with Python.
-
-#+BEGIN_SRC sh
-  pip install elpy
-  pip install jedi
-  pip install rope # optional
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (defun setup-elpy-mode ()
-    (elpy-enable)
-    ;; Use Flycheck instead of Flymake
-    (when (require 'flycheck nil t)
-      (remove-hook 'elpy-modules 'elpy-module-flymake)
-      (add-hook 'elpy-mode-hook 'flycheck-mode))
-    ;; jedi is great
-    (setq elpy-rpc-backend "jedi"))
-  (eval-after-load 'python-mdoe '(progn (setup-elpy-mode)))
 #+END_SRC
 
 *** Web Mode
@@ -928,42 +808,6 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
     (indent-region (point-min) (point-max)))
 #+END_SRC
 
-*** Geiser / Scheme
-**** Dr. Racket:
-#+BEGIN_SRC sh
-pacman -S racket
-#+END_SRC
-
-**** Geiser:
-#+BEGIN_SRC sh
-pacman -S guile
-#+END_SRC
-
-**** Emacs:
-#+BEGIN_SRC emacs-lisp
-  (defun setup-guiser ()
-    (setq geiser-racket-binary "/usr/bin/racket")
-    (setq geiser-guile-binary "/usr/bin/guile"))
-  (eval-after-load 'scheme '(progn (setup-geiser)))
-#+END_SRC
-
-*** LaTeX
-**** Setup
-Install ImageMagick, Pygments, and extra LaTeX packages.
-#+BEGIN_SRC sh
-pacman -S imagemagick texlive-most texlive-lang
-pip install Pygments
-#+END_SRC
-
-**** AUCTeX
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'tex-site)
-  (defun setup-latex-mode ()
-    (setq TeX-PDF-mode t)
-    (setq LaTeX-command "latex -shell-escape"))
-  (eval-after-load 'latex-mode '(progn (setup-latex-mode)))
-#+END_SRC
-
 *** Org Mode
 If you are not using it, you need to start.
 #+BEGIN_SRC emacs-lisp
@@ -1059,14 +903,6 @@ For example: \='quotes'\= will not get highlighted, but \=​'quotes'​\= will.
 Use =M-x org-toggle-inline-images= to display linked images in the buffer.
 (without a prefix argument, only images without a label are displayed.
 With a prefix argument, all images are shown)
-
-*** dired+
-Dired Plus is an extension to the =dired= file manager in Emacs.
-
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'dired+)
-  (require 'dired+)
-#+END_SRC
 
 *** Markdown
 Use [[http://johnmacfarlane.net/pandoc/][Pandoc]]
@@ -1201,35 +1037,10 @@ js2-mode is full JavaScript AST parser in elisp
   (bind-key "C-c g" 'magit-status)
 #+END_SRC
 
-*** Eshell
-Type =clear= to clear the buffer like in other terminal emulators.
-#+BEGIN_SRC emacs-lisp
-(defun eshell/clear ()
-  "04Dec2001 - sailor, to clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
-#+END_SRC
-
-*** ERC
-Emacs IRC Client
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'erc)
-  (require 'erc)
-  (add-hook 'erc-mode-hook 'flyspell-mode)
-#+END_SRC
-
 *** JSON
 #+BEGIN_SRC emacs-lisp
   (quelpa 'json-mode)
   (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-#+END_SRC
-
-*** Handlebars
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'handlebars-mode)
-  (add-to-list 'auto-mode-alist '("\\.hbs$" . handlebars-mode))
-  (add-to-list 'auto-mode-alist '("\\.handlebards$" . handlebars-mode))
 #+END_SRC
 
 *** SVG
@@ -1429,13 +1240,60 @@ Add some magic and auto modes to load =sh-mode= automatically
 
                 ;; oracle
                 (go-oracle-mode))))
-  (eval-after-load 'org '(progn (setup-go-mode)))
+  (eval-after-load 'go-mode '(progn (setup-go-mode)))
 #+END_SRC
 
 *** Elastic Search
 #+BEGIN_SRC emacs-lisp
   (quelpa 'es-mode)
   (add-to-list 'auto-mode-alist '("\\.es$". es-mode))
+#+END_SRC
+
+*** Erlang
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'erlang)
+  (quelpa 'edts)
+  (add-to-list 'auto-mode-alist '("\\.erl$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.hrl$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.erlang$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.app$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.app.src$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.es$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.escript$" . erlang-mode))
+  (add-to-list 'auto-mode-alist '("\\.eterm$" . erlang-mode))
+  (defun setup-erlang-mode ()
+    (require 'erlang-start)
+    (require 'edts-start))
+  (eval-after-load 'erlang-mode '(progn (setup-erlang-mode)))
+#+END_SRC
+
+*** Elixir
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'elixir-mode)
+  (quelpa 'alchemist)
+  (add-to-list 'auto-mode-alist '("\\.exs$" . elixir-mode))
+  (add-to-list 'auto-mode-alist '("\\.ex$" . elixir-mode))
+  (defun setup-erlang-mode ()
+    (require 'alchemist))
+  (eval-after-load 'erlang-mode '(progn (setup-erlang-mode)))
+#+END_SRC
+
+*** Rust
+**** Rust Dependencies
+#+BEGIN_SRC sh
+  pacaur -S rust-nightly-bin cargo-nightly-bin
+#+END_SRC
+
+**** Setup
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'rust-mode)
+  (quelpa 'flycheck-rust)
+  (quelpa 'toml)
+
+  (add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))
+  (add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))
+
+  (eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 #+END_SRC
 
 * Custom Functions

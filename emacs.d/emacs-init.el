@@ -117,22 +117,16 @@
 (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 98)
 
 (quelpa 'moe-theme)
-  (require 'moe-theme)
+(require 'moe-theme)
 
-  (load-theme 'moe-dark t)
+(load-theme 'moe-dark t)
 
-  ;; Resize titles
-;  (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
-  (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
+;; Resize titles
+(setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
+(setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 
-  (moe-theme-set-color 'orange)
-  (powerline-moe-theme)
-
-(setq display-time-day-and-date t
-                display-time-format "%a %b %d %R"
-                display-time-interval 60
-                display-time-default-load-average nil)
-             (display-time)
+(moe-theme-set-color 'orange)
+(powerline-moe-theme)
 
 (quelpa 'powerline)
 (powerline-default-theme)
@@ -235,18 +229,6 @@
 (bind-key "C-x x r u" 'undo-tree-save-state-to-register)
 (bind-key "C-x x r U" 'undo-tree-restore-state-from-register)
 
-(quelpa 'move-text)
-(require 'move-text)
-(bind-key "C-S-<up>" 'move-text-up)
-(bind-key "C-S-<down>" 'move-text-down)
-
-(quelpa 'webjump)
-(require 'webjump)
-(bind-key "C-c j" 'webjump)
-
-(require 'browse-url)
-(bind-key "C-c C-j" 'browse-url)
-
 (quelpa 'smartparens)
 (require 'smartparens)
 (diminish 'smartparens-mode)
@@ -261,19 +243,6 @@
 ;; global definition is used.
 (sp-local-pair 'emacs-lisp-mode "'" nil :when '(sp-in-string-p))
 (sp-local-pair 'lisp-interaction-mode "'" nil :when '(sp-in-string-p))
-
-(quelpa 'smart-compile)
-(require 'smart-compile)
-
-(bind-key "C-x c c" 'smart-compile)
-
-(remove '("\\.c\\'" . "gcc -O2 %f -lm -o %n") 'smart-compile-alist)
-;; compile and run programs
-(add-to-list 'smart-compile-alist '("\\.c\\'" . "gcc -O2 -Wall %f -lm -o %n"))
-(add-to-list 'smart-compile-alist '("\\.cpp\\'" . "g++ -Wall -ggdb %f -lm -o %n"))
-(add-to-list 'smart-compile-alist '("\\.py\\'" . "python %f"))
-(add-to-list 'smart-compile-alist '("\\.hs\\'" . "ghc -o %n %f"))
-(add-to-list 'smart-compile-alist '("\\.js\\'" . "node %f"))
 
 (quelpa '(rainbow-mode :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el" :fetcher url))
 (require 'rainbow-mode)
@@ -434,13 +403,6 @@ up before you execute another command."
 (require 'comment-dwim-2)
 (bind-key "M-;" 'comment-dwim-2)
 
-(quelpa 'workgroups2)
-(require 'workgroups2)
-(setq wg-prefix-key (kbd "C-z"))
-(setq wg-session-file "~/.emacs.d/.emacs_workgroups")
-(workgroups-mode 1)
-(diminish 'workgroups-mode)
-
 (quelpa 'smart-forward)
 (require 'smart-forward)
 (bind-key "M-<up>" 'smart-up)
@@ -472,19 +434,6 @@ up before you execute another command."
   ad-do-it
   (rainbow-delimiters-mode t))
 
-(quelpa 'god-mode)
-(require 'god-mode)
-(bind-key "M-<f1>" 'god-mode-all)
-(bind-key "C-x C-1" 'delete-other-windows)
-(bind-key "C-x C-2" 'split-window-below)
-(bind-key "C-x C-3" 'split-window-right)
-(bind-key "C-x C-0" 'delete-window)
-
-(quelpa 'sane-term)
-(require 'sane-term)
-(bind-key "C-x t" 'sane-term)
-(bind-key "C-x T" 'sane-term-create)
-
 (quelpa 'hackernews)
 (require 'hackernews)
 (bind-key "C-c n h" 'hackernews)
@@ -497,16 +446,6 @@ up before you execute another command."
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
 (eval-after-load 'lisp-mode '(progn (setup-lisp-mode)))
-
-(defun setup-elpy-mode ()
-  (elpy-enable)
-  ;; Use Flycheck instead of Flymake
-  (when (require 'flycheck nil t)
-    (remove-hook 'elpy-modules 'elpy-module-flymake)
-    (add-hook 'elpy-mode-hook 'flycheck-mode))
-  ;; jedi is great
-  (setq elpy-rpc-backend "jedi"))
-(eval-after-load 'python-mdoe '(progn (setup-elpy-mode)))
 
 (quelpa 'web-mode)
 (defun setup-web-mode ()
@@ -604,17 +543,6 @@ up before you execute another command."
 (defadvice sgml-delete-tag (after reindent activate)
   (indent-region (point-min) (point-max)))
 
-(defun setup-guiser ()
-  (setq geiser-racket-binary "/usr/bin/racket")
-  (setq geiser-guile-binary "/usr/bin/guile"))
-(eval-after-load 'scheme '(progn (setup-geiser)))
-
-(quelpa 'tex-site)
-(defun setup-latex-mode ()
-  (setq TeX-PDF-mode t)
-  (setq LaTeX-command "latex -shell-escape"))
-(eval-after-load 'latex-mode '(progn (setup-latex-mode)))
-
 (quelpa 'org)
 (quelpa 'ob-core)
 (quelpa 'ox-md)
@@ -698,9 +626,6 @@ up before you execute another command."
   (defadvice kill-whole-line (after fix-cookies activate)
     (myorg-update-parent-cookie)))
 (eval-after-load 'org '(progn (setup-org-mode)))
-
-(quelpa 'dired+)
-(require 'dired+)
 
 (quelpa 'pandoc-mode)
 (quelpa 'markdown-mode)
@@ -816,22 +741,8 @@ up before you execute another command."
 (diminish 'magit-auto-revert-mode)
 (bind-key "C-c g" 'magit-status)
 
-(defun eshell/clear ()
-  "04Dec2001 - sailor, to clear the eshell buffer."
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)))
-
-(quelpa 'erc)
-(require 'erc)
-(add-hook 'erc-mode-hook 'flyspell-mode)
-
 (quelpa 'json-mode)
 (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
-
-(quelpa 'handlebars-mode)
-(add-to-list 'auto-mode-alist '("\\.hbs$" . handlebars-mode))
-(add-to-list 'auto-mode-alist '("\\.handlebards$" . handlebars-mode))
 
 (add-to-list 'auto-mode-alist '("\\.svg$" . image-mode))
 
@@ -985,10 +896,42 @@ up before you execute another command."
 
               ;; oracle
               (go-oracle-mode))))
-(eval-after-load 'org '(progn (setup-go-mode)))
+(eval-after-load 'go-mode '(progn (setup-go-mode)))
 
 (quelpa 'es-mode)
 (add-to-list 'auto-mode-alist '("\\.es$". es-mode))
+
+(quelpa 'erlang)
+(quelpa 'edts)
+(add-to-list 'auto-mode-alist '("\\.erl$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.hrl$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.erlang$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.app$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.app.src$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.es$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.escript$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("\\.eterm$" . erlang-mode))
+(defun setup-erlang-mode ()
+  (require 'erlang-start)
+  (require 'edts-start))
+(eval-after-load 'erlang-mode '(progn (setup-erlang-mode)))
+
+(quelpa 'elixir-mode)
+(quelpa 'alchemist)
+(add-to-list 'auto-mode-alist '("\\.exs$" . elixir-mode))
+(add-to-list 'auto-mode-alist '("\\.ex$" . elixir-mode))
+(defun setup-erlang-mode ()
+  (require 'alchemist))
+(eval-after-load 'erlang-mode '(progn (setup-erlang-mode)))
+
+(quelpa 'rust-mode)
+(quelpa 'flycheck-rust)
+(quelpa 'toml)
+
+(add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))
+(add-to-list 'auto-mode-alist '("\\.toml$" . toml-mode))
+
+(eval-after-load 'flycheck '(add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
@@ -1137,8 +1080,8 @@ Including indent-buffer, which should not be called automatically on save."
         (aset buffer-display-table ?\^M []))
 
 (defun other-window-backwards (count)
-  (itneractive "p")
-  (otehr-window (- 0 count)))
+  (interactive "p")
+  (other-window (- 0 count)))
 (global-set-key (kbd "C-x p") 'other-window-backwards)
 
 (defun rename-current-buffer-file ()
