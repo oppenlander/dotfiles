@@ -125,11 +125,52 @@
 (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
 (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 
-(moe-theme-set-color 'orange)
 (powerline-moe-theme)
 
 (quelpa 'powerline)
-(powerline-default-theme)
+(quelpa 'flycheck-color-mode-line)
+(eval-after-load "flycheck"
+  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
+
+;; TODO: add Evil integration and hard code the powerline/flycheck colors
+
+(setq-default mode-line-format
+              '("%e"
+                (:eval
+                 (let* ((active (powerline-selected-window-active))
+                        (mode-line (if active 'mode-line 'mode-line-inactive))
+                        (face1 (if active 'powerline-active1 'powerline-inactive1))
+                        (face2 (if active 'powerline-active2 'powerline-inactive2))
+                        (separator-left (intern (format "powerline-%s-%s"
+                                                        powerline-default-separator
+                                                        (car powerline-default-separator-dir))))
+                        (separator-right (intern (format "powerline-%s-%s"
+                                                         powerline-default-separator
+                                                         (cdr powerline-default-separator-dir))))
+                        (lhs (list (powerline-hud face2 face1)
+                                   (powerline-raw "%l" face1 'l)
+                                   (powerline-raw ":" face1 'l)
+                                   (powerline-raw "%c" face1 'l)
+                                   (funcall separator-left face1 mode-line)
+                                   (powerline-raw "%*" nil 'l)
+                                   (powerline-buffer-id nil 'l)
+                                   (powerline-raw " ")
+                                   (funcall separator-left mode-line face1)
+                                   (powerline-major-mode face1 'l)
+                                   (powerline-process face1)
+                                   (when (and (fboundp 'projectile-project-name) (projectile-project-p))
+                                     (powerline-raw (format "P[%s]" (projectile-project-name)) face1 'l))
+                                   (powerline-narrow face1 'l)
+                                   (powerline-raw " " face1)
+                                   (funcall separator-left face1 face2)
+                                   (powerline-vc face2 'r)))
+                        (rhs (list (powerline-raw global-mode-string face2 'r)
+                                   (funcall separator-right face2 mode-line)
+                                   (powerline-raw " ")
+                                   (powerline-raw "%6p" nil 'r))))
+                   (concat (powerline-render lhs)
+                           (powerline-fill face2 (powerline-width rhs))
+                           (powerline-render rhs))))))
 
 (defun add-operator-hl ()
   (font-lock-add-keywords
