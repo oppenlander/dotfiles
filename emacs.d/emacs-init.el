@@ -116,70 +116,18 @@
 
 (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 98)
 
-(quelpa 'zenburn-theme)
-(load-theme 'zenburn t)
-
-;; (quelpa 'moe-theme)
-;; (require 'moe-theme)
-
-;; (load-theme 'moe-dark t)
+(require 'moe-theme)
+(load-theme 'moe-dark t)
 
 ;; ;; Resize titles
-;; (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
-;; (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
+(setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
+(setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 
 (quelpa 'smart-mode-line)
 (quelpa 'smart-mode-line-powerline-theme)
 (setq sml/no-confirm-load-theme t)
 (sml/setup)
-(sml/apply-theme 'dark)
-
-
-;; (quelpa 'powerline)
-
-;; ;; TODO: add Evil integration and save hook to cahnge moe color based on flycheck/test results
-;; (powerline-moe-theme)
-
-;; (setq-default mode-line-format
-;;               '("%e"
-;;                 (:eval
-;;                  (let* ((active (powerline-selected-window-active))
-;;                         (mode-line (if active 'mode-line 'mode-line-inactive))
-;;                         (face1 (if active 'powerline-active1 'powerline-inactive1))
-;;                         (face2 (if active 'powerline-active2 'powerline-inactive2))
-;;                         (separator-left (intern (format "powerline-%s-%s"
-;;                                                         powerline-default-separator
-;;                                                         (car powerline-default-separator-dir))))
-;;                         (separator-right (intern (format "powerline-%s-%s"
-;;                                                          powerline-default-separator
-;;                                                          (cdr powerline-default-separator-dir))))
-;;                         (lhs (list (powerline-hud face2 face1)
-;;                                    (powerline-raw "%l" face1 'l)
-;;                                    (powerline-raw ":" face1 'l)
-;;                                    (powerline-raw "%c" face1 'l)
-;;                                    (funcall separator-left face1 mode-line)
-;;                                    (powerline-raw "%*" nil 'l)
-;;                                    (powerline-buffer-id nil 'l)
-;;                                    (powerline-raw " ")
-;;                                    (funcall separator-left mode-line face1)
-;;                                    (powerline-major-mode face1 'l)
-;;                                    (powerline-process face1)
-;;                                    (powerline-narrow face1 'l)
-;;                                    (powerline-raw " " face1)
-;;                                    (funcall separator-left face1 face2)
-;;                                    (when (and (fboundp 'projectile-project-name) (projectile-project-p))
-;;                                      (powerline-raw (format "P[%s]" (projectile-project-name)) face2 'l))
-;;                                    (powerline-vc face2 'l)))
-;;                         (rhs (list (powerline-raw global-mode-string face2 'r)
-;;                                    (funcall separator-right face2 face1)
-;;                                    (powerline-raw " " face1)
-;;                                    (powerline-minor-modes face1 'r)
-;;                                    (funcall separator-right face1 mode-line)
-;;                                    (powerline-raw " ")
-;;                                    (powerline-raw "%6p" nil 'r))))
-;;                    (concat (powerline-render lhs)
-;;                            (powerline-fill face2 (powerline-width rhs))
-;;                            (powerline-render rhs))))))
+(sml/apply-theme 'automatic)
 
 (defun add-operator-hl ()
   (font-lock-add-keywords
