@@ -243,6 +243,7 @@
 ;; global definition is used.
 (sp-local-pair 'emacs-lisp-mode "'" nil :when '(sp-in-string-p))
 (sp-local-pair 'lisp-interaction-mode "'" nil :when '(sp-in-string-p))
+(sp-local-pair 'clojure-mode "'" nil :actions nil)
 
 (quelpa '(rainbow-mode :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el" :fetcher url))
 (require 'rainbow-mode)
@@ -383,8 +384,8 @@ up before you execute another command."
 ;; Show matchin parentheses
 (show-paren-mode 1)
 
-(require 'eww)
-(setq browse-url-browser-function 'eww)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome-stable")
 
 ;; Make tramp work nicely with sudo
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/ssh:%h:"))))
@@ -441,6 +442,14 @@ up before you execute another command."
 (quelpa 'elfeed)
 (require 'elfeed)
 (bind-key "C-c n f" 'elfeed)
+
+(quelpa 'http)
+
+(quelpa 'vlf)
+(require 'vlf-integrate)
+
+(quelpa 'zeal-at-point)
+(bind-key "C-c d" 'zeal-at-point)
 
 (defun setup-lisp-mode ()
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -1006,6 +1015,7 @@ line instead."
              (get-buffer bufname)))
     (switch-to-buffer (get-buffer-create bufname))
     (lisp-interaction-mode)))
+(global-set-key (kbd "C-c @ s") 'create-scratch-buffer)
 
 (defun untabify-buffer ()
   (interactive)
@@ -1114,7 +1124,7 @@ Including indent-buffer, which should not be called automatically on save."
         (delete-file filename)
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
-(global-set-key (kbd "C-c @ d") 'rename-current-buffer-file)
+(global-set-key (kbd "C-c @ d") 'delete-current-buffer-file)
 
 (defun insert-date ()
   "Insert current date yyyy-mm-dd H:M:S."

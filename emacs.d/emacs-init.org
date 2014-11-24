@@ -372,6 +372,7 @@ Show matching and unmatched delimiters, and auto-close them as well.
   ;; global definition is used.
   (sp-local-pair 'emacs-lisp-mode "'" nil :when '(sp-in-string-p))
   (sp-local-pair 'lisp-interaction-mode "'" nil :when '(sp-in-string-p))
+  (sp-local-pair 'clojure-mode "'" nil :actions nil)
 #+END_SRC
 
 *** Rainbow Mode
@@ -581,10 +582,10 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 (show-paren-mode 1)
 #+END_SRC
 
-*** EWW
+*** Browse URL
 #+BEGIN_SRC emacs-lisp
-(require 'eww)
-(setq browse-url-browser-function 'eww)
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "google-chrome-stable")
 #+END_SRC
 
 *** Tramp
@@ -677,6 +678,23 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
   (quelpa 'elfeed)
   (require 'elfeed)
   (bind-key "C-c n f" 'elfeed)
+#+END_SRC
+
+*** HTTP
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'http)
+#+END_SRC
+
+*** Very Large Files
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'vlf)
+  (require 'vlf-integrate)
+#+END_SRC
+
+*** Zeal
+#+BEGIN_SRC emacs-lisp
+  (quelpa 'zeal-at-point)
+  (bind-key "C-c d" 'zeal-at-point)
 #+END_SRC
 
 ** Major Modes
@@ -1419,6 +1437,7 @@ Make the mode line disappear.
              (get-buffer bufname)))
     (switch-to-buffer (get-buffer-create bufname))
     (lisp-interaction-mode)))
+(global-set-key (kbd "C-c @ s") 'create-scratch-buffer)
 #+END_SRC
 
 *** Untabify Buffer
@@ -1484,7 +1503,7 @@ Including indent-buffer, which should not be called automatically on save."
   (remove-hook 'before-save-hook 'cleanup-buffer-boring))
 (global-set-key (kbd "C-c @ Y") 'auto-buffer-cleanup)
 (global-set-key (kbd "C-c @ y") 'auto-buffer-cleanup-boring)
-(global-set-key (kbd "C-c @ n") 'stop-auto-buffer-claenup)
+(global-set-key (kbd "C-c @ n") 'stop-auto-buffer-cleanup)
 (auto-buffer-cleanup-boring)
 #+END_SRC
 
@@ -1561,7 +1580,7 @@ Including indent-buffer, which should not be called automatically on save."
         (delete-file filename)
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
-(global-set-key (kbd "C-c @ d") 'rename-current-buffer-file)
+(global-set-key (kbd "C-c @ d") 'delete-current-buffer-file)
 #+END_SRC
 
 ** Miscellaneous

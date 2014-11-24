@@ -70,6 +70,9 @@ floating_modifier $mod
 # Don't follow mouse focus
 focus_follows_mouse no
 
+# Warp the mosue around
+mouse_warping output
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
