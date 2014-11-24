@@ -116,20 +116,18 @@
 
 (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 98)
 
-(quelpa 'moe-theme)
 (require 'moe-theme)
-
 (load-theme 'moe-dark t)
 
 ;; Resize titles
 (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
 (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 
-(moe-theme-set-color 'orange)
-(powerline-moe-theme)
-
-(quelpa 'powerline)
-(powerline-default-theme)
+(quelpa 'smart-mode-line)
+(quelpa 'smart-mode-line-powerline-theme)
+(setq sml/no-confirm-load-theme t)
+(sml/setup)
+(sml/apply-theme 'automatic)
 
 (defun add-operator-hl ()
   (font-lock-add-keywords
@@ -380,6 +378,7 @@ up before you execute another command."
 (quelpa 'projectile)
 (require 'projectile)
 (projectile-global-mode)
+(diminish 'projectile-mode)
 
 ;; Show matchin parentheses
 (show-paren-mode 1)
