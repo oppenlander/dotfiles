@@ -9,8 +9,15 @@ rm -r $HOME/bin
 ln -s $DIR/bin $HOME/bin
 
 # Emacs
-rm -r $HOME/.emacs.d
-ln -s $DIR/emacs.d $HOME/.emacs.d
+#rm -r $HOME/.emacs.d
+#ln -s $DIR/emacs.d $HOME/.emacs.d
+if [! -d $HOME/.emacs.d ] then
+  git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
+fi
+rm -r $HOME/.emcas.d/private
+ln -s $DIR/spacemacs/private $HOME/.emacs.d/private
+rm $HOME/.spacemacs
+ln -s $DIR/spacemacs/spacemacs $HOME/.spacemacs
 
 # Fish shell
 rm -r $HOME/.config/fish
@@ -25,12 +32,12 @@ rm $HOME/.profile
 ln -s $DIR/profile $HOME/.profile
 
 # Lightdm (requires sudo) (cannot use links)
-sudo mkdir -p /etc/lightdm
-sudo rm /etc/lightdm/lightdm.conf
-sudo cp $DIR/lightdm.conf /etc/lightdm/lightdm.conf
-sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
-sudo cp $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
-sudo systemctl enable lightdm
+#sudo mkdir -p /etc/lightdm
+#sudo rm /etc/lightdm/lightdm.conf
+#sudo cp $DIR/lightdm.conf /etc/lightdm/lightdm.conf
+#sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
+#sudo cp $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+#sudo systemctl enable lightdm
 
 # Git
 rm $HOME/.gitconfig

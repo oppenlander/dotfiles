@@ -192,24 +192,12 @@ Set custom theme path and load theme
 #+END_SRC
 
 ** Mode Line
-*** TODO Use a custom powerline theme that includes evil
 #+BEGIN_SRC emacs-lisp
   (quelpa 'smart-mode-line)
   (quelpa 'smart-mode-line-powerline-theme)
   (setq sml/no-confirm-load-theme t)
   (sml/setup)
   (sml/apply-theme 'dark)
-#+END_SRC
-
-** Custom Keywords
-*** Keyword Symbols
-#+BEGIN_SRC emacs-lisp
-(defun add-operator-hl ()
-  (font-lock-add-keywords
-   nil
-   '(("\s[-]\s\\|\s[/]\s\\|[%]\\|[+]\\|[*]\\|[!=]\\|[/=]\\|[<=]\\|[>=]" . font-lock-keyword-face))))
-;; prog-mode applies to all programming modes
-(add-hook 'prog-mode-hook 'add-operator-hl)
 #+END_SRC
 
 ** Other
@@ -644,7 +632,7 @@ Make selections based on semantic units / delimiters like quotes, parens, or mar
 #+BEGIN_SRC emacs-lisp
   (quelpa 'evil)
   (require 'evil)
-  (bind-key "M-<f2>" 'evil-mode)
+  (bind-key "C-z" 'evil-mode)
   (setq evil-default-cursor t)
 #+END_SRC
 
@@ -1595,16 +1583,10 @@ Including indent-buffer, which should not be called automatically on save."
 * Server
 ** Client/Server
 Running emacs as greatly improves startup
+[[https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh?hl=en][Edit With Emacs]] provides a method to use an edit server for text fields in the browser.
 #+BEGIN_SRC emacs-lisp
   (require 'server)
   (unless (server-running-p)
-    (server-start))
-#+END_SRC
-
-** Edit With Emacs
-[[https://chrome.google.com/webstore/detail/edit-with-emacs/ljobjlafonikaiipfkggjbhkghgicgoh?hl=en][Edit With Emacs]] provides a method to use an edit server for text fields in the browser.
-#+BEGIN_SRC emacs-lisp
-  (quelpa 'edit-server)
-  (when (daemonp)
+    (server-start)
     (edit-server-start))
 #+END_SRC

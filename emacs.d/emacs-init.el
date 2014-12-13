@@ -116,25 +116,19 @@
 
 (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 98)
 
-(require 'moe-theme)
-(load-theme 'moe-dark t)
+(quelpa 'moe-theme)
+ (require 'moe-theme)
+ (load-theme 'moe-dark t)
 
 ;; Resize titles
-(setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
-(setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
+ (setq moe-theme-resize-markdown-title '(2.0 1.7 1.5 1.3 1.0 1.0))
+ (setq moe-theme-resize-org-title '(2.2 1.8 1.6 1.4 1.2 1.0 1.0 1.0 1.0))
 
 (quelpa 'smart-mode-line)
 (quelpa 'smart-mode-line-powerline-theme)
 (setq sml/no-confirm-load-theme t)
 (sml/setup)
-(sml/apply-theme 'automatic)
-
-(defun add-operator-hl ()
-  (font-lock-add-keywords
-   nil
-   '(("\s[-]\s\\|\s[/]\s\\|[%]\\|[+]\\|[*]\\|[!=]\\|[/=]\\|[<=]\\|[>=]" . font-lock-keyword-face))))
-;; prog-mode applies to all programming modes
-(add-hook 'prog-mode-hook 'add-operator-hl)
+(sml/apply-theme 'dark)
 
 (setq redisplay-dont-pause t)
 
@@ -419,7 +413,7 @@ up before you execute another command."
 
 (quelpa 'evil)
 (require 'evil)
-(bind-key "M-<f2>" 'evil-mode)
+(bind-key "C-z" 'evil-mode)
 (setq evil-default-cursor t)
 
 (quelpa 'grunt)
@@ -1062,7 +1056,7 @@ Including indent-buffer, which should not be called automatically on save."
   (remove-hook 'before-save-hook 'cleanup-buffer-boring))
 (global-set-key (kbd "C-c @ Y") 'auto-buffer-cleanup)
 (global-set-key (kbd "C-c @ y") 'auto-buffer-cleanup-boring)
-(global-set-key (kbd "C-c @ n") 'stop-auto-buffer-claenup)
+(global-set-key (kbd "C-c @ n") 'stop-auto-buffer-cleanup)
 (auto-buffer-cleanup-boring)
 
 ;; Mimic vim's "w" command
@@ -1132,8 +1126,5 @@ Including indent-buffer, which should not be called automatically on save."
 
 (require 'server)
 (unless (server-running-p)
-  (server-start))
-
-(quelpa 'edit-server)
-(when (daemonp)
+  (server-start)
   (edit-server-start))
