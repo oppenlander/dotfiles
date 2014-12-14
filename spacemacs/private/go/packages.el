@@ -7,9 +7,8 @@
     go-projectile
     go-errcheck
     helm-go-package
-    go-autocomplete
     go-stacktracer
-    gotest
+    company-go
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -28,8 +27,8 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (progn
       
-      ;; Try to load teh Oracle
-      (let (oracle-path (concat (getenv "GOPATH") "/src/code.google.com/p/go.tools/cmd/oracle/oracle.el"))
+      ;; Try to load the Oracle
+      (let ((oracle-path (concat (getenv "GOPATH") "/src/code.google.com/p/go.tools/cmd/oracle/oracle.el")))
         (if (file-exists-p oracle-path) (load oracle-path)))    
       )
     ))
@@ -37,7 +36,10 @@ which require an initialization must be listed explicitly in the list.")
 (defun go/init-go-eldoc ()
   (use-package go-eldoc
     :defer t
-    :init (add-hook 'go-mode-hook (lambda () (require 'go-eldoc-setup) (go-eldoc-setup)))))
+     :init (eval-after-load 'go-mode 
+            '(progn
+               (require 'go-eldoc)
+               (go-eldoc-setup)))))
 
 (defun go/init-go-direx ()
   (use-package go-direx 
@@ -45,7 +47,7 @@ which require an initialization must be listed explicitly in the list.")
     :init (eval-after-load 'go-mode 
             '(progn
                (require 'go-direx)
-               (evil-loader/set-key-for-mode 'go-mode "md")))))
+               (evil-leader/set-key-for-mode 'go-mode "md" 'go-direx-pop-to-buffer)))))
 
 (defun go/init-golint ()
   (use-package golint
@@ -73,20 +75,20 @@ which require an initialization must be listed explicitly in the list.")
                (require 'helm-go-package)
                (substitute-key-definition 'go-import-add 'helm-go-package go-mode-map)))))
 
-(defun go/init-go-autocomplete ()
-  (use-package go-autocomplete
+(defun go/init-company-go ()
+  (use-package company-go
     :defer t
     :init (eval-after-load 'go-mode
-            '(require 'go-autocomplete))))
+            '(progn
+               (require 'company)
+               (require 'company-go)
+
+               (add-hook 'go-mode-hook (lambda ()
+                                         (set (make-local-variable 'company-backends) '(company-go))
+                                         (company-mode)))))))
 
 (defun go/init-go-stacktracer ()
   (use-package go-stacktracer
     :defer t
     :init (eval-after-load 'go-mode
             '(require 'go-stacktracer))))
-
-(defun go/init-gotest ()
-  (use-package gotest
-    :defer t
-    :init (eval-after-load 'go-mode
-            '(require go-test))))
