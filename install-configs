@@ -11,11 +11,11 @@ ln -s $DIR/bin $HOME/bin
 # Emacs
 #rm -r $HOME/.emacs.d
 #ln -s $DIR/emacs.d $HOME/.emacs.d
-if [! -d $HOME/.emacs.d ] then
+if [ ! -d $HOME/.emacs.d ]; then
   git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
 fi
-rm -r $HOME/.emcas.d/private
-ln -s $DIR/spacemacs/private $HOME/.emacs.d/private
+rm -r $HOME/.emacs.d/private
+ln -s $DIR/spacemacs/private/ $HOME/.emacs.d/private
 rm $HOME/.spacemacs
 ln -s $DIR/spacemacs/spacemacs $HOME/.spacemacs
 
