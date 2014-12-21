@@ -10,7 +10,7 @@
  ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
  dotspacemacs-configuration-layer-path '()
  ;; List of configuration layers to load.
- dotspacemacs-configuration-layers '(restclient javascript oppenlander iedit go)
+ dotspacemacs-configuration-layers '(javascript oppenlander go html git)
  ;; A list of packages and/or extensions that will not be install and loaded.
  dotspacemacs-excluded-packages '()
 )
@@ -30,6 +30,9 @@
  dotspacemacs-guide-key-delay 0.4
  ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only)
  dotspacemacs-fullscreen-at-startup nil
+ ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only).
+ ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
+ dotspacemacs-maximized-at-startup nil
  ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth scrolling
  ;; overrides the default behavior of Emacs which recenters the point when
  ;; it reaches the top or bottom of the screen
@@ -37,6 +40,10 @@
  ;; If non nil pressing 'jk' in insert state, ido or helm will activate the
  ;; evil leader.
  dotspacemacs-feature-toggle-leader-on-jk nil
+ ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
+ dotspacemacs-smartparens-strict-mode nil
+ ;; If non nil advises quit functions to keep server open when quitting.
+ dotspacemacs-persistent-server t
  ;; The default package repository used if no explicit repository has been
  ;; specified with an installed package.
  ;; Not used for now.
@@ -56,6 +63,8 @@ This function is called at the very end of Spacemacs initialization."
   ;; Turn on relative linums by default
   (global-linum-mode)
   (linum-relative-toggle)
+  (global-flycheck-mode)
+  (setq x-select-enable-clipboard t)
 
   ;; js2-mode config (needs to be moved into usr/config layer)
   (eval-after-load 'js2-mode

@@ -5,7 +5,8 @@
     password-store
     grunt
     vlf
-    auto-dim-other-buffers
+    edit-server
+    edit-server-htmlize
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -42,8 +43,22 @@ which require an initialization must be listed explicitly in the list.")
   "Very Large Files"
   (use-package vlf :config (require 'vlf-integrate)))
 
-(defun oppenlander/init-auto-dim-other-buffers ()
-  (use-package auto-dim-other-buffers :config (auto-dim-other-buffers-mode -1)))
+;; (defun oppenlander/init-edit-server ()
+;;   "Edit Server used with the 'Edit With Emacs' plugin"
+;;   (use-package edit-server
+;;     :config
+;;     (progn
+;;       (require 'server)
+;;       (when (server-running-p)
+;;         (edit-server-start)))))
+
+;; (defun oppenladner/init-edit-server-htmlize ()
+;;   "Will try to htmlize certain plain text blocks that come in, like from GMail"
+;;   (use-package edit-server-htmlize
+;;     :init
+;;     (progn
+;;       (add-hook 'edit-server-start-hook 'edit-server-maybe-dehtmlize-buffer)
+;;       (add-hook 'edit-server-done-hook 'edit-server-maybe-htmlize-buffer))))
 
 ;; For each package, define a function usr/init-<package-usr>
 ;;

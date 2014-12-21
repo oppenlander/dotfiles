@@ -26,6 +26,9 @@ which require an initialization must be listed explicitly in the list.")
       )
     :config
     (progn
+
+      ;; gofmt on save
+      (add-hook 'go-mode-hook '(add-hook 'before-save-hook #'gofmt-before-save))
       
       ;; Try to load the Oracle
       (let ((oracle-path (concat (getenv "GOPATH") "/src/code.google.com/p/go.tools/cmd/oracle/oracle.el")))
