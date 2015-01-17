@@ -10,7 +10,7 @@
  ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
  dotspacemacs-configuration-layer-path '()
  ;; List of configuration layers to load.
- dotspacemacs-configuration-layers '(javascript oppenlander go html git)
+ dotspacemacs-configuration-layers '(javascript html git oppenlander fasd company-mode vim-empty-lines)
  ;; A list of packages and/or extensions that will not be install and loaded.
  dotspacemacs-excluded-packages '()
 )
@@ -19,10 +19,14 @@
 ;; --------
 
 (setq-default
+ ;; Startup banner
+ dotspacemacs-startup-banner 'random
  ;; Default theme applied at startup
  dotspacemacs-default-theme 'monokai
  ;; The leader key
  dotspacemacs-leader-key "SPC"
+ ;; Major mode shortcut
+ dotspacemacs-major-mode-leader-key ","
  ;; Extra Emacs commands
  dotspacemacs-command-key ":"
  ;; Guide-key delay in seconds. The Guide-key is the popup buffer listing
@@ -33,6 +37,12 @@
  ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only).
  ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
  dotspacemacs-maximized-at-startup nil
+ ;; Transparency level of the frame when transparency is activated
+ dotspacemacs-active-transparency 90
+ ;; Transparency level of the frame when transparency is inactive
+ dotspacemacs-inactive-transparency 90
+ ;; Use unicode symbols in the mode line
+ dotspacemacs-mode-line-unicode-symbols t
  ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth scrolling
  ;; overrides the default behavior of Emacs which recenters the point when
  ;; it reaches the top or bottom of the screen
@@ -43,7 +53,7 @@
  ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
  dotspacemacs-smartparens-strict-mode nil
  ;; If non nil advises quit functions to keep server open when quitting.
- dotspacemacs-persistent-server t
+ dotspacemacs-persistent-server nil
  ;; The default package repository used if no explicit repository has been
  ;; specified with an installed package.
  ;; Not used for now.
@@ -65,6 +75,16 @@ This function is called at the very end of Spacemacs initialization."
   (linum-relative-toggle)
   (global-flycheck-mode)
   (setq x-select-enable-clipboard t)
+
+  ;; Make helm open in split in the window
+  (setq helm-split-window-in-side-p t)
+
+  ;; Follow symlinks
+  (setq vc-follow-symlinks t)
+
+  ;; Company Mode
+  (define-key company-active-map (kbd "C-j") 'company-select-next)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous)
 
   ;; js2-mode config (needs to be moved into usr/config layer)
   (eval-after-load 'js2-mode

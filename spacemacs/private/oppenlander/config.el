@@ -1,7 +1,5 @@
 ;; Configurations that need to happen
 
-(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-
 ;; Make Multiple-Cursors not die while using evil
 (setq mc/cmds-to-run-for-all
       '(

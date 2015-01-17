@@ -15,29 +15,29 @@ set $mod Mod4
 exec feh --bg-scale /opt/backgrounds/default.jpg
 
 # Lock screen after 10 minutes
-exec xautolock -time 10 -locker i3lock &
+exec xautolock -detectsleep -time 10 -locker "i3lock -d -c 000000" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds" &
 
 # Move control key
 exec setxkbmap -option ctrl:nocaps
 
 # Map some keys with xcape
-exec xcape -e 'Alt_L=Escape'
+#exec xcape -e 'Alt_L=Escape'
 
 # desktop notifications
 exec dunst -config $HOME/.config/i3/dunstrc
 
 # Desktop manager (mounting USB drices)
-exec pcmanfm -d
+#exec pcmanfm -d
 
 # Spotify
 exec spotify
 
 # Communication apps
-exec skype
-exec hipchat
+#exec skype
+#exec hipchat
 
 # Reden the everything
-exec redshift-gtk
+#exec redshift-gtk
 
 ##############
 # APPEARANCE #
@@ -45,7 +45,7 @@ exec redshift-gtk
 
 ### font ###
 
-font pango:DejaVu Sans Mono 10
+font pango:Source Code Pro 10
 
 ### window style ###
 

@@ -1,12 +1,12 @@
 (defvar oppenlander-packages
   '(
     ;; package usrs go here
+    grunt
     jade-mode
     password-store
-    grunt
     vlf
-    edit-server
-    edit-server-htmlize
+    whitespace-cleanup-mode
+    helm-dash
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -37,11 +37,32 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun oppenlander/init-grunt ()
   "Grunt Task Runner"
-  (use-package grunt :defer t :init (evil-leader/set-key "aG" 'grunt-exec)))
+  (use-package grunt
+    :defer t
+    :init (evil-leader/set-key "aG" 'grunt-exec)))
 
 (defun oppenlander/init-vlf ()
   "Very Large Files"
-  (use-package vlf :config (require 'vlf-integrate)))
+  (use-package vlf :config (require 'vlf-setup)))
+
+(defun oppenlander/init-whitespace-cleanup-mode ()
+  "Whitespace Butler"
+  (use-package whitespace-cleanup-mode
+    :config
+    (progn
+      (global-whitespace-cleanup-mode)
+      (setq whitespace-cleanup-mode-only-if-initially-clean nil))))
+ opy
+(defun oppenlander/init-helm-dash ()
+  (use-package helm-dash
+    :defer t
+    :init
+    (evil-leader/set-key
+      "dd" 'helm-dash-at-point
+      "dD" 'helm-dash)
+    :config
+    (progn
+      (add-hook 'js2-mode-hook))))
 
 ;; (defun oppenlander/init-edit-server ()
 ;;   "Edit Server used with the 'Edit With Emacs' plugin"
