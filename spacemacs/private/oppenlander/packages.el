@@ -7,6 +7,7 @@
     vlf
     whitespace-cleanup-mode
     helm-dash
+    rust-mode
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -52,7 +53,7 @@ which require an initialization must be listed explicitly in the list.")
     (progn
       (global-whitespace-cleanup-mode)
       (setq whitespace-cleanup-mode-only-if-initially-clean nil))))
- opy
+
 (defun oppenlander/init-helm-dash ()
   (use-package helm-dash
     :defer t
@@ -63,6 +64,9 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (progn
       (add-hook 'js2-mode-hook))))
+
+(defun oppenlander/init-rust-mode ()
+  (use-package rust-mode :defer t))
 
 ;; (defun oppenlander/init-edit-server ()
 ;;   "Edit Server used with the 'Edit With Emacs' plugin"
