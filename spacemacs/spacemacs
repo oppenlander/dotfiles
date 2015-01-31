@@ -10,7 +10,21 @@
  ;; Paths must have a trailing slash (ie. `~/.mycontribs/')
  dotspacemacs-configuration-layer-path '()
  ;; List of configuration layers to load.
- dotspacemacs-configuration-layers '(javascript oppenlander html git fasd company-mode vim-empty-lines)
+ dotspacemacs-configuration-layers '(
+                                     javascript
+                                     oppenlander
+                                     html
+                                     git
+                                     fasd
+                                     company-mode
+                                     vim-empty-lines
+                                     colors
+                                     jira
+                                     (clojure :variables
+                                              clojure-enable-fancify-symbols nil)
+                                     go
+                                     lua
+                                     )
  ;; A list of packages and/or extensions that will not be install and loaded.
  dotspacemacs-excluded-packages '()
 )
@@ -22,7 +36,7 @@
  ;; Startup banner
  dotspacemacs-startup-banner 'random
  ;; Default theme applied at startup
- dotspacemacs-default-theme 'monokai
+ dotspacemacs-themes '(zenburn leuven)
  ;; The leader key
  dotspacemacs-leader-key "SPC"
  ;; Major mode shortcut
@@ -78,6 +92,9 @@ This function is called at the very end of Spacemacs initialization."
 
   ;; Make helm open in split in the window
   (setq helm-split-window-in-side-p t)
+
+  ;; Turn on rainbow-delimiters for prog modes
+  (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode)))
 
   ;; Follow symlinks
   (setq vc-follow-symlinks t)

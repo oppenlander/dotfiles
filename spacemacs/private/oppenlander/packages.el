@@ -8,6 +8,9 @@
     whitespace-cleanup-mode
     helm-dash
     rust-mode
+    helm-ag
+    js-doc
+    pretty-mode
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -67,6 +70,38 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun oppenlander/init-rust-mode ()
   (use-package rust-mode :defer t))
+
+(defun oppenlander/init-js-doc ()
+  (use-package js-doc
+    :defer t
+    :init
+    (progn
+      (defun oppenlander/load-js-doc ()
+        "Lazy load js-doc"
+        (require 'js-doc))
+      (add-hook 'js2-mode-hook 'oppenlander/load-js-doc))
+    :config
+    (progn
+      (setq js-doc-mail-address "andrew.oppenlander@zipscene.com"
+            js-doc-author (format "Andrew Oppenlander <%s>" js-doc-mail-address)
+            js-doc-url "zipscene.com"
+            js-doc-license "")
+
+      (evil-leader/set-key "m;" 'js-doc-insert-function-doc)
+      (define-key js2-mode-map "@" 'js-doc-insert-tag))))
+
+(defun oppenlander/init-pretty-mode ()
+  (use-package pretty-mode
+    :defer t
+    :init
+    (progn
+      (defun oppenlander/toggle-pretty-mode ()
+        "Lazy load/toggle pretty mode"
+        (interactive)
+        (if (bound-and-true-p pretty-mode)
+            (global-pretty-mode -1)
+          (global-pretty-mode 1)))
+      (evil-leader/set-key "tp" 'oppenlander/toggle-pretty-mode))))
 
 ;; (defun oppenlander/init-edit-server ()
 ;;   "Edit Server used with the 'Edit With Emacs' plugin"
