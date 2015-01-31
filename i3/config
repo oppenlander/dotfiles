@@ -15,7 +15,7 @@ set $mod Mod4
 exec feh --bg-scale /opt/backgrounds/default.jpg
 
 # Lock screen after 10 minutes
-exec xautolock -detectsleep -time 10 -locker "i3lock -d -c 000000" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds" &
+exec xautolock -detectsleep -time 10 -locker "i3lock -f -e -d -c 000000" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds" &
 
 # Move control key
 exec setxkbmap -option ctrl:nocaps
@@ -30,7 +30,7 @@ exec dunst -config $HOME/.config/i3/dunstrc
 #exec pcmanfm -d
 
 # Spotify
-exec spotify
+#exec spotify
 
 # Communication apps
 #exec skype
