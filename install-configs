@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Link all the files in dotfiles to their correct locations
+# link all the files in dotfiles to their correct locations
 mkdir -p $HOME/.config
 
-# Home bin/scripts
+# home bin/scripts
 rm -r $HOME/bin
 ln -s $DIR/bin $HOME/bin
 
-# Emacs
-#rm -r $HOME/.emacs.d
-#ln -s $DIR/emacs.d $HOME/.emacs.d
+# emacs
 if [ ! -d $HOME/.emacs.d ]; then
   git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
 fi
-rm -r $HOME/.emacs.d/private
-ln -s $DIR/spacemacs/private/ $HOME/.emacs.d/private
+mkdir -p $DIR/.emacs.d/private
+ln -s $DIR/spacemacs/private/oppenlander $HOME/.emacs.d/private/oppenlander
 rm $HOME/.spacemacs
 ln -s $DIR/spacemacs/spacemacs $HOME/.spacemacs
 
@@ -31,23 +29,16 @@ ln -s $DIR/i3 $HOME/.config/i3
 rm $HOME/.profile
 ln -s $DIR/profile $HOME/.profile
 
-# Lightdm (requires sudo) (cannot use links)
-#sudo mkdir -p /etc/lightdm
-#sudo rm /etc/lightdm/lightdm.conf
-#sudo cp $DIR/lightdm.conf /etc/lightdm/lightdm.conf
-#sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
-#sudo cp $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
-#sudo systemctl enable lightdm
-
-# Git
+# git
 rm $HOME/.gitconfig
 ln -s $DIR/git/gitconfig $HOME/.gitconfig
 rm $HOME/.gitignore
 ln -s $DIR/git/gitignore $HOME/.gitignore
 
-# Terminator
+# terminator
 rm -r $HOME/.config/terminator
 ln -s $DIR/terminator $HOME/.config/terminator
 
-# Fish
-chsh -s /usr/bin/fish
+# nodejs
+rm $HOME/.npmrc
+ln -s $DIR/node/npmrc $HOME/.npmrc

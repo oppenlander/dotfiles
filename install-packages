@@ -1,85 +1,105 @@
 #!/usr/bin/env bash
 # Installs (most of) my Arch Linux setup
-# Assumes user account/sudo has been set up, and an internet connection.
+# Assumes you are using a user account, sudo is set up, and there is an internet connection.
 
 # Ensure the system is up to date
 sudo pacman -Syu
 
-hash pacaur &> /dev/null
+hash aura &> /dev/null
 if [ $? -eq 1 ]; then
     # Install base packages we'll need for pacaur
-    sudo pacman -S git base-devel yajl openssl curl expac
+    sudo pacman -S git base-devel openssl curl abs gmp pcre
 
     # Enter temp folder to install cower/pacaur
     mkdir -p $HOME/tmp
     cd $HOME/tmp
 
-    # Download/build/install cower
-    curl -o cower.tar.gz https://aur.archlinux.org/packages/co/cower/cower.tar.gz
-    tar xzf cower.tar.gz
-    cd cower
+    # Download/build/install customizepkg
+    curl -o customizepkg.tar.gz https://aur.archlinux.org/packages/cu/customizepkg/customizepkg.tar.gz
+    tar xzf customizepkg.tar.gz
+    cd customizepkg
     makepkg
-    sudo pacman -U cower*.pkg.tar.gz
+    sudo pacman -U customizepkg*.pkg.tar.gz
     cd ..
 
-    # Download/build/install pacaur
-    curl -o pacaur.tar.gz https://aur.archlinux.org/packages/pa/pacaur/pacaur.tar.gz
-    tar xzf pacaur.tar.gz
-    cd pacaur
+    # Download/build/install aura
+    curl -o aura-bin.tar.gz https://aur.archlinux.org/packages/au/aura-bin/aura-bin.tar.gz
+    tar xzf aura-bin.tar.gz
+    cd aura-bin
     makepkg
-    sudo pacman -U pacaur*.pkg.tar.gz
+    sudo pacman -U aura-bin*.pkg.tar.gz
     cd ..
 
     # Cleanup
-    rm cower.tar.gz && rm -r cower && rm pacaur.tar.gz && rm -r pacaur
+    rm aura-bin.tar.gz && rm -r aura-bin && rm aura-bin.tar.gz && rm -r aura-bin
     cd $HOME
 fi
 
-# Install software
-pacaur -S \
-    compton \
-    elementary-icon-theme \
-    emacs \
-    dmenu2 \
-    feh \
-    fish \
-    go \
-    google-chrome \
-    gtk-theme-elementary \
-    i3 \
-    i3blocks \
-    iw \
-    jdk \
-    libreoffice \
-    lightdm \
-    lxappearance \
-    lxrandr \
-    pcmanfm \
-    playerctl \
-    skype \
-    spotify \
-    redshift \
-    terminator \
-    tmux \
-    ttf-dejavu \
-    ttf-font-awesome \
-    xautolock \
-    xfce4-mixer \
-    wireless-tools \
-    wpa_supplicant
+# Install pacman software
+sudo aura -S \
+     alsa-oss \
+     alsa-plugins \
+     alsa-utils \
+     arandr \
+     compton \
+     elementary-icon-theme \
+     emacs \
+     feh \
+     firefox \
+     gvim \
+     gwenview \
+     i3 \
+     i3blocks \
+     i3lock \
+     i3status \
+     ifplugd \
+     iw \
+     libreoffice \
+     lightdm \
+     lightdm-gtk3-greeter \
+     lxappearance \
+     lxrandr \
+     pavucontrol \
+     pcmanfm \
+     powertop \
+     pulseaudio \
+     pulseaudio-alsa \
+     python2 \
+     python2-pip \
+     python-pip \
+     skype \
+     smplayer \
+     redshift \
+     terminator \
+     tmux \
+     ttf-dejavu \
+     ttf-font-awesome \
+     xautolock \
+     xfce4-mixer \
+     xfce4-power-manager \
+     vlc \
+     wireless-tools \
+     wpa_supplicant
 
-# Install go dependencies
-# gocode
-go get -u github.com/nsf/gocode
-# gotags
-go get -u github.com/jstemmer/gotags
-# golint
-go get -u github.com/golang/lint/golint
-# oracle
-go get -u code.google.com/p/go.tools/cmd/oracle
-# godef
-go get -u code.google.com/p/rog-go/exp/cmd/godef
-# errcheck
-go get -u github.com/kisielk/errcheck
-# goimports
-go get -u github.com/bradfitz/goimports
+# Install AUR software
+sudo aura -A \
+     dmenu2-underline \
+     fasd \
+     fish-shell-git \
+     google-chrome \
+     gtk-theme-elementary \
+     hipchat \
+     jdk \
+     oft-font-awesome \
+     oft-powerline-symbols-git \
+     oft-source-code-pro-powerline-git \
+     playerctl \
+     rxvt-unicode-patched \
+     spotify \
+     the_silver_searcher \
+     ttf-font-awesome \
+     ttf-google-fonts-git \
+     zeal-git
+
+# Fish
+chsh -s /usr/bin/fish
