@@ -6,9 +6,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # lightdm (requires sudo) (cannot use links)
 sudo mkdir -p /etc/lightdm
 sudo rm /etc/lightdm/lightdm.conf
-sudo cp $DIR/lightdm.conf /etc/lightdm/lightdm.conf
+sudo cp $DIR/lightdm/lightdm.conf /etc/lightdm/lightdm.conf
 sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
-sudo cp $DIR/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+sudo cp $DIR/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
 sudo systemctl enable lightdm
 
 # xorg (requires sudo)
@@ -22,3 +22,8 @@ sudo cp $DIR/xorg/50-thinkpad-trackpoint.conf /etc/X11/xorg.conf.d/50-thinkpad-t
 sudo rm /etc/systemd/system/powertop.service
 sudo cp $DIR/powertop/powertop.service /etc/systemd/system/powertop.service
 sudo systemctl enable powertop.service
+
+# Backgrounds
+sudo mkdir -p /opt/backgrounds
+sudo rm /opt/backgrounds/ramona.jpg
+sudo ln -s $DIR/backgrounds/ramona.jpg /opt/backgrounds/ramona.jpg

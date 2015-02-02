@@ -42,3 +42,12 @@ ln -s $DIR/terminator $HOME/.config/terminator
 # nodejs
 rm $HOME/.npmrc
 ln -s $DIR/node/npmrc $HOME/.npmrc
+
+# gtk
+mkdir -p $HOME/.config/gtk-3.0
+rm $HOME/.config/gtk-3.0/settings.ini
+ln -s $DIR/gtk/settings.ini $HOME/.config/gtk-3.0/settings.ini
+rm $HOME/.gtkrc-2.0
+ln -s $DIR/gtk/gktrc-2.0 $HOME/.gtkrc-2.0
+rm $HOME/.gtkrc-2.0-kde4
+ln -s $DIR/gtk/gktrc-2.0-kde4 $HOME/.gtkrc-2.0-kde4
