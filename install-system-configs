@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Most of this script will require sudo, and will install system service configs
+
+# lightdm (requires sudo) (cannot use links)
+sudo mkdir -p /etc/lightdm
+sudo rm /etc/lightdm/lightdm.conf
+sudo cp $DIR/lightdm/lightdm.conf /etc/lightdm/lightdm.conf
+sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
+sudo cp $DIR/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+sudo systemctl enable lightdm
+
+# xorg (requires sudo)
+sudo mkdir -p /etc/X11/xorg.conf.d
+sudo rm /etc/X11/xorg.conf.d/10-kensington-trackball.conf
+sudo cp $DIR/xorg/10-kensington-trackball.conf /etc/X11/xorg.conf.d/10-kensington-trackball.conf
+sudo rm /etc/X11/xorg.conf.d/50-thinkpad-trackpoint.conf
+sudo cp $DIR/xorg/50-thinkpad-trackpoint.conf /etc/X11/xorg.conf.d/50-thinkpad-trackpoint.conf
+
+# powertop
+sudo rm /etc/systemd/system/powertop.service
+sudo cp $DIR/powertop/powertop.service /etc/systemd/system/powertop.service
+sudo systemctl enable powertop.service
+
+# Backgrounds
+sudo mkdir -p /opt/backgrounds
+sudo rm /opt/backgrounds/ramona.jpg
+sudo ln -s $DIR/backgrounds/ramona.jpg /opt/backgrounds/ramona.jpg

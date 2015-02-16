@@ -19,7 +19,6 @@
                                      company-mode
                                      vim-empty-lines
                                      colors
-                                     jira
                                      (clojure :variables
                                               clojure-enable-fancify-symbols nil)
                                      go
