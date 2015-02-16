@@ -13,6 +13,7 @@ if [ ! -d $HOME/.emacs.d ]; then
   git clone --recursive http://github.com/syl20bnr/spacemacs ~/.emacs.d
 fi
 mkdir -p $DIR/.emacs.d/private
+rm -r $HOME/.emacs.d/private/oppenlander
 ln -s $DIR/spacemacs/private/oppenlander $HOME/.emacs.d/private/oppenlander
 rm $HOME/.spacemacs
 ln -s $DIR/spacemacs/spacemacs $HOME/.spacemacs
@@ -51,3 +52,6 @@ rm $HOME/.gtkrc-2.0
 ln -s $DIR/gtk/gktrc-2.0 $HOME/.gtkrc-2.0
 rm $HOME/.gtkrc-2.0-kde4
 ln -s $DIR/gtk/gktrc-2.0-kde4 $HOME/.gtkrc-2.0-kde4
+
+# Fish
+chsh -s /usr/bin/fish

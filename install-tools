@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Fish
+chsh -s /usr/bin/fish
+
 # Node.js
 sudo aura -S nodejs
 npm i -g --python=python2 tern grunt bower

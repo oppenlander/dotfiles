@@ -35,21 +35,20 @@ if [ $? -eq 1 ]; then
     cd $HOME
 fi
 
-# Install pacman software
-sudo aura -S \
+# Install repo software
+sudo aura -S --needed \
      alsa-oss \
      alsa-plugins \
      alsa-utils \
      arandr \
-     compton \
      elementary-icon-theme \
      emacs \
      feh \
+     filezilla \
      firefox \
      gvim \
      gwenview \
      i3 \
-     i3blocks \
      i3lock \
      i3status \
      ifplugd \
@@ -73,33 +72,32 @@ sudo aura -S \
      terminator \
      tmux \
      ttf-dejavu \
-     ttf-font-awesome \
      xautolock \
      xfce4-mixer \
      xfce4-power-manager \
+     xorg \
      vlc \
-     wireless-tools \
+     wireless_tools \
      wpa_supplicant
 
 # Install AUR software
-sudo aura -A \
+sudo aura -A --needed \
+     compton \
      dmenu2-underline \
      fasd \
      fish-shell-git \
      google-chrome \
-     gtk-theme-elementary \
+     gtk-theme-elementary-bzr \
      hipchat \
+     i3blocks \
      jdk \
-     oft-font-awesome \
-     oft-powerline-symbols-git \
-     oft-source-code-pro-powerline-git \
+     otf-font-awesome \
+     otf-powerline-symbols-git \
+     otf-source-code-pro-powerline-git \
      playerctl \
      rxvt-unicode-patched \
+     silver-searcher-git \
      spotify \
-     the_silver_searcher \
      ttf-font-awesome \
      ttf-google-fonts-git \
      zeal-git
-
-# Fish
-chsh -s /usr/bin/fish
