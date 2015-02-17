@@ -58,6 +58,7 @@ sudo aura -S --needed \
      lightdm-gtk3-greeter \
      lxappearance \
      lxrandr \
+     net-tools \
      pavucontrol \
      pcmanfm \
      powertop \
@@ -78,7 +79,8 @@ sudo aura -S --needed \
      xorg \
      vlc \
      wireless_tools \
-     wpa_supplicant
+     wpa_supplicant \
+     xorg
 
 # Install AUR software
 sudo aura -A --needed \
@@ -98,6 +100,7 @@ sudo aura -A --needed \
      rxvt-unicode-patched \
      silver-searcher-git \
      spotify \
+     silver-searcher-git \
      ttf-font-awesome \
      ttf-google-fonts-git \
      zeal-git

@@ -8,6 +8,18 @@ function _is_git_dirty
   echo (command git status -s --ignore-submodules=dirty ^/dev/null)
 end
 
+function fish_vi_prompt_color --description "Displays the current mode"
+  switch $fish_bind_mode
+    case default
+      set_color --bold --background red white
+    case insert
+      set_color --bold --background green white
+    case visual
+      set_color --bold --background magenta white
+  end
+  set_color normal
+end
+
 function fish_prompt
   set -l last_status $status
   set -l cyan (set_color -o cyan)
@@ -35,5 +47,15 @@ function fish_prompt
     set git_info "$git_info$yellow)"
   end
 
-  echo -n -s $prompt_status $onormal '[' $green (whoami) $onormal '@' $cyan (hostname) $onormal ':' $blue (prompt_pwd) $git_info $onormal ']' $onormal➜ ' '
+  set -l arrow_color
+  switch $fish_bind_mode
+    case default
+      set arrow_color (set_color -o normal)
+    case insert
+      set arrow_color (set_color -o green)
+    case visual
+      set arrow_color (set_color -o magenta)
+  end
+
+  echo -n -s $prompt_status $onormal '[' $green (whoami) $onormal '@' $cyan (hostname) $onormal ':' $blue (prompt_pwd) $git_info $onormal ']' $arrow_color ➜ $onormal ' '
 end
