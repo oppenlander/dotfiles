@@ -1,5 +1,5 @@
 # Path to your oh-my-fish.
-set fish_path $HOME/.config/fish/oh-my-fish
+set fish_path $HOME/.oh-my-fish
 
 set fish_greeting ""
 
@@ -9,7 +9,7 @@ set fish_greeting ""
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-fish/plugins/*)
 # Custom plugins may be added to ~/.oh-my-fish/custom/plugins/
 # Example format: set fish_plugins autojump bundler
-set fish_plugins python tmux jump
+set fish_plugins python tmux jump fasd
 
 # Path to your custom folder (default path is $FISH/custom)
 #set fish_custom $HOME/dotfiles/oh-my-fish
@@ -21,7 +21,7 @@ alias et 'emacsclient -a "" -t'
 alias ec 'emacsclient -a "" -nc'
 
 function pj
-	node -e "console.log(JSON.stringify("{$argv}", null, '\t'));"
+  node -e "console.log(JSON.stringify("{$argv}", null, '\t'));"
 end
 
 alias agl 'ag --pager="less -FRSX"'
@@ -61,3 +61,8 @@ set -gx PATH $HOME'/.cabal/bin' $PATH
 
 # Load oh-my-fish configuration.
 . $fish_path/oh-my-fish.fish
+
+# Set vi mode because I hate myself
+#fish_vi_keybindings
+
+source ~/.config/fish/nvm-wrapper/nvm.fish

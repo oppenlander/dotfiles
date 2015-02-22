@@ -12,7 +12,7 @@ set $mod Mod4
 ################
 
 # Ensure the background is set
-exec feh --bg-scale /opt/backgrounds/default.jpg
+exec feh --bg-scale /opt/backgrounds/ramona.jpg
 
 # Lock screen after 10 minutes
 exec xautolock -detectsleep -time 10 -locker "i3lock -f -e -d -c 000000" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds" &
@@ -266,7 +266,7 @@ bindsym $mod+m mode "$mode_spotify"
 # WINDOW RULES #
 ################
 
-#for_window [class="FTL"] floating enable
 assign [class="Spotify"] → "9: spotify"
+for_window [class="Spotify"] floating enable
 assign [class="Skype"] → "10: comm"
 assign [class="HipChat"] → "10: comm"

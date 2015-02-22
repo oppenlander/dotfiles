@@ -4,11 +4,11 @@
 chsh -s /usr/bin/fish
 
 # Node.js
-sudo aura -S nodejs
+sudo aura -S --needed nodejs
 npm i -g --python=python2 tern grunt bower
 
 # Install go dependencies
-sudo aura -S go
+sudo aura -S --needed go mercurial subversion
 go get -u github.com/nsf/gocode
 go get -u github.com/jstemmer/gotags
 go get -u github.com/golang/lint/golint
