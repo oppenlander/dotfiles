@@ -1,3 +1,6 @@
 [submodule "fish/oh-my-fish"]
 	path = fish/oh-my-fish
 	url = https://github.com/bpinto/oh-my-fish
+[submodule "i3/blocks"]
+	path = i3/blocks
+	url = https://github.com/acleverpun/i3-blocks-contrib.git
