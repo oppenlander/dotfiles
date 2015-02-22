@@ -23,6 +23,8 @@
                                               clojure-enable-fancify-symbols nil)
                                      go
                                      lua
+                                     markdown
+                                     finance
                                      )
  ;; A list of packages and/or extensions that will not be install and loaded.
  dotspacemacs-excluded-packages '()
@@ -98,9 +100,8 @@ This function is called at the very end of Spacemacs initialization."
   ;; Follow symlinks
   (setq vc-follow-symlinks t)
 
-  ;; Company Mode
-  (define-key company-active-map (kbd "C-j") 'company-select-next)
-  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+  ;; CSS offset
+  (setq css-indent-offset 2)
 
   ;; js2-mode config (needs to be moved into usr/config layer)
   (eval-after-load 'js2-mode
