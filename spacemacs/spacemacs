@@ -104,6 +104,10 @@ This function is called at the very end of Spacemacs initialization."
   ;; CSS offset
   (setq css-indent-offset 2)
 
+  ;; Company Mode
+  (define-key company-active-map (kbd "C-j") 'company-select-next)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+
   ;; js2-mode config (needs to be moved into usr/config layer)
   (eval-after-load 'js2-mode
     '(progn
