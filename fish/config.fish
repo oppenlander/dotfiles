@@ -65,4 +65,5 @@ set -gx PATH $HOME'/.cabal/bin' $PATH
 # Set vi mode because I hate myself
 #fish_vi_keybindings
 
-source ~/.config/fish/nvm-wrapper/nvm.fish
+# NVM
+source ~/.config/fish/nvm-fish-wrapper/nvm.fish
