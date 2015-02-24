@@ -8,6 +8,7 @@
     whitespace-cleanup-mode
     helm-dash
     rust-mode
+    flycheck-rust
     helm-ag
     js-doc
     pretty-mode
@@ -72,6 +73,12 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun oppenlander/init-rust-mode ()
   (use-package rust-mode :defer t))
+
+(defun oppenlander/init-flycheck-rust ()
+  (use-package flycheck-rust
+    :defer t
+    :init
+    (add-hook 'rust-mode-hook #'flycheck-rust-setup)))
 
 (defun oppenlander/init-js-doc ()
   (use-package js-doc

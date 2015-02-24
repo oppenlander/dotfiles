@@ -101,6 +101,9 @@ This function is called at the very end of Spacemacs initialization."
   ;; Follow symlinks
   (setq vc-follow-symlinks t)
 
+  ;; CSS offset
+  (setq css-indent-offset 2)
+
   ;; js2-mode config (needs to be moved into usr/config layer)
   (eval-after-load 'js2-mode
     '(progn
