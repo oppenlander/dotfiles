@@ -46,7 +46,6 @@ sudo aura -S --needed \
      feh \
      filezilla \
      firefox \
-     gvim \
      gwenview \
      i3 \
      i3lock \
@@ -61,6 +60,7 @@ sudo aura -S --needed \
      net-tools \
      pavucontrol \
      pcmanfm \
+     ponymix \
      powertop \
      pulseaudio \
      pulseaudio-alsa \
@@ -76,6 +76,7 @@ sudo aura -S --needed \
      xautolock \
      xfce4-mixer \
      xfce4-power-manager \
+     xfce4-terminal \
      xorg \
      vlc \
      wireless_tools \
@@ -93,6 +94,7 @@ sudo aura -A --needed \
      hipchat \
      i3blocks \
      jdk \
+     neovim-git \
      otf-font-awesome \
      otf-powerline-symbols-git \
      otf-source-code-pro-powerline-git \

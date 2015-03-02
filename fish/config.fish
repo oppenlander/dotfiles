@@ -26,6 +26,14 @@ end
 
 alias agl 'ag --pager="less -FRSX"'
 
+alias e "$EDITOR"
+alias se "sudo $EDITOR"
+
+alias tmux "tmux -2"
+alias t "tmux"
+alias ta="tmux new-session -A -s"
+alias tl "tmux list-sessions"
+
 #####################################
 # Variables
 # Editor

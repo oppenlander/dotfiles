@@ -14,7 +14,8 @@
                                      javascript
                                      oppenlander
                                      html
-                                     git
+                                     (git :variables
+                                          git-gutter-use-fringe nil)
                                      fasd
                                      company-mode
                                      vim-empty-lines
@@ -26,6 +27,7 @@
                                      markdown
                                      finance
                                      c-c++
+                                     tmux-navigator
                                      )
  ;; A list of packages and/or extensions that will not be install and loaded.
  dotspacemacs-excluded-packages '()
@@ -37,6 +39,8 @@
 (setq-default
  ;; Startup banner
  dotspacemacs-startup-banner 'random
+ ;; If non nil the cursor color matches the state color.
+ dotspacemacs-colorize-cursor-according-to-state t
  ;; Default theme applied at startup
  dotspacemacs-themes '(zenburn leuven)
  ;; The leader key
@@ -48,8 +52,17 @@
  ;; Guide-key delay in seconds. The Guide-key is the popup buffer listing
  ;; the commands bound to the current keystrokes.
  dotspacemacs-guide-key-delay 0.4
+ ;; If non nil a progress bar is displayed when spacemacs is loading. This
+ ;; may increase the boot time on some systems and emacs builds, set it to nil
+ ;; to boost the loading time.
+ dotspacemacs-loading-progress-bar t
+ ;; Enable micro-state for helm buffer when pressing on TAB."
+ dotspacemacs-helm-micro-state t
  ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only)
  dotspacemacs-fullscreen-at-startup nil
+ ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
+ ;; Use to disable fullscreen animations in OSX."
+ dotspacemacs-fullscreen-use-non-native nil
  ;; If non nil the frame is maximized when Emacs starts up (Emacs 24.4+ only).
  ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
  dotspacemacs-maximized-at-startup nil
@@ -58,7 +71,7 @@
  ;; Transparency level of the frame when transparency is inactive
  dotspacemacs-inactive-transparency 90
  ;; Use unicode symbols in the mode line
- dotspacemacs-mode-line-unicode-symbols t
+ dotspacemacs-mode-line-unicode-symbols nil
  ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth scrolling
  ;; overrides the default behavior of Emacs which recenters the point when
  ;; it reaches the top or bottom of the screen
@@ -87,8 +100,14 @@
   "This is were you can ultimately override default Spacemacs configuration.
 This function is called at the very end of Spacemacs initialization."
   ;; Turn on relative linums by default
-  (global-linum-mode)
-  (linum-relative-toggle)
+  ;; (global-linum-mode)
+  ;; (linum-relative-toggle)
+  ;; (defun linum-format-func (line)
+  ;;   (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+  ;;     (propertize (format (format "%%dd " w) line) 'face 'linum)))
+  ;; (setq linum-format 'linum-format-func)
+  ;; (setq linum-format "%4d ")
+
   (global-flycheck-mode)
   (setq x-select-enable-clipboard t)
 
@@ -104,6 +123,10 @@ This function is called at the very end of Spacemacs initialization."
   ;; CSS offset
   (setq css-indent-offset 2)
 
+  (setq-default etcc--tmux-bar-cursor-string 'bar) ; ⎸
+  (setq-default etcc--tmux-box-cursor-string 'box) ; _
+  (setq-default etcc--tmux-hbar-cursor-string 'hbar) ; █
+
   ;; Company Mode
   (define-key company-active-map (kbd "C-j") 'company-select-next)
   (define-key company-active-map (kbd "C-k") 'company-select-previous)
@@ -114,7 +137,7 @@ This function is called at the very end of Spacemacs initialization."
        ;; Set default js2 settings
        (setq-default js2-enter-indents-newline nil)
        (setq-default js2-bounce-indent-p t)
-       (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum"))
+       (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum" "it" "describe"))
 
        ;; Let Flycheck handle errors until js2 mode supports ES6
        (setq-default js2-show-parse-errors nil)

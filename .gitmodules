@@ -7,3 +7,6 @@
 [submodule "fish/nvm-fish-wrapper"]
 	path = fish/nvm-fish-wrapper
 	url = https://github.com/passcod/nvm-fish-wrapper.git
+[submodule "tmux/plugins/tpm"]
+	path = tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
