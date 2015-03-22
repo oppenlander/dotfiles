@@ -24,3 +24,12 @@
         evil-backward-char
         evil-change
         ))
+
+;; Add ability to close frame
+(evil-leader/set-key "Fc" 'delete-frame)
+(evil-leader/set-key "Ff" 'find-file-other-frame)
+(evil-leader/set-key "Fb" 'display-buffer-other-frame)
+(evil-leader/set-key "FC" 'delete-other-frames)
+(evil-leader/set-key "Fs" 'switch-to-buffer-other-frame)
+(evil-leader/set-key "Fd" 'dired-other-frame)
+(evil-leader/set-key "Fo" 'other-frame)

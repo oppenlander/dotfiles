@@ -12,6 +12,8 @@
     helm-ag
     js-doc
     pretty-mode
+    editorconfig
+    swiper
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -50,24 +52,25 @@ which require an initialization must be listed explicitly in the list.")
   "Very Large Files"
   (use-package vlf :config (require 'vlf-setup)))
 
-(defun oppenlander/init-whitespace-cleanup-mode ()
-  "Whitespace Butler"
-  (use-package whitespace-cleanup-mode
-    :config
-    (progn
-      (global-whitespace-cleanup-mode)
-      (setq whitespace-cleanup-mode-only-if-initially-clean nil))))
+;; (defun oppenlander/init-whitespace-cleanup-mode ()
+;;   "Whitespace Butler"
+;;   (use-package whitespace-cleanup-mode
+;;     :config
+;;     (progn
+;;       (global-whitespace-cleanup-mode)
+;;       ;(setq whitespace-cleanup-mode-only-if-initially-clean nil)
+;;       )))
 
-(defun oppenlander/init-helm-dash ()
-  (use-package helm-dash
-    :defer t
-    :init
-    (evil-leader/set-key
-      "dd" 'helm-dash-at-point
-      "dD" 'helm-dash)
-    :config
-    (progn
-      (add-hook 'js2-mode-hook))))
+;; (defun oppenlander/init-helm-dash ()
+;;   (use-package helm-dash
+;;     :defer t
+;;     :init
+;;     (evil-leader/set-key
+;;       "dd" 'helm-dash-at-point
+;;       "dD" 'helm-dash)
+;;     :config
+;;     (progn
+;;       (add-hook 'js2-mode-hook))))
 
 (defun oppenlander/init-rust-mode ()
   (use-package rust-mode :defer t))
@@ -109,6 +112,16 @@ which require an initialization must be listed explicitly in the list.")
             (global-pretty-mode -1)
           (global-pretty-mode 1)))
       (evil-leader/set-key "tp" 'oppenlander/toggle-pretty-mode))))
+
+(defun oppenlander/init-swiper ()
+  (use-package swiper
+    :defer t
+    :init
+    (evil-leader/set-key
+      "os" 'swiper)))
+
+;; (defun oppenlander/init-editorconfig ()
+;;   (use-package editorconfig))
 
 ;; (defun oppenlander/init-edit-server ()
 ;;   "Edit Server used with the 'Edit With Emacs' plugin"

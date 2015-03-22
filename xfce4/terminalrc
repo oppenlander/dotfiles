@@ -1,0 +1,26 @@
+[Configuration]
+ColorCursor=#dcdccc
+ColorForeground=#dcdccc
+ColorBackground=#3f3f3f
+ColorPalette=#3f3f3f;#cc9393;#7f9f7f;#f0dfaf;#8cd0d3;#dc8cc3;#93e0e3;#dcdccc;#595959;#cc9393;#7f9f7f;#f0dfaf;#8cd0d3;#dc8cc3;#93e0e3;#ffffff
+MiscAlwaysShowTabs=FALSE
+MiscBell=FALSE
+MiscBordersDefault=TRUE
+MiscCursorBlinks=TRUE
+MiscDefaultGeometry=80x24
+MiscInheritGeometry=FALSE
+MiscMenubarDefault=FALSE
+MiscMouseAutohide=FALSE
+MiscToolbarDefault=FALSE
+MiscConfirmClose=TRUE
+MiscCycleTabs=TRUE
+MiscTabCloseButtons=TRUE
+MiscTabCloseMiddleClick=TRUE
+MiscTabPosition=GTK_POS_TOP
+MiscHighlightUrls=TRUE
+ScrollingBar=TERMINAL_SCROLLBAR_NONE
+FontName=Source Code Pro for Powerline 10
+ShortcutsNoMenukey=TRUE
+ShortcutsNoMnemonics=TRUE
+MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK
+

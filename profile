@@ -9,7 +9,7 @@ export EDITOR="emacsclient -t"
 export PAGER="less -FRSX"
 
 # sensible terminal
-export TERMINAL=terminator
+export TERMINAL=xfce4-terminal -e "tmux"
 
 ## Add path modifications here for i3
 

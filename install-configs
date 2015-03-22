@@ -53,5 +53,15 @@ ln -s $DIR/gtk/gktrc-2.0 $HOME/.gtkrc-2.0
 rm $HOME/.gtkrc-2.0-kde4
 ln -s $DIR/gtk/gktrc-2.0-kde4 $HOME/.gtkrc-2.0-kde4
 
-# Fish
-chsh -s /usr/bin/fish
+# tmux
+rm $HOME/.tmux.conf
+ln -s $DIR/tmux/tmux.conf $HOME/.tmux.conf
+rm -r $HOME/.tmux
+mkdir $HOME/.tmux
+ln -s $DIR/tmux/plugins $HOME/.tmux/plugins
+
+# xfce4
+mkdir -p $HOME/.config/xfce4
+mkdir -p $HOME/.config/xfce4/terminal
+rm $HOME/.config/xfce4/terminal/terminalrc
+ln -s $DIR/xfce4/terminalrc $HOME/.config/xfce4/terminal/terminalrc
