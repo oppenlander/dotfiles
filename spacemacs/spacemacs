@@ -53,7 +53,7 @@ before layers configuration."
      dotspacemacs-colorize-cursor-according-to-state t
      ;; Default font. `powerline-scale' allows to quickly tweak the mode-line   ;; size to make separators look not too crappy.
      dotspacemacs-default-font '("Source Code Pro"
-                                 :size 13
+                                 :size 14
                                  :weight normal
                                  :width normal
                                  :powerline-scale 1.1)
@@ -103,59 +103,30 @@ before layers configuration."
      ;; The default package repository used if no explicit repository has been
      ;; specified with an installed package.
      ;; Not used for now.
-     dotspacemacs-default-package-repository nil)
+     dotspacemacs-default-package-repository nil
+     ;; Follow symlinks
+     vc-follow-symlinks t
+     ;; Use system clipboard
+     x-select-enable-clipboard t)
     ;; User initialization goes here
+    ;; Override defvars that are defined later
+    (defvar spacemacs-evil-cursor-colors '((normal . "#94bff3")
+                                           (insert . "#bfebbf")
+                                           (emacs . "#dcdccc")
+                                           (visual . "#dfaf8f")
+                                           (motion . "#656555")
+                                           (lisp . "#dc8cc3")
+                                           (iedit . "#cc9393")
+                                           (iedit-insert . "#8c5353"))
+      "Mode/cursor/powerline colors")
     )
 
 (defun dotspacemacs/config ()
   "This is were you can ultimately override default Spacemacs configuration.
 This function is called at the very end of Spacemacs initialization."
-  ;; Turn on relative linums by default
   (global-linum-mode)
   (linum-relative-toggle)
-
-  (global-flycheck-mode)
-  (setq x-select-enable-clipboard t)
-
-  ;; Make helm open in split in the window
-  (setq helm-split-window-in-side-p t)
-
-  ;; Turn on rainbow-delimiters for prog modes
-  (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode)))
-
-  ;; Follow symlinks
-  (setq vc-follow-symlinks t)
-
-  ;; CSS offset
-  (setq css-indent-offset 2)
-
-  ;; Company Mode
-  (define-key company-active-map (kbd "C-j") 'company-select-next)
-  (define-key company-active-map (kbd "C-k") 'company-select-previous)
-
-  ;; js2-mode config (needs to be moved into usr/config layer)
-  (eval-after-load 'js2-mode
-    '(progn
-       ;; Set default js2 settings
-       (setq-default js2-enter-indents-newline nil)
-       (setq-default js2-bounce-indent-p t)
-       (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum" "it" "describe"))
-
-       ;; Let Flycheck handle errors until js2 mode supports ES6
-       (setq-default js2-show-parse-errors nil)
-       (setq-default js2-strict-missing-semi-warning nil)
-       (setq-default js2-strict-trailing-comma-warning t)
-
-       (setq-default js-indent-level 2)
-       (setq-default js2-strict-inconsistent-return-warning nil)
-       (setq-default js2-include-node-externs t)
-       (setq-default js2-include-jslint-globals t)
-       (setq-default js2-basic-offset 2)
-
-       (add-hook 'js2-mode-hook
-                 (lambda ()
-                   ;; Electric indent hates bouncies
-                   (electric-indent-mode -1)))))
+  (setq-default powerline-default-separator 'arrow)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will

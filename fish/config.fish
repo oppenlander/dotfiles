@@ -8,6 +8,8 @@ set fish_greeting ""
 set fish_theme budspencer
 set -U budspencer_nogreeting
 set budspencer_pwdstyle short
+set budspencer_colors 2b2b2b 4f4f4f 6f6f6f dcdccc bfebbf f0dfaf cc9393 dfaf8f 93e0e3 94bff3 7f9f7f bfebbf
+#set budspencer_colors #2b2b2b #4f4f4f #6f6f6f #dcdccc #bfebbf #f0dfaf #cc9393 #dfaf8f #93e0e3 #94bff3 #7f9f7f #bfebbf
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-fish/plugins/*)
 # Custom plugins may be added to ~/.oh-my-fish/custom/plugins/
@@ -42,7 +44,7 @@ alias tl "tmux list-sessions"
 # Variables
 # Editor
 set -U EDITOR 'et'
-set -gx TERM xterm-256color
+set -gx TERM screen-256color
 # Language
 set -gx LC_ALL en_US.UTF-8
 set -gx LANG en_US.UTF-8
@@ -81,18 +83,10 @@ set -U fish_key_bindings fish_vi_key_bindings
 ####################################
 # Theme
 set -g fish_color_normal normal
-set -g fish_color_command -o noraml
+set -g fish_color_command -o yellow
 set -g fish_color_quote red
-set -g fish_color_redirection blue
-set -g fish_color_end blue
-set -g fish_color_error orange
-set -g fish_color_param white
-set -g fish_color_comment green
-set -g fish_color_match teal
-set -g fish_color_search_match yellow
-set -g fish_color_operator blue
-set -g fish_color_escape normal
-set -g fish_color_cwd teal
+set -g fish_color_redirection orange
+set -g fish_color_param blue
 
 # Load oh-my-fish configuration.
 . $fish_path/oh-my-fish.fish

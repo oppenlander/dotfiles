@@ -1,19 +1,23 @@
 (defvar oppenlander-packages
   '(
     ;; package usrs go here
-    grunt
-    jade-mode
-    password-store
-    vlf
-    whitespace-cleanup-mode
-    helm-dash
-    rust-mode
+    company
+    css-mode
+    flycheck
     flycheck-rust
+    fish-mode
+    grunt
+    helm
     helm-ag
+    jade-mode
     js-doc
+    js2-mode
+    password-store
     pretty-mode
-    editorconfig
-    swiper
+    rainbow-delimiters
+    rust-mode
+    vlf
+    ws-butler
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -51,26 +55,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun oppenlander/init-vlf ()
   "Very Large Files"
   (use-package vlf :config (require 'vlf-setup)))
-
-;; (defun oppenlander/init-whitespace-cleanup-mode ()
-;;   "Whitespace Butler"
-;;   (use-package whitespace-cleanup-mode
-;;     :config
-;;     (progn
-;;       (global-whitespace-cleanup-mode)
-;;       ;(setq whitespace-cleanup-mode-only-if-initially-clean nil)
-;;       )))
-
-;; (defun oppenlander/init-helm-dash ()
-;;   (use-package helm-dash
-;;     :defer t
-;;     :init
-;;     (evil-leader/set-key
-;;       "dd" 'helm-dash-at-point
-;;       "dD" 'helm-dash)
-;;     :config
-;;     (progn
-;;       (add-hook 'js2-mode-hook))))
 
 (defun oppenlander/init-rust-mode ()
   (use-package rust-mode :defer t))
@@ -113,39 +97,63 @@ which require an initialization must be listed explicitly in the list.")
           (global-pretty-mode 1)))
       (evil-leader/set-key "tp" 'oppenlander/toggle-pretty-mode))))
 
-(defun oppenlander/init-swiper ()
-  (use-package swiper
+(defun oppenlander/init-company ()
+  (use-package company
     :defer t
-    :init
-    (evil-leader/set-key
-      "os" 'swiper)))
+    :config
+    (progn
+      ;; Match other spacemacs bindings
+      (define-key company-active-map (kbd "C-j") 'company-select-next)
+      (define-key company-active-map (kbd "C-k") 'company-select-previous))))
 
-;; (defun oppenlander/init-editorconfig ()
-;;   (use-package editorconfig))
+(defun oppenlander/init-js2-mode ()
+  (use-package js2-mode
+    :defer t
+    :config
+    (progn
+      ;; Set default js2 settings
+      (setq-default js2-enter-indents-newline nil)
+      (setq-default js2-bounce-indent-p t)
+      (setq-default js2-global-externs '("module" "require" "jQuery" "$" "_" "buster" "sinon" "assert" "refute" "setTimeout" "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" "console" "JSON" "process" "setImmediate" "exports" "enum" "it" "describe"))
 
-;; (defun oppenlander/init-edit-server ()
-;;   "Edit Server used with the 'Edit With Emacs' plugin"
-;;   (use-package edit-server
-;;     :config
-;;     (progn
-;;       (require 'server)
-;;       (when (server-running-p)
-;;         (edit-server-start)))))
+      ;; Let Flycheck handle errors until js2 mode supports ES6
+      (setq-default js2-show-parse-errors nil)
+      (setq-default js2-strict-missing-semi-warning nil)
+      (setq-default js2-strict-trailing-comma-warning t)
 
-;; (defun oppenladner/init-edit-server-htmlize ()
-;;   "Will try to htmlize certain plain text blocks that come in, like from GMail"
-;;   (use-package edit-server-htmlize
-;;     :init
-;;     (progn
-;;       (add-hook 'edit-server-start-hook 'edit-server-maybe-dehtmlize-buffer)
-;;       (add-hook 'edit-server-done-hook 'edit-server-maybe-htmlize-buffer))))
+      (setq-default js-indent-level 2)
+      (setq-default js2-strict-inconsistent-return-warning nil)
+      (setq-default js2-include-node-externs t)
+      (setq-default js2-include-jslint-globals t)
+      (setq-default js2-basic-offset 2)
 
-;; For each package, define a function usr/init-<package-usr>
-;;
-;; (defun usr/init-my-package ()
-;;   "Initialize my package"
-;;   )
-;;
-;; Often the body of an initialize function uses `use-package'
-;; For more info on `use-package', see readme:
-;; https://github.com/jwiegley/use-package
+      (defun oppenlander/js2-mode-hook ()
+        ;; Electric indnets hate bouncies
+        (electric-indent-mode -1))
+      (add-hook 'js2-mode-hook 'oppenlander/js2-mode-hook)
+      )))
+
+(defun oppenlander/init-helm ()
+  (use-package helm
+    :defer t
+    :config (setq-default helm-split-window-in-side-p t)))
+
+(defun oppenlander/init-css-mode ()
+  (use-package css-mode
+    :defer t
+    :config (setq-default css-indent-offset 2)))
+
+(defun oppenlander/init-rainbow-delimiters ()
+  (use-package rainbow-delimiters
+    :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+
+(defun oppenlander/init-flycheck ()
+  (use-package flycheck
+    :config (global-flycheck-mode)))
+
+(defun oppenladner/init-ws-butler ()
+  (use-package ws-butler
+    :init (add-hook 'prog-mode-hook 'ws-butler-mode)))
+
+(defun oppenlander/init-fish-mode ()
+  (use-package fish-mode :defer t))
