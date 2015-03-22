@@ -13,6 +13,7 @@
     js-doc
     pretty-mode
     editorconfig
+    swiper
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -111,6 +112,13 @@ which require an initialization must be listed explicitly in the list.")
             (global-pretty-mode -1)
           (global-pretty-mode 1)))
       (evil-leader/set-key "tp" 'oppenlander/toggle-pretty-mode))))
+
+(defun oppenlander/init-swiper ()
+  (use-package swiper
+    :defer t
+    :init
+    (evil-leader/set-key
+      "os" 'swiper)))
 
 ;; (defun oppenlander/init-editorconfig ()
 ;;   (use-package editorconfig))
