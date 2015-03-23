@@ -5,13 +5,14 @@ action=$2
 
 
 bind() {
-    cmd="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/$(basename $0)"
+    cmd="$(basename $0)"
     for key in $keys; do
         tmux bind -n $key run "$cmd $namespace $key"
     done
 
     # allow exiting with escape
     tmux bind -n Escape run "$cmd $namespace Escape"
+    tmux bind -n Enter run "$cmd $namespace Escape"
 }
 
 
@@ -21,6 +22,7 @@ unbind() {
     done
 
     tmux unbind -n Escape
+    tmux unbind -n Enter
 }
 
 
@@ -62,24 +64,26 @@ case $namespace in
         if [ -z $action ]; then
             bind
         else
-            case $action in
-                j) tmux resize-pane -U 15 ;;
-                k) tmux resize-pane -D 15 ;;
-                h) tmux resize-pane -L 25 ;;
-                l) tmux resize-pane -R 25 ;;
+            if [ $action == 'Escape' ]; then
+                unbind
+            else
+                case $action in
+                    j) tmux resize-pane -U 15 ;;
+                    k) tmux resize-pane -D 15 ;;
+                    h) tmux resize-pane -L 25 ;;
+                    l) tmux resize-pane -R 25 ;;
 
-                J) tmux resize-pane -U -15 ;;
-                K) tmux resize-pane -D -15 ;;
-                H) tmux resize-pane -L -25 ;;
-                L) tmux resize-pane -R -25 ;;
-            esac
-
-            unbind
+                    J) tmux resize-pane -U -15 ;;
+                    K) tmux resize-pane -D -15 ;;
+                    H) tmux resize-pane -L -25 ;;
+                    L) tmux resize-pane -R -25 ;;
+                esac
+            fi
         fi
         ;;
 
 
-    window)
+    pane)
         keys="j k h l J K H L v V s S c C"
 
         if [ -z $action ]; then
@@ -110,13 +114,15 @@ case $namespace in
         ;;
 
 
-    frame)
-        keys="h l s n N o c C"
+    window)
+        keys="j k h l s n N o c C"
 
         if [ -z $action ]; then
             bind
         else
             case $action in
+                j) tmux next-window ;;
+                k) tmux previous-window ;;
                 h) tmux previous-window ;;
                 l) tmux next-window ;;
 

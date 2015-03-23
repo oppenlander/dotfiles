@@ -1,0 +1,11 @@
+" Initialize
+runtime! config/init.vim
+
+" Load packages
+runtime! config/packages.vim
+
+" Load user config
+runtime! config/user/**/*.vim
+
+" Load plugin config
+runtime! config/plugins/**/*.vim

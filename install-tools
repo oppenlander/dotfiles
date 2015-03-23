@@ -6,6 +6,7 @@ chsh -s /usr/bin/fish
 # Node.js
 sudo aura -S --needed nodejs
 npm i -g --python=python2 tern grunt bower
+git clone https://github.com/creationix/nvm.git ~/.nvm && cd ~/.nvm && git checkout `git describe --abbrev=0 --tags` && cd -
 
 # Install go dependencies
 sudo aura -S --needed go mercurial subversion

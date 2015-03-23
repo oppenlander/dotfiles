@@ -18,6 +18,7 @@
     rust-mode
     vlf
     ws-butler
+    vimrc-mode
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -157,3 +158,6 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun oppenlander/init-fish-mode ()
   (use-package fish-mode :defer t))
+
+(defun oppenlander/init-vimrc-mode ()
+  (use-package vimrc-mode :defer t))
