@@ -5,20 +5,23 @@
     css-mode
     flycheck
     flycheck-rust
-    fish-mode
     grunt
-    helm
-    helm-ag
+;;    helm
+;;    helm-ag
     jade-mode
     js-doc
     js2-mode
     password-store
     pretty-mode
     rainbow-delimiters
+    restclient
     rust-mode
+    toml-mode
     vlf
     ws-butler
     vimrc-mode
+    yaml-mode
+    org
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -30,6 +33,17 @@ which require an initialization must be listed explicitly in the list.")
 (defun oppenlander/init-jade-mode ()
   "Jade Templating language"
   (use-package jade-mode :defer t))
+
+(defun oppenlander/init-org ()
+  (use-package org
+    :defer t
+    :init
+    (progn
+      (setq org-todo-keywords
+            '((sequence "UNASSIGNED(u)" "DREW(D)" "HAZLETT(H)" "ROSS(R)" "YOUYOU(Y)" "MICHAEL(M)" "CHRIS(C)" "ERIN(E)" "INTARN(I)" "ROB(R)" "ANDY(O)" "KEVIN(K)" "MO(M)" "SHERMAN(S)" "PATRICK(P)" "JAMES(J)" "BONNIE(B)" "DYLAN(N)" "OTHER(?@)" "|" "DONE(d)")
+              (sequence "NEW(n)" "WAIT(w)" "TODO(t@/@)" "PROGRESS(p@)" "REVIEW(r!)" "QA(q!)" "|" "COMPLETE(c!)" "CANCEL(d@)" "ROADBLOCK(b@)")))
+      )
+    ))
 
 (defun oppenlander/init-password-store ()
   "Password Store that uses pass"
@@ -59,6 +73,9 @@ which require an initialization must be listed explicitly in the list.")
 
 (defun oppenlander/init-rust-mode ()
   (use-package rust-mode :defer t))
+
+(defun oppenlander/init-toml-mode ()
+  (use-package toml-mode :defer t))
 
 (defun oppenlander/init-flycheck-rust ()
   (use-package flycheck-rust
@@ -134,10 +151,10 @@ which require an initialization must be listed explicitly in the list.")
       (add-hook 'js2-mode-hook 'oppenlander/js2-mode-hook)
       )))
 
-(defun oppenlander/init-helm ()
-  (use-package helm
-    :defer t
-    :config (setq-default helm-split-window-in-side-p t)))
+;;(defun oppenlander/init-helm ()
+;;  (use-package helm
+;;    :defer t
+;;    :config (setq-default helm-split-window-in-side-p t)))
 
 (defun oppenlander/init-css-mode ()
   (use-package css-mode
@@ -156,8 +173,21 @@ which require an initialization must be listed explicitly in the list.")
   (use-package ws-butler
     :init (add-hook 'prog-mode-hook 'ws-butler-mode)))
 
-(defun oppenlander/init-fish-mode ()
-  (use-package fish-mode :defer t))
-
 (defun oppenlander/init-vimrc-mode ()
   (use-package vimrc-mode :defer t))
+
+(defun oppenlander/init-yaml-mode ()
+  (use-package yaml-mode :defer t))
+
+(defun oppenlander/init-restclient ()
+  (use-package restclient
+    :defer t
+    :config
+    (progn
+      (evil-leader/set-key-for-mode 'restclient-mode "c" 'restclient-http-send-current)
+      (evil-leader/set-key-for-mode 'restclient-mode "r" 'restclient-http-send-current-raw)
+      (evil-leader/set-key-for-mode 'restclient-mode "v" 'restclient-http-send-current-stay-in-window)
+      (evil-leader/set-key-for-mode 'restclient-mode "j" 'restclient-jump-next)
+      (evil-leader/set-key-for-mode 'restclient-mode "k" 'restclient-jump-previous)
+      (evil-leader/set-key-for-mode 'restclient-mode "." 'restclient-mark-current)
+      (evil-leader/set-key-for-mode 'restclient-mode "y" 'restclient-copy-curl-command))))

@@ -4,6 +4,9 @@
 # - set up dunst http://www.j4tools.org/
 # - fix volume muting
 # - useless gaps
+# - add VPN block
+# - fix weather block
+# - add wifi name to wifi block
 
 set $mod Mod4
 
@@ -20,14 +23,11 @@ exec xautolock -detectsleep -time 10 -locker "i3lock -c 000000" &
 # Move control key
 exec setxkbmap -option ctrl:nocaps
 
-# Map some keys with xcape
-#exec xcape -e 'Alt_L=Escape'
-
 # desktop notifications
 exec dunst -config $HOME/.config/i3/dunstrc
 
 # Desktop manager (mounting USB drices)
-#exec pcmanfm -d
+exec pcmanfm -d
 
 # Spotify
 #exec spotify
@@ -114,18 +114,18 @@ bindsym $mod+Shift+Up move workspace to output up
 bindsym $mod+Shift+Right move workspace to output right
 
 # split in horizontal orientation
-bindsym $mod+b split h
+bindsym $mod+v split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+s split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
+# change container layout (tabbed, toggle split, stacking)
+bindsym $mod+t layout tabbed
 bindsym $mod+e layout toggle split
+bindsym $mod+w layout stacking
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -147,8 +147,8 @@ bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
 
+bindsym $mod+8 workspace "8: browser"
 bindsym $mod+9 workspace "9: spotify"
 bindsym $mod+0 workspace "10: comm"
 
@@ -160,8 +160,8 @@ bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
 
+bindsym $mod+Shift+8 move container to workspace "8: browser"
 bindsym $mod+Shift+9 move container to workspace "9: spotify"
 bindsym $mod+Shift+0 move container to workspace "10: comm"
 
@@ -214,6 +214,7 @@ mode "$mode_system" {
   bindsym q mode "default"
 }
 bindsym $mod+Pause mode "$mode_system"
+bindsym $mod+Shift+Mod1+End mode "$mode_system"
 
 # Lock screen without system mode
 bindsym Mod1+Control+l exec --no-startup-id $HOME/bin/i3exit lock, mode "default"
@@ -222,7 +223,7 @@ bindsym Mod1+Control+l exec --no-startup-id $HOME/bin/i3exit lock, mode "default
 # finds out, if available)
 bar {
   position top
-  font pango:DejaVu Sans Mono 10
+  font pango:Source Code Pro, FontAwesome, DejaVu Sans Mono 10
   status_command $HOME/bin/i3blocks -c $HOME/.config/i3/i3blocks.conf
   colors {
     background #000000
@@ -236,21 +237,22 @@ bar {
   }
 }
 
-set $mode_vlc VLC: (m) play/pause, (n) next, (p) previous, (s) stop
+set $mode_vlc VLC: (M) play/pause, (n) next, (p) previous, (s) stop
 mode "$mode_vlc" {
   bindsym m exec playerctl --player=vlc play-pause, mode "default"
   bindsym n exec playerctl --player=vlc next
   bindsym p exec playerctl --player=vlc previous
-  bindsym Space exec playerctl --player=vlc stop, mode "default"
+  bindsym Space exec --no-startup-id playerctl --player=vlc stop, mode "default"
 
   bindsym Return mode "default"
   bindsym Escape mode "default"
   bindsym q mode "default"
+  bindsym $mod+m mode "default"
 }
-bindsym $mod+n mode "$mode_vlc"
+bindsym $mod+Shift+m mode "$mode_vlc"
 
 set $mode_spotify Spotify: (m) play/pause, (n) next, (p) previous, (s) stop
-mode "$mode_playerctl" {
+mode "$mode_spotify" {
   bindsym m exec --no-startup-id playerctl play-pause, mode "default"
   bindsym n exec --no-startup-id playerctl next
   bindsym p exec --no-startup-id playerctl previous
@@ -259,8 +261,9 @@ mode "$mode_playerctl" {
   bindsym Return mode "default"
   bindsym Escape mode "default"
   bindsym q mode "default"
+  bindsym $mod+m mode "default"
 }
-bindsym $mod+m mode "$mode_playerctl"
+bindsym $mod+m mode "$mode_spotify"
 
 ################
 # WINDOW RULES #

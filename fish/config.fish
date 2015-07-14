@@ -1,44 +1,61 @@
-# Path to your oh-my-fish.
+####################################
+# Oh My Fish
 set fish_path $HOME/.config/fish/oh-my-fish
+set fish_custom $HOME/.config/fish/custom
+
+# Load oh-my-fish configuration.
+. $fish_path/oh-my-fish.fish
 
 set fish_greeting ""
 
+####################################
 # Theme
-#set fish_theme agnoster
-set fish_theme budspencer
+Theme "budspencer"
 set -U budspencer_nogreeting
 set budspencer_pwdstyle short
 set budspencer_colors 2b2b2b 4f4f4f 6f6f6f dcdccc bfebbf f0dfaf cc9393 dfaf8f 93e0e3 94bff3 7f9f7f bfebbf
-#set budspencer_colors #2b2b2b #4f4f4f #6f6f6f #dcdccc #bfebbf #f0dfaf #cc9393 #dfaf8f #93e0e3 #94bff3 #7f9f7f #bfebbf
+set -g fish_color_normal normal
+set -g fish_color_command -o yellow
+set -g fish_color_quote red
+set -g fish_color_redirection orange
+set -g fish_color_param blue
+set -U fish_key_bindings fish_vi_key_bindings
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-fish/plugins/*)
-# Custom plugins may be added to ~/.oh-my-fish/custom/plugins/
-# Example format: set fish_plugins autojump bundler
-#set fish_plugins python tmux jump fasd
-#set fish_plugins python
+#####################################
+# Plugins
+Plugin "balias"
+Plugin "emacs"
+Plugin "extract"
+Plugin "msg"
+Plugin "theme"
 
-# Path to your custom folder (default path is $FISH/custom)
-#set fish_custom $HOME/dotfiles/oh-my-fish
+#####################################
+# NVM
+. $HOME/.config/fish/nvm-fish-wrapper/nvm.fish
 
 #####################################
 # Aliases
-alias et 'emacsclient -a "" -t'
+balias et 'emacsclient -a "" -t'
 
-alias ec 'emacsclient -a "" -nc'
+balias ec 'emacsclient -a "" -nc'
 
 function pj
   node -e "console.log(JSON.stringify("{$argv}", null, '\t'));"
 end
 
-alias agl 'ag --pager="less -FRSX"'
+balias agl 'ag --pager=l'
 
-alias e "$EDITOR"
-alias se "sudo $EDITOR"
+balias l 'less -FRSX'
 
-alias tmux "tmux -2"
-alias t "tmux"
-alias ta="tmux new-session -A -s"
-alias tl "tmux list-sessions"
+balias e "$EDITOR"
+balias se "sudo $EDITOR"
+
+balias tmux "tmux -2"
+balias t "tmux"
+balias ta="tmux new-session -A -s"
+balias tl "tmux list-sessions"
+
+balias ccat 'pygmentize -g'
 
 #####################################
 # Variables
@@ -72,21 +89,3 @@ set -gx PATH $HOME'/bin' $PATH
 set -gx PATH $HOME'/npm/bin' $PATH
 # Cabal/Haskell bin
 set -gx PATH $HOME'/.cabal/bin' $PATH
-
-
-# NVM
-source ~/.config/fish/nvm-fish-wrapper/nvm.fish
-
-# Use vi bindings because I hate myself
-set -U fish_key_bindings fish_vi_key_bindings
-
-####################################
-# Theme
-set -g fish_color_normal normal
-set -g fish_color_command -o yellow
-set -g fish_color_quote red
-set -g fish_color_redirection orange
-set -g fish_color_param blue
-
-# Load oh-my-fish configuration.
-. $fish_path/oh-my-fish.fish
