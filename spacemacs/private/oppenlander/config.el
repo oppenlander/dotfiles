@@ -36,6 +36,7 @@
 (evil-leader/set-key "Fs" 'switch-to-buffer-other-frame)
 (evil-leader/set-key "Fd" 'dired-other-frame)
 (evil-leader/set-key "Fo" 'other-frame)
+(evil-leader/set-key "Fn" 'new-frame)
 
 ;; Fix zenburn highlight persist isssue
 ;; (custom-set-faces

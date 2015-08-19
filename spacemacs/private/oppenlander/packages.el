@@ -144,6 +144,7 @@ which require an initialization must be listed explicitly in the list.")
       (setq-default js2-include-node-externs t)
       (setq-default js2-include-jslint-globals t)
       (setq-default js2-basic-offset 2)
+      (setq-default js2-indent-switch-body t)
 
       (defun oppenlander/js2-mode-hook ()
         ;; Electric indnets hate bouncies
