@@ -28,36 +28,37 @@
         ))
 
 ;; Add ability to close frame
-(spacemacs/declare-prefix "F" "frame")
-(evil-leader/set-key "Fc" 'delete-frame)
-(evil-leader/set-key "Ff" 'find-file-other-frame)
-(evil-leader/set-key "Fb" 'display-buffer-other-frame)
-(evil-leader/set-key "FC" 'delete-other-frames)
-(evil-leader/set-key "Fs" 'switch-to-buffer-other-frame)
-(evil-leader/set-key "Fd" 'dired-other-frame)
-(evil-leader/set-key "Fo" 'other-frame)
-(evil-leader/set-key "Fn" 'new-frame)
+;; (spacemacs/declare-prefix "F" "frame")
+;; (evil-leader/set-key "Fc" 'delete-frame)
+;; (evil-leader/set-key "Ff" 'find-file-other-frame)
+;; (evil-leader/set-key "Fb" 'display-buffer-other-frame)
+;; (evil-leader/set-key "FC" 'delete-other-frames)
+;; (evil-leader/set-key "Fs" 'switch-to-buffer-other-frame)
+;; (evil-leader/set-key "Fd" 'dired-other-frame)
+;; (evil-leader/set-key "Fo" 'other-frame)
+;; (evil-leader/set-key "Fn" 'new-frame)
 
-;; Fix zenburn highlight persist isssue
-;; (custom-set-faces
-;;  '(evil-search-highlight-persist-highlight-face
+
 ;;    ((t (:background "selectedMenuItemColor")))))
+;;  '(evil-search-highlight-persist-highlight-face
+;; (custom-set-faces
+;; Fix zenburn highlight persist isssue
 
-(spacemacs/declare-prefix "ox" "text")
-(spacemacs/declare-prefix "oxu" "uniquify")
-(defun uniquify-region-lines (beg end)
-  "Remove duplicate adjacent lines in region."
-  (interactive "*r")
-  (save-excursion
-    (goto-char beg)
-    (while (re-search-forward "^\\(.*\n\\)\\1+" end t)
-      (replace-match "\\1"))))
-(evil-leader/set-key "oxur" 'uniquify-region-lines)
-(defun uniquify-buffer-lines ()
-  "Remove duplicate adjacent lines in the current buffer."
-  (interactive)
-  (uniquify-region-lines (point-min) (point-max)))
-(evil-leader/set-key "oxub" 'uniquify-region-lines)
+;; (spacemacs/declare-prefix "ox" "text")
+;; (spacemacs/declare-prefix "oxu" "uniquify")
+;; (defun uniquify-region-lines (beg end)
+;;   "Remove duplicate adjacent lines in region."
+;;   (interactive "*r")
+;;   (save-excursion
+;;     (goto-char beg)
+;;     (while (re-search-forward "^\\(.*\n\\)\\1+" end t)
+;;       (replace-match "\\1"))))
+;; (evil-leader/set-key "oxur" 'uniquify-region-lines)
+;; (defun uniquify-buffer-lines ()
+;;   "Remove duplicate adjacent lines in the current buffer."
+;;   (interactive)
+;;   (uniquify-region-lines (point-min) (point-max)))
+;; (evil-leader/set-key "oxub" 'uniquify-region-lines)
 
 (spacemacs/declare-prefix "oi" "irc")
 (defun oppenlander/irc-join-zipscene ()

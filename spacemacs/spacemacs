@@ -36,11 +36,14 @@
                                        oppenlander
                                        org
                                        pandoc
+                                       pass
+                                       react
                                        rust
                                        shell
                                        shell-scripts
                                        syntax-checking
                                        version-control
+                                       yaml
                                        xkcd
                                        )
    ;; List of additional packages that will be installed without being
@@ -183,6 +186,7 @@ This function is called at the very end of Spacemacs initialization."
   (global-linum-mode)
   (linum-relative-toggle)
   (setq-default powerline-default-separator 'slant)
+  ;; (setq-default truncate-lines t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

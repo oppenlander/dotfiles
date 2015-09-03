@@ -1,26 +1,17 @@
 (defvar oppenlander-packages
   '(
     ;; package usrs go here
-    company
     css-mode
-    flycheck
-    flycheck-rust
     grunt
-;;    helm
-;;    helm-ag
     jade-mode
-    js-doc
     js2-mode
-    password-store
+    ;; password-store
     pretty-mode
     rainbow-delimiters
     restclient
-    rust-mode
-    toml-mode
     vlf
     ws-butler
     vimrc-mode
-    yaml-mode
     org
     )
   "List of all packages to install and/or initialize. Built-in packages
@@ -45,22 +36,6 @@ which require an initialization must be listed explicitly in the list.")
       )
     ))
 
-(defun oppenlander/init-password-store ()
-  "Password Store that uses pass"
-  (use-package password-store
-    :defer t
-    :init
-    (evil-leader/set-key
-      "opc" 'password-store-edit
-      "opy" 'password-store-copy
-      "opi" 'password-store-insert
-      "opD" 'password-store-clear
-      "opI" 'password-store-init
-      "opg" 'password-store-generate
-      "opd" 'password-store-remove
-      "opC" 'password-store-rename
-      "opj" 'password-store-url)))
-
 (defun oppenlander/init-grunt ()
   "Grunt Task Runner"
   (use-package grunt
@@ -70,37 +45,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun oppenlander/init-vlf ()
   "Very Large Files"
   (use-package vlf :config (require 'vlf-setup)))
-
-(defun oppenlander/init-rust-mode ()
-  (use-package rust-mode :defer t))
-
-(defun oppenlander/init-toml-mode ()
-  (use-package toml-mode :defer t))
-
-(defun oppenlander/init-flycheck-rust ()
-  (use-package flycheck-rust
-    :defer t
-    :init
-    (add-hook 'rust-mode-hook #'flycheck-rust-setup)))
-
-(defun oppenlander/init-js-doc ()
-  (use-package js-doc
-    :defer t
-    :init
-    (progn
-      (defun oppenlander/load-js-doc ()
-        "Lazy load js-doc"
-        (require 'js-doc))
-      (add-hook 'js2-mode-hook 'oppenlander/load-js-doc))
-    :config
-    (progn
-      (setq js-doc-mail-address "andrew.oppenlander@zipscene.com"
-            js-doc-author (format "Andrew Oppenlander <%s>" js-doc-mail-address)
-            js-doc-url "zipscene.com"
-            js-doc-license "")
-
-      (evil-leader/set-key "m;" 'js-doc-insert-function-doc)
-      (define-key js2-mode-map "@" 'js-doc-insert-tag))))
 
 (defun oppenlander/init-pretty-mode ()
   (use-package pretty-mode
@@ -115,16 +59,7 @@ which require an initialization must be listed explicitly in the list.")
           (global-pretty-mode 1)))
       (evil-leader/set-key "tp" 'oppenlander/toggle-pretty-mode))))
 
-(defun oppenlander/init-company ()
-  (use-package company
-    :defer t
-    :config
-    (progn
-      ;; Match other spacemacs bindings
-      (define-key company-active-map (kbd "C-j") 'company-select-next)
-      (define-key company-active-map (kbd "C-k") 'company-select-previous))))
-
-(defun oppenlander/init-js2-mode ()
+(defun oppenlander/post-init-js2-mode ()
   (use-package js2-mode
     :defer t
     :config
@@ -152,12 +87,7 @@ which require an initialization must be listed explicitly in the list.")
       (add-hook 'js2-mode-hook 'oppenlander/js2-mode-hook)
       )))
 
-;;(defun oppenlander/init-helm ()
-;;  (use-package helm
-;;    :defer t
-;;    :config (setq-default helm-split-window-in-side-p t)))
-
-(defun oppenlander/init-css-mode ()
+(defun oppenlander/post-init-css-mode ()
   (use-package css-mode
     :defer t
     :config (setq-default css-indent-offset 2)))
@@ -173,12 +103,6 @@ which require an initialization must be listed explicitly in the list.")
 (defun oppenladner/init-ws-butler ()
   (use-package ws-butler
     :init (add-hook 'prog-mode-hook 'ws-butler-mode)))
-
-(defun oppenlander/init-vimrc-mode ()
-  (use-package vimrc-mode :defer t))
-
-(defun oppenlander/init-yaml-mode ()
-  (use-package yaml-mode :defer t))
 
 (defun oppenlander/init-restclient ()
   (use-package restclient
