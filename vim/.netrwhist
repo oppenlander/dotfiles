@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/opt/visualstudiocode/resources/app/plugins/vs.language.csharp.o/omnisharp'
-let g:netrw_dirhist_2='/home/andrew/Zipscene/Repos/ZSAPI External Proejcts/zs-selligent-uploader/run-info'
-let g:netrw_dirhist_3='/home/andrew/Zipscene/Repos/ZSAPI External Proejcts/zs-selligent-brand-creator/node_modules/zs-selligent'
-let g:netrw_dirhist_4='/home/andrew/.config'
