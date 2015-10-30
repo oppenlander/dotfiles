@@ -49,7 +49,7 @@ values."
                                        search-engine
                                        shell
                                        shell-scripts
-                                       spell-checking
+                                       ;; spell-checking
                                        syntax-checking
                                        version-control
                                        yaml
